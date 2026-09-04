@@ -24,7 +24,8 @@ Configured in `config/sources.json`:
 
 - RealClearPolling generic congressional vote
 - VoteHub 2026 generic ballot
-- Decision Desk HQ national generic ballot
+- HillCast Generic Congressional Ballot Polling Average
+- America First Insight 2026 generic-ballot dashboard
 - Optional JSON/CSV API slots
 
 ## Presidential approval

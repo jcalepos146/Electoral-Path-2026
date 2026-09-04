@@ -1,0 +1,14 @@
+{
+  "enabled": false,
+  "note": "DDHQ's demographic averages are a premium feature on the public website. Do not scrape or bypass that paywall. If you have authorized API/export access, add it here using the same JSON/CSV auth pattern described in SOURCES.md.",
+  "groups": [
+    { "id": "men", "label": "Men", "enabled": false },
+    { "id": "women", "label": "Women", "enabled": false },
+    { "id": "black", "label": "Black / African American", "enabled": false },
+    { "id": "hispanic", "label": "Hispanic", "enabled": false },
+    { "id": "white", "label": "White", "enabled": false },
+    { "id": "democrats", "label": "Democrats", "enabled": false },
+    { "id": "independents", "label": "Independents", "enabled": false },
+    { "id": "republicans", "label": "Republicans", "enabled": false }
+  ]
+}

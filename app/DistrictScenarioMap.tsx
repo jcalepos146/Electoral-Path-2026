@@ -195,6 +195,26 @@ function neutralSettings(): Record<DemographicKey, ScenarioSetting> {
   return { whiteNH: { margin: 0, turnout: 100 }, black: { margin: 0, turnout: 100 }, hispanic: { margin: 0, turnout: 100 }, asian: { margin: 0, turnout: 100 }, other: { margin: 0, turnout: 100 } };
 }
 
+function districtTurnoutRate(shares: Record<DemographicKey, number> | undefined, groupTurnout: Record<DemographicKey, number>) {
+  if (!shares) return 0;
+  return GROUPS.reduce((sum, { key }) => sum + (Math.max(0, Number(shares[key] ?? 0)) / 100) * Math.max(0, groupTurnout[key] ?? 0), 0);
+}
+
+function leadCounts(values: Iterable<{ margin: number }>) {
+  let d = 0, r = 0, toss = 0;
+  for (const value of values) {
+    if (value.margin >= 0.5) d++;
+    else if (value.margin <= -0.5) r++;
+    else toss++;
+  }
+  return { d, r, toss };
+}
+
+function seatDelta(value: number) {
+  if (value > 0) return `+${value}`;
+  return String(value);
+}
+
 export default function DistrictScenarioMap({ rawNationalMargin, projectedNationalMargin }: { rawNationalMargin: number; projectedNationalMargin: number }) {
   const [hillcast, setHillcast] = useState<HillcastBundle | null>(null);
   const [demographics, setDemographics] = useState<DemographicBundle | null>(null);
@@ -231,12 +251,12 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
       setHillcast(h);
       setDemographics(d);
       setGeo(g);
-      setSelectedId(h.districts?.[0]?.id ?? null);
+      setSelectedId((current) => current && h.districts?.some((row: DistrictRow) => row.id === current) ? current : h.districts?.[0]?.id ?? null);
 
       if (!d && !g) {
         setLoadNote("Census demographic data and district geometry are unavailable. The map can be retried without redeploying.");
       } else if (!g) {
-        setLoadNote("The committed district geometry file is not available yet and the browser fallback could not reach Census. Run the dedicated “Refresh congressional district geometry” GitHub Action once.");
+        setLoadNote("The committed district geometry file is not available yet and the browser fallback could not reach Census. Run the dedicated “Refresh election map geometry” GitHub Action once.");
       } else if (!d) {
         setLoadNote("Map geometry loaded, but Census demographic data were unavailable; demographic effects will remain neutral until the next successful refresh.");
       } else if (usedRuntimeGeometry) {
@@ -253,46 +273,118 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
     void loadDistrictData();
   }, []);
 
-  const districtMap = useMemo(() => new Map(hillcast?.districts.map((d) => [d.id, d]) ?? []), [hillcast]);
   const demoMap = useMemo(() => new Map(demographics?.districts.map((d) => [d.id, d]) ?? []), [demographics]);
-  const nationalDemoMargin = useMemo(() => demographicMargin(demographics?.nationalShares, settings), [demographics, settings]);
+  const baselineSettings = useMemo(() => projectedSettings(), []);
+
+  // Convert the relative turnout sliders into absolute implied turnout rates. The national
+  // average is rescaled back to the overall turnout assumption, so moving one group's
+  // turnout changes composition while the overall control changes total participation.
   const impliedTurnout = useMemo(() => {
     const shares = demographics?.nationalShares;
     if (!shares) {
-      return Object.fromEntries(GROUPS.map(({ key }) => [key, overallTurnout * settings[key].turnout / 100])) as Record<DemographicKey, number>;
+      return Object.fromEntries(GROUPS.map(({ key }) => [key, Math.min(100, overallTurnout * settings[key].turnout / 100)])) as Record<DemographicKey, number>;
     }
     const relativeNational = GROUPS.reduce((sum, { key }) => sum + Math.max(0, shares[key] ?? 0) * Math.max(0, settings[key].turnout / 100), 0);
-    const scale = relativeNational > 0 ? overallTurnout / relativeNational : overallTurnout;
+    const scale = relativeNational > 0 ? overallTurnout * 100 / relativeNational : overallTurnout;
     return Object.fromEntries(GROUPS.map(({ key }) => [key, Math.min(100, scale * Math.max(0, settings[key].turnout / 100))])) as Record<DemographicKey, number>;
   }, [demographics, settings, overallTurnout]);
+
+  const baselineImpliedTurnout = useMemo(() => {
+    return Object.fromEntries(GROUPS.map(({ key }) => [key, BASELINE.overallTurnout])) as Record<DemographicKey, number>;
+  }, []);
+
+  const baselineNationalDemoMargin = useMemo(
+    () => demographicMargin(demographics?.nationalShares, baselineSettings),
+    [demographics, baselineSettings],
+  );
+  const scenarioNationalDemoMargin = useMemo(
+    () => demographicMargin(demographics?.nationalShares, settings),
+    [demographics, settings],
+  );
+  const demographicNationalSwing = demographics ? scenarioNationalDemoMargin - baselineNationalDemoMargin : 0;
+
   const pollingAnchor = anchorMode === "projected" ? projectedNationalMargin : rawNationalMargin;
-  const scenarioNationalMargin = preserveNational ? pollingAnchor : nationalDemoMargin;
+  // Baseline demographic projections are treated as the zero point. If demographic mode is
+  // allowed to move the national vote, only the change away from that baseline is added.
+  const scenarioNationalMargin = preserveNational ? pollingAnchor : pollingAnchor + demographicNationalSwing;
+  const baselineNationalResidual = hillcast ? pollingAnchor - hillcast.hillcastNationalMargin : 0;
   const nationalResidual = hillcast ? scenarioNationalMargin - hillcast.hillcastNationalMargin : 0;
 
   const adjusted = useMemo(() => {
-    if (!hillcast) return new Map<string, { row: DistrictRow; margin: number; demoEffect: number; demoMargin: number }>();
-    const out = new Map<string, { row: DistrictRow; margin: number; demoEffect: number; demoMargin: number }>();
+    type Adjusted = {
+      row: DistrictRow;
+      margin: number;
+      baselineMargin: number;
+      scenarioShift: number;
+      baselineDemoMargin: number;
+      demoMargin: number;
+      localDemoSwing: number;
+      demoEffect: number;
+      turnoutRate: number;
+      baselineTurnoutRate: number;
+      projectedVotes: number | null;
+    };
+    const out = new Map<string, Adjusted>();
+    if (!hillcast) return out;
+
     for (const row of hillcast.districts) {
       const demoRow = demoMap.get(row.id);
+      const baselineDemoMargin = demographicMargin(demoRow?.shares, baselineSettings);
       const demoMargin = demographicMargin(demoRow?.shares, settings);
-      const demoEffect = demographics ? demoMargin - nationalDemoMargin : 0;
+      const localDemoSwing = demographics ? demoMargin - baselineDemoMargin : 0;
+      // The national component of the demographic swing is already handled by the national
+      // anchor/residual. Subtracting it here leaves only the district-specific geographic effect.
+      const demoEffect = demographics ? localDemoSwing - demographicNationalSwing : 0;
+      const baselineMargin = row.margin + baselineNationalResidual;
       const margin = row.margin + nationalResidual + demoEffect;
-      out.set(row.id, { row, margin, demoEffect, demoMargin });
+      const turnoutRate = districtTurnoutRate(demoRow?.shares, impliedTurnout);
+      const baselineTurnoutRate = districtTurnoutRate(demoRow?.shares, baselineImpliedTurnout);
+      const projectedVotes = demoRow?.totalCvapApprox && turnoutRate
+        ? Math.round(demoRow.totalCvapApprox * turnoutRate / 100)
+        : null;
+      out.set(row.id, {
+        row,
+        margin,
+        baselineMargin,
+        scenarioShift: margin - baselineMargin,
+        baselineDemoMargin,
+        demoMargin,
+        localDemoSwing,
+        demoEffect,
+        turnoutRate,
+        baselineTurnoutRate,
+        projectedVotes,
+      });
     }
     return out;
-  }, [hillcast, demoMap, demographics, settings, nationalDemoMargin, nationalResidual]);
+  }, [hillcast, demoMap, demographics, baselineSettings, settings, demographicNationalSwing, baselineNationalResidual, nationalResidual, impliedTurnout, baselineImpliedTurnout]);
+
+  const baselineAdjusted = useMemo(() => {
+    if (!hillcast) return new Map<string, { margin: number }>();
+    return new Map(hillcast.districts.map((row) => [row.id, { margin: row.margin + baselineNationalResidual }]));
+  }, [hillcast, baselineNationalResidual]);
 
   const bounds = useMemo(() => geo ? { main: boundsFor(geo.features, "main"), AK: boundsFor(geo.features, "AK"), HI: boundsFor(geo.features, "HI") } : null, [geo]);
   const selected = selectedId ? adjusted.get(selectedId) : undefined;
   const selectedDemo = selectedId ? demoMap.get(selectedId) : undefined;
-  const counts = useMemo(() => {
-    let d = 0, r = 0, toss = 0;
-    for (const v of adjusted.values()) { if (v.margin >= 0.5) d++; else if (v.margin <= -0.5) r++; else toss++; }
-    return { d, r, toss };
+  const counts = useMemo(() => leadCounts(adjusted.values()), [adjusted]);
+  const baselineCounts = useMemo(() => leadCounts(baselineAdjusted.values()), [baselineAdjusted]);
+  const districtShiftSummary = useMemo(() => {
+    let movedD = 0, movedR = 0, unchanged = 0;
+    for (const item of adjusted.values()) {
+      if (item.scenarioShift > 0.05) movedD++;
+      else if (item.scenarioShift < -0.05) movedR++;
+      else unchanged++;
+    }
+    return { movedD, movedR, unchanged };
   }, [adjusted]);
 
   function setGroup(key: DemographicKey, field: "margin" | "turnout", value: number) {
     setSettings((old) => ({ ...old, [key]: { ...old[key], [field]: value } }));
+  }
+
+  function selectDistrict(id: string) {
+    setSelectedId(id);
   }
 
   async function toggleFullscreen() {
@@ -309,10 +401,22 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
       <div className="districtHeader">
         <div>
           <div className="eyebrow">DISTRICT SCENARIO ENGINE</div>
-          <h3>HillCast district prior + national aggregate + demographic redistribution</h3>
-          <p className="small">Weekly HillCast CSVs set the district-level prior. Only the difference between the selected national anchor and HillCast&apos;s own national baseline is added to each district, which avoids adding the national environment twice.</p>
+          <h3>HillCast district prior + national aggregate + real-time demographic swing</h3>
+          <p className="small">HillCast supplies the district prior. The national anchor is applied only as a residual, while demographic sliders now calculate changes relative to the published 2026 demographic baseline. Moving a slider therefore shows a real-time district swing instead of replacing the prior with a second demographic model.</p>
         </div>
-        <div className="districtCounts"><span>D-led <b>{counts.d}</b></span><span>R-led <b>{counts.r}</b></span><span>Within 0.5 <b>{counts.toss}</b></span></div>
+        <div className="districtCounts">
+          <span>D-led <b>{counts.d}</b> <em>{seatDelta(counts.d - baselineCounts.d)}</em></span>
+          <span>R-led <b>{counts.r}</b> <em>{seatDelta(counts.r - baselineCounts.r)}</em></span>
+          <span>Within 0.5 <b>{counts.toss}</b> <em>{seatDelta(counts.toss - baselineCounts.toss)}</em></span>
+        </div>
+      </div>
+
+      <div className="liveScenarioRibbon" aria-live="polite">
+        <div><span>Polling anchor</span><b>{formatMargin(pollingAnchor)}</b></div>
+        <div><span>Demographic national swing</span><b>{formatMargin(demographicNationalSwing)}</b></div>
+        <div><span>Scenario national margin</span><b>{formatMargin(scenarioNationalMargin)}</b></div>
+        <div><span>Districts shifting D</span><b>{districtShiftSummary.movedD}</b></div>
+        <div><span>Districts shifting R</span><b>{districtShiftSummary.movedR}</b></div>
       </div>
 
       <div className="districtTopControls">
@@ -323,7 +427,7 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
           </select>
         </label>
         <label>Demographic mode
-          <button className="toggle" onClick={() => setPreserveNational((v) => !v)}>{preserveNational ? "Preserve national anchor" : "Demographics set national margin"}</button>
+          <button type="button" className="toggle" onClick={() => setPreserveNational((v) => !v)}>{preserveNational ? "Preserve national anchor" : "Allow demographic national swing"}</button>
         </label>
         <label>District inspector
           <select value={selectedId ?? ""} onChange={(e) => setSelectedId(e.target.value || null)}>
@@ -337,15 +441,15 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
       <div className="demographicProjectionHeader">
         <div>
           <div className="eyebrow">2026 DEMOGRAPHIC PROJECTION BASELINE</div>
-          <h4>Start from projected group margins, then move the sliders</h4>
-          <p className="small">Overlapping race estimates are averaged from Morning Consult (Aug. 16) and Pew (July); Asian uses Pew and Other uses Morning Consult. These are polling-derived starting values, not final exit-poll forecasts.</p>
+          <h4>Adjust projected group margins and turnout; the map recalculates immediately</h4>
+          <p className="small">The baseline values are the zero point for scenario changes. A White margin shift from R+9.5 to R+5.0, for example, is treated as a 4.5-point Democratic movement within that group. Turnout changes reweight each district according to its demographic composition.</p>
         </div>
         <div className="overallTurnoutControl">
           <span>Projected overall turnout</span>
           <strong>{overallTurnout.toFixed(1)}%</strong>
           <small>{BASELINE.turnoutMeasure}</small>
           <input type="range" min="35" max="65" step="0.1" value={overallTurnout} onChange={(e) => setOverallTurnout(Number(e.target.value))} />
-          <small>Baseline {BASELINE.overallTurnout.toFixed(1)}% · high-turnout midterm starting point</small>
+          <small>Overall turnout changes vote volume. Partisan margins move when group turnout differs from the baseline composition.</small>
         </div>
       </div>
 
@@ -356,24 +460,30 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
       </div>
 
       <div className="demographicSliders">
-        {GROUPS.map(({ key, label }) => (
-          <div className="demoSlider" key={key}>
-            <strong>{label}</strong>
-            <div className="demoBaselineLine"><span>Projected baseline</span><b>{formatMargin(BASELINE.groups[key].margin)}</b></div>
-            <label>Scenario vote margin <span>{formatMargin(settings[key].margin)}</span>
-              <input type="range" min="-100" max="100" step="0.5" value={settings[key].margin} onChange={(e) => setGroup(key, "margin", Number(e.target.value))} />
-            </label>
-            <label>Relative turnout <span>{settings[key].turnout}%</span>
-              <input type="range" min="50" max="150" step="1" value={settings[key].turnout} onChange={(e) => setGroup(key, "turnout", Number(e.target.value))} />
-            </label>
-            <div className="impliedTurnout"><span>Implied group turnout</span><b>{impliedTurnout[key].toFixed(1)}%</b></div>
-          </div>
-        ))}
+        {GROUPS.map(({ key, label }) => {
+          const marginDelta = settings[key].margin - BASELINE.groups[key].margin;
+          const turnoutDelta = impliedTurnout[key] - BASELINE.overallTurnout;
+          return (
+            <div className="demoSlider" key={key}>
+              <strong>{label}</strong>
+              <div className="demoBaselineLine"><span>Projected baseline</span><b>{formatMargin(BASELINE.groups[key].margin)}</b></div>
+              <label>Scenario vote margin <span>{formatMargin(settings[key].margin)}</span>
+                <input type="range" min="-100" max="100" step="0.5" value={settings[key].margin} onChange={(e) => setGroup(key, "margin", Number(e.target.value))} />
+              </label>
+              <div className="sliderDelta"><span>Margin shift</span><b>{formatMargin(marginDelta)}</b></div>
+              <label>Relative turnout <span>{settings[key].turnout}%</span>
+                <input type="range" min="50" max="150" step="1" value={settings[key].turnout} onChange={(e) => setGroup(key, "turnout", Number(e.target.value))} />
+              </label>
+              <div className="impliedTurnout"><span>Implied group turnout</span><b>{impliedTurnout[key].toFixed(1)}%</b></div>
+              <div className="sliderDelta"><span>Turnout vs baseline</span><b>{turnoutDelta >= 0 ? "+" : ""}{turnoutDelta.toFixed(1)} pt</b></div>
+            </div>
+          );
+        })}
       </div>
       <div className="scenarioActions">
-        <button className="secondary" onClick={() => { setSettings(projectedSettings()); setOverallTurnout(BASELINE.overallTurnout); }}>Reset to 2026 projection</button>
-        <button className="secondary" onClick={() => setSettings(neutralSettings())}>Neutralize demographic effects</button>
-        <span className="small">Positive margins are Democratic; negative margins are Republican. Relative turnout changes group composition while the overall-turnout control sets the absolute participation level.</span>
+        <button className="secondary" type="button" onClick={() => { setSettings(projectedSettings()); setOverallTurnout(BASELINE.overallTurnout); }}>Reset to 2026 projection</button>
+        <button className="secondary" type="button" onClick={() => setSettings(neutralSettings())}>Set every group to tie</button>
+        <span className="small">The published 2026 projection is the model&apos;s zero-change state. Sliders apply changes from that baseline in real time. Uniform changes to overall turnout alone do not create a partisan swing; differential group turnout does.</span>
       </div>
 
       <div className="districtMapGrid">
@@ -387,7 +497,7 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
               <button type="button" onClick={() => void toggleFullscreen()}>Fullscreen</button>
             </div>
           </div>
-          <div className="mapInteractionHint">Scroll to zoom · drag to pan · double-click to zoom in · click a district to inspect</div>
+          <div className="mapInteractionHint">Click a district to inspect · scroll to zoom · drag to pan · double-click to zoom in</div>
           {geo && bounds ? (
             <svg
               ref={svgRef}
@@ -406,26 +516,61 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
                 const id = districtId(feature);
                 if (!id) return null;
                 const item = adjusted.get(id);
-                return <path key={`${id}-${i}`} d={pathFor(feature, bounds)} fill={colorForMargin(item?.margin ?? 0)} fillRule="evenodd" className={`districtShape ${selectedId === id ? "selected" : ""}`} onClick={(event) => { event.stopPropagation(); setSelectedId(id); }}><title>{id}: {item ? formatMargin(item.margin) : "No model row"}</title></path>;
+                const label = `${id}: ${item ? formatMargin(item.margin) : "No model row"}`;
+                return (
+                  <path
+                    key={`${id}-${i}`}
+                    d={pathFor(feature, bounds)}
+                    fill={colorForMargin(item?.margin ?? 0)}
+                    fillRule="evenodd"
+                    className={`districtShape ${selectedId === id ? "selected" : ""}`}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={label}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      if (viewport.shouldSuppressClick()) return;
+                      selectDistrict(id);
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        selectDistrict(id);
+                      }
+                    }}
+                  >
+                    <title>{label}</title>
+                  </path>
+                );
               })}
             </svg>
           ) : <div className="mapPlaceholder"><div>District geometry is not available in this deployment.</div><button className="secondary" onClick={() => void loadDistrictData()}>Retry Census map</button><div className="small">The page checks the committed GeoJSON first, then tries official Census endpoints. The dedicated GitHub Action is the reliable long-term source.</div></div>}
           <div className="mapLegend"><span><i className="legendDStrong" />D+15</span><span><i className="legendD" />D+5</span><span><i className="legendT" />±0.5</span><span><i className="legendR" />R+5</span><span><i className="legendRStrong" />R+15</span></div>
         </div>
 
-        <aside className="districtInspector">
+        <aside className="districtInspector" aria-live="polite">
           {selected ? <>
             <div className="eyebrow">{selected.row.id}</div>
             <div className="districtMargin">{formatMargin(selected.margin)}</div>
+            <div className="districtScenarioDelta">Scenario shift <b>{formatMargin(selected.scenarioShift)}</b> from the unmodified 2026 baseline</div>
             <div className="districtBreakdown">
               <div><span>HillCast prior</span><b>{formatMargin(selected.row.margin)}</b></div>
               <div><span>National residual</span><b>{formatMargin(nationalResidual)}</b></div>
-              <div><span>Demographic geographic effect</span><b>{formatMargin(selected.demoEffect)}</b></div>
+              <div><span>Local demographic swing</span><b>{formatMargin(selected.localDemoSwing)}</b></div>
+              <div><span>National demographic swing</span><b>{formatMargin(demographicNationalSwing)}</b></div>
+              <div><span>Geographic demo effect</span><b>{formatMargin(selected.demoEffect)}</b></div>
+              <div><span>Baseline scenario margin</span><b>{formatMargin(selected.baselineMargin)}</b></div>
+              <div className="finalProjectionRow"><span>Final scenario margin</span><b>{formatMargin(selected.margin)}</b></div>
+            </div>
+            <div className="turnoutInspector">
+              <div><span>Estimated district turnout</span><b>{selected.turnoutRate ? `${selected.turnoutRate.toFixed(1)}%` : "—"}</b></div>
+              <div><span>Baseline turnout</span><b>{selected.baselineTurnoutRate ? `${selected.baselineTurnoutRate.toFixed(1)}%` : "—"}</b></div>
+              <div><span>Approx. votes cast</span><b>{selected.projectedVotes ? selected.projectedVotes.toLocaleString() : "—"}</b></div>
             </div>
             <p className="small"><strong>HillCast rating:</strong> {selected.row.rating ?? "—"}</p>
             <p className="small"><strong>Republican:</strong> {selected.row.republican ?? "Not listed"}<br/><strong>Democrat:</strong> {selected.row.democrat ?? "Not listed"}</p>
             {selectedDemo && <div className="demoShares">{GROUPS.map(({ key, label }) => <span key={key}>{label} <b>{selectedDemo.shares[key]?.toFixed(1) ?? "0.0"}%</b></span>)}</div>}
-          </> : <p className="small">Select a district on the map.</p>}
+          </> : <p className="small">Click a district on the map or choose one from the district inspector menu.</p>}
         </aside>
       </div>
 
@@ -434,7 +579,7 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
         <div className="small">{BASELINE.turnoutNote}</div>
       </div>
 
-      <p className="small districtFootnote">District boundaries use Census 119th Congressional District geography. Demographic shares are generated from the 2024 ACS API as a lightweight CVAP approximation; the build notes disclose the category-normalization limitation. {hillcast ? `Current district prior: ${hillcast.sourceFile}${hillcast.sourceAsOf ? ` (${hillcast.sourceAsOf})` : ""}.` : ""} {loadNote ?? ""}</p>
+      <p className="small districtFootnote">The scenario engine is comparative: the demographic baseline itself produces no extra district adjustment. Only changes from the baseline margins and relative turnout create a demographic swing. In preserve-national mode the national component is removed and only geographic redistribution remains. District boundaries use Census 119th Congressional District geography. Demographic shares are generated from the 2024 ACS API as a lightweight CVAP approximation. {hillcast ? `Current district prior: ${hillcast.sourceFile}${hillcast.sourceAsOf ? ` (${hillcast.sourceAsOf})` : ""}.` : ""} {loadNote ?? ""}</p>
     </section>
   );
 }

@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "status": "not_configured",
+    "description": "Placeholder for demographic-specific historical generic-ballot polling and final-vote benchmarks. No demographic correction is applied until validated historical crosstabs are imported."
+  },
+  "groups": []
+}

@@ -15,3 +15,5 @@ Included:
 - state demographic aggregation from the House Census dataset
 
 Upload this version over the repository root and replace matching files. Existing committed map geometry files can remain in `public/data/`.
+
+Cumulative v0.8 hotfix: includes the complete v0.7 master baseline plus the Senate v0.8 overlay, including app/mapViewport.ts required by the Senate and House click-suppression code.

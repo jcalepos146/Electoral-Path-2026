@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-04T17:20:08.719Z",
+  "generatedAt": "2026-09-04T18:03:57.353Z",
   "sourceFile": "hillcast-2026-09-04.csv",
   "sourceAsOf": "2026-09-04",
   "districtCount": 435,
   "hillcastNationalMargin": 4.64,
   "hillcastNationalAsOf": "2026-09-03",
-  "hillcastNationalSource": "last-known-hillcast",
+  "hillcastNationalSource": "live-aggregates",
   "convention": "Positive margins are Democratic; negative margins are Republican.",
   "districts": [
     {
