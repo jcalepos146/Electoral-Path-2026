@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-09-04T16:04:26.620Z",
+  "composite": {
+    "dem": 48,
+    "rep": 42.3,
+    "margin": 5.700000000000003,
+    "asOf": "2026-09-04",
+    "sourceCount": 1,
+    "method": "weighted_mean",
+    "label": "Configured aggregate composite"
+  },
+  "sources": [
+    {
+      "id": "rcp",
+      "name": "RealClearPolling",
+      "status": "fallback",
+      "dem": 48,
+      "rep": 42.3,
+      "margin": 5.700000000000003,
+      "asOf": "2026-09-04",
+      "weight": 1,
+      "sourceUrl": "https://www.realclearpolling.com/polls/state-of-the-union/generic-congressional-vote",
+      "message": "fetch failed"
+    }
+  ]
+}

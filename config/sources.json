@@ -1,0 +1,77 @@
+{
+  "composite": {
+    "method": "weighted_mean",
+    "label": "Configured aggregate composite"
+  },
+  "sources": [
+    {
+      "id": "rcp",
+      "name": "RealClearPolling",
+      "enabled": true,
+      "adapter": "rcp_html",
+      "url": "https://www.realclearpolling.com/polls/state-of-the-union/generic-congressional-vote",
+      "weight": 1,
+      "fallbackFile": "data/last-known-rcp.json"
+    },
+    {
+      "id": "json_slot_1",
+      "name": "JSON aggregate slot 1",
+      "enabled": false,
+      "adapter": "json",
+      "url": "https://example.com/api/generic-ballot",
+      "weight": 1,
+      "auth": {
+        "env": "DATA_SOURCE_1_KEY",
+        "mode": "header",
+        "name": "Authorization",
+        "prefix": "Bearer "
+      },
+      "mapping": {
+        "rootPath": "data",
+        "dem": "dem",
+        "rep": "rep",
+        "asOf": "updated_at"
+      }
+    },
+    {
+      "id": "json_slot_2",
+      "name": "JSON aggregate slot 2",
+      "enabled": false,
+      "adapter": "json",
+      "url": "https://example.com/api/polls/generic",
+      "weight": 1,
+      "auth": {
+        "env": "DATA_SOURCE_2_KEY",
+        "mode": "query",
+        "name": "api_key"
+      },
+      "mapping": {
+        "dem": "average.democrats",
+        "rep": "average.republicans",
+        "asOf": "average.date"
+      }
+    },
+    {
+      "id": "csv_slot_3",
+      "name": "CSV aggregate slot 3",
+      "enabled": false,
+      "adapter": "csv",
+      "url": "https://example.com/generic-ballot.csv",
+      "weight": 1,
+      "auth": {
+        "env": "DATA_SOURCE_3_KEY",
+        "mode": "header",
+        "name": "X-API-Key"
+      },
+      "csv": {
+        "delimiter": ",",
+        "selectLastRow": true,
+        "columns": {
+          "dem": "dem",
+          "rep": "rep",
+          "asOf": "date"
+        }
+      }
+    }
+  ]
+}
