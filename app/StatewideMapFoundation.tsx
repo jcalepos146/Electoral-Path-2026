@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { formatMargin } from "@/lib/model";
+import demographicBaseline from "@/data/demographic-baseline-2026.json";
 import { useSvgViewport } from "@/app/mapViewport";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -13,22 +14,61 @@ type StateFeature = {
 };
 type FeatureCollection = { type: "FeatureCollection"; features: StateFeature[] };
 
+type DemographicKey = "whiteNH" | "black" | "hispanic" | "asian" | "other";
+type ScenarioSetting = { margin: number; turnout: number };
+type BaselineData = {
+  label: string;
+  asOf: string;
+  overallTurnout: number;
+  turnoutMeasure: string;
+  turnoutNote: string;
+  groups: Record<DemographicKey, { label: string; margin: number; basis: string }>;
+  sources: { name: string; asOf: string; url: string }[];
+};
+const BASELINE = demographicBaseline as BaselineData;
+
+const GROUPS: { key: DemographicKey; label: string }[] = [
+  { key: "whiteNH", label: "White non-Hispanic" },
+  { key: "black", label: "Black" },
+  { key: "hispanic", label: "Hispanic" },
+  { key: "asian", label: "Asian" },
+  { key: "other", label: "Other / residual" },
+];
+
 type RaceRow = {
   state: string;
   republican?: string | null;
   democrat?: string | null;
-  margin?: number | null;
+  other?: string | null;
+  margin: number;
+  marginLabel?: string | null;
   rating?: string | null;
+  democraticOdds?: number | null;
+  republicanOdds?: number | null;
   source?: string | null;
   asOf?: string | null;
-  note?: string | null;
 };
 type StatewideBundle = {
   generatedAt?: string | null;
   convention: string;
+  senateSourceFile?: string | null;
+  senateSourceAsOf?: string | null;
+  senateChartId?: string | null;
   senate: RaceRow[];
-  governors: RaceRow[];
   note?: string;
+};
+type DemoRow = {
+  id: string;
+  totalCvapApprox: number;
+  shares: Record<DemographicKey, number>;
+};
+type StateDemographicBundle = {
+  generatedAt: string;
+  source: string;
+  geography: string;
+  methodNote: string;
+  nationalShares: Record<DemographicKey, number>;
+  states: DemoRow[];
 };
 
 const STATE_ABBR: Record<string, string> = {
@@ -41,6 +81,13 @@ const STATE_GEOMETRY_URLS = [
   "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/State_County/MapServer/7/query?where=1%3D1&outFields=GEOID%2CSTATE%2CSTUSAB%2CNAME%2CBASENAME&returnGeometry=true&returnZ=false&returnM=false&resultRecordCount=100&geometryPrecision=5&outSR=4326&f=geojson",
   "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/State_County/MapServer/9/query?where=1%3D1&outFields=GEOID%2CSTATE%2CSTUSAB%2CNAME%2CBASENAME&returnGeometry=true&returnZ=false&returnM=false&resultRecordCount=100&geometryPrecision=4&outSR=4326&f=geojson",
 ];
+
+function stateId(feature: StateFeature) {
+  const direct = String(feature.properties?.STUSAB ?? "").toUpperCase();
+  if (VALID.has(direct)) return direct;
+  const fips = String(feature.properties?.STATE ?? feature.properties?.GEOID ?? "").padStart(2, "0").slice(0, 2);
+  return STATE_ABBR[fips] ?? null;
+}
 
 async function fetchStateGeometryFallback(): Promise<FeatureCollection | null> {
   for (const url of STATE_GEOMETRY_URLS) {
@@ -57,13 +104,6 @@ async function fetchStateGeometryFallback(): Promise<FeatureCollection | null> {
     }
   }
   return null;
-}
-
-function stateId(feature: StateFeature) {
-  const direct = String(feature.properties?.STUSAB ?? "").toUpperCase();
-  if (VALID.has(direct)) return direct;
-  const fips = String(feature.properties?.STATE ?? feature.properties?.GEOID ?? "").padStart(2, "0").slice(0, 2);
-  return STATE_ABBR[fips] ?? null;
 }
 
 function allPoints(feature: StateFeature): [number, number][] {
@@ -129,11 +169,51 @@ function colorForMargin(margin: number | null | undefined) {
   return "#a93634";
 }
 
+function projectedSettings(): Record<DemographicKey, ScenarioSetting> {
+  return {
+    whiteNH: { margin: BASELINE.groups.whiteNH.margin, turnout: 100 },
+    black: { margin: BASELINE.groups.black.margin, turnout: 100 },
+    hispanic: { margin: BASELINE.groups.hispanic.margin, turnout: 100 },
+    asian: { margin: BASELINE.groups.asian.margin, turnout: 100 },
+    other: { margin: BASELINE.groups.other.margin, turnout: 100 },
+  };
+}
+
+function demographicMargin(shares: Record<DemographicKey, number> | undefined, settings: Record<DemographicKey, ScenarioSetting>) {
+  if (!shares) return 0;
+  let numerator = 0, denominator = 0;
+  for (const { key } of GROUPS) {
+    const weight = Math.max(0, Number(shares[key] ?? 0)) * Math.max(0, settings[key].turnout / 100);
+    numerator += weight * settings[key].margin;
+    denominator += weight;
+  }
+  return denominator ? numerator / denominator : 0;
+}
+
+function turnoutRate(shares: Record<DemographicKey, number> | undefined, groupTurnout: Record<DemographicKey, number>) {
+  if (!shares) return 0;
+  return GROUPS.reduce((sum, { key }) => sum + (Math.max(0, Number(shares[key] ?? 0)) / 100) * Math.max(0, groupTurnout[key] ?? 0), 0);
+}
+
+function leadCategory(margin: number) {
+  if (margin >= .5) return "D";
+  if (margin <= -.5) return "R";
+  return "T";
+}
+
+function seatDelta(value: number) {
+  if (value > 0) return `+${value}`;
+  return String(value);
+}
+
 export default function StatewideMapFoundation() {
-  const [mode, setMode] = useState<"senate" | "governors">("senate");
   const [geo, setGeo] = useState<FeatureCollection | null>(null);
   const [bundle, setBundle] = useState<StatewideBundle | null>(null);
-  const [selectedState, setSelectedState] = useState("PA");
+  const [demographics, setDemographics] = useState<StateDemographicBundle | null>(null);
+  const [selectedState, setSelectedState] = useState("MI");
+  const [settings, setSettings] = useState<Record<DemographicKey, ScenarioSetting>>(() => projectedSettings());
+  const [overallTurnout, setOverallTurnout] = useState(BASELINE.overallTurnout);
+  const [preserveNational, setPreserveNational] = useState(true);
   const [loadNote, setLoadNote] = useState<string | null>(null);
   const paneRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -141,9 +221,10 @@ export default function StatewideMapFoundation() {
 
   async function load() {
     try {
-      const [gResponse, rResponse] = await Promise.all([
+      const [gResponse, rResponse, dResponse] = await Promise.all([
         fetch(`${BASE_PATH}/data/states.geojson?v=${Date.now()}`, { cache: "no-store" }),
         fetch(`${BASE_PATH}/data/statewide-races.json?v=${Date.now()}`, { cache: "no-store" }),
+        fetch(`${BASE_PATH}/data/state-demographics.json?v=${Date.now()}`, { cache: "no-store" }),
       ]);
       let g = gResponse.ok ? await gResponse.json() : null;
       let fallback = false;
@@ -151,33 +232,111 @@ export default function StatewideMapFoundation() {
         g = await fetchStateGeometryFallback();
         fallback = Boolean(g);
       }
-      const b = rResponse.ok ? await rResponse.json() : { convention: "positive = Democratic; negative = Republican", senate: [], governors: [] };
+      const b = rResponse.ok ? await rResponse.json() : { convention: "positive = Democratic; negative = Republican", senate: [] };
+      const d = dResponse.ok ? await dResponse.json() : null;
       setGeo(g);
       setBundle(b);
+      setDemographics(d);
       if (!g) setLoadNote("State geometry is not available yet. Run the geometry refresh Action or retry from the browser.");
+      else if (!d) setLoadNote("State map loaded, but state demographic data are unavailable; Senate demographic effects will stay neutral until the next successful refresh.");
       else if (fallback) setLoadNote("State geometry loaded directly from Census because the committed file was unavailable.");
       else setLoadNote(null);
     } catch (error) {
-      setLoadNote(error instanceof Error ? error.message : "Could not load statewide map foundation");
+      setLoadNote(error instanceof Error ? error.message : "Could not load Senate scenario map");
     }
   }
 
   useEffect(() => { void load(); }, []);
 
   const bounds = useMemo(() => geo ? { main: boundsFor(geo.features, "main"), AK: boundsFor(geo.features, "AK"), HI: boundsFor(geo.features, "HI") } : null, [geo]);
-  const races = bundle?.[mode] ?? [];
+  const races = bundle?.senate ?? [];
   const raceMap = useMemo(() => new Map(races.map((row) => [row.state.toUpperCase(), row])), [races]);
-  const selected = raceMap.get(selectedState);
-  const stateName = geo?.features.find((feature) => stateId(feature) === selectedState)?.properties?.NAME ?? selectedState;
-  const counts = useMemo(() => {
-    let d = 0, r = 0, toss = 0, tracked = 0;
-    for (const row of races) {
-      if (row.margin == null || !Number.isFinite(row.margin)) continue;
-      tracked++;
-      if (row.margin >= .5) d++; else if (row.margin <= -.5) r++; else toss++;
+  const demoMap = useMemo(() => new Map(demographics?.states.map((row) => [row.id.toUpperCase(), row]) ?? []), [demographics]);
+  const baselineSettings = useMemo(() => projectedSettings(), []);
+
+  const impliedTurnout = useMemo(() => {
+    const shares = demographics?.nationalShares;
+    if (!shares) {
+      return Object.fromEntries(GROUPS.map(({ key }) => [key, Math.min(100, overallTurnout * settings[key].turnout / 100)])) as Record<DemographicKey, number>;
     }
-    return { d, r, toss, tracked };
+    const relativeNational = GROUPS.reduce((sum, { key }) => sum + Math.max(0, shares[key] ?? 0) * Math.max(0, settings[key].turnout / 100), 0);
+    const scale = relativeNational > 0 ? overallTurnout * 100 / relativeNational : overallTurnout;
+    return Object.fromEntries(GROUPS.map(({ key }) => [key, Math.min(100, scale * Math.max(0, settings[key].turnout / 100))])) as Record<DemographicKey, number>;
+  }, [demographics, settings, overallTurnout]);
+
+  const baselineImpliedTurnout = useMemo(() => {
+    return Object.fromEntries(GROUPS.map(({ key }) => [key, BASELINE.overallTurnout])) as Record<DemographicKey, number>;
+  }, []);
+
+  const baselineNationalDemoMargin = useMemo(() => demographicMargin(demographics?.nationalShares, baselineSettings), [demographics, baselineSettings]);
+  const scenarioNationalDemoMargin = useMemo(() => demographicMargin(demographics?.nationalShares, settings), [demographics, settings]);
+  const nationalDemoSwing = demographics ? scenarioNationalDemoMargin - baselineNationalDemoMargin : 0;
+
+  const scenarios = useMemo(() => {
+    const map = new Map<string, {
+      row: RaceRow;
+      margin: number;
+      priorMargin: number;
+      scenarioShift: number;
+      localDemoSwing: number;
+      demographicEffect: number;
+      turnoutRate: number;
+      baselineTurnoutRate: number;
+      projectedVotes: number | null;
+    }>();
+    for (const row of races) {
+      const demoRow = demoMap.get(row.state.toUpperCase());
+      const baselineLocal = demographicMargin(demoRow?.shares, baselineSettings);
+      const scenarioLocal = demographicMargin(demoRow?.shares, settings);
+      const localDemoSwing = demographics ? scenarioLocal - baselineLocal : 0;
+      const demographicEffect = preserveNational ? localDemoSwing - nationalDemoSwing : localDemoSwing;
+      const margin = row.margin + demographicEffect;
+      const stateTurnout = turnoutRate(demoRow?.shares, impliedTurnout);
+      const baselineTurnout = turnoutRate(demoRow?.shares, baselineImpliedTurnout);
+      const projectedVotes = demoRow?.totalCvapApprox && stateTurnout ? Math.round(demoRow.totalCvapApprox * stateTurnout / 100) : null;
+      map.set(row.state.toUpperCase(), {
+        row,
+        margin,
+        priorMargin: row.margin,
+        scenarioShift: margin - row.margin,
+        localDemoSwing,
+        demographicEffect,
+        turnoutRate: stateTurnout,
+        baselineTurnoutRate: baselineTurnout,
+        projectedVotes,
+      });
+    }
+    return map;
+  }, [races, demoMap, baselineSettings, settings, demographics, preserveNational, nationalDemoSwing, impliedTurnout, baselineImpliedTurnout]);
+
+  const counts = useMemo(() => {
+    let d = 0, r = 0, toss = 0, dFlips = 0, rFlips = 0;
+    for (const scenario of scenarios.values()) {
+      const now = leadCategory(scenario.margin);
+      const prior = leadCategory(scenario.priorMargin);
+      if (now === "D") d++; else if (now === "R") r++; else toss++;
+      if (prior === "R" && now === "D") dFlips++;
+      if (prior === "D" && now === "R") rFlips++;
+    }
+    return { d, r, toss, tracked: scenarios.size, dFlips, rFlips };
+  }, [scenarios]);
+
+  const baselineCounts = useMemo(() => {
+    let d = 0, r = 0, toss = 0;
+    for (const row of races) {
+      const lead = leadCategory(row.margin);
+      if (lead === "D") d++; else if (lead === "R") r++; else toss++;
+    }
+    return { d, r, toss };
   }, [races]);
+
+  const selectedScenario = scenarios.get(selectedState);
+  const selectedDemo = demoMap.get(selectedState);
+  const stateName = geo?.features.find((feature) => stateId(feature) === selectedState)?.properties?.NAME ?? selectedState;
+
+  function setGroup(key: DemographicKey, field: "margin" | "turnout", value: number) {
+    setSettings((current) => ({ ...current, [key]: { ...current[key], [field]: value } }));
+  }
 
   async function toggleFullscreen() {
     try {
@@ -187,25 +346,76 @@ export default function StatewideMapFoundation() {
   }
 
   return (
-    <section className="shell card statewideMapCard">
+    <section className="shell card statewideMapCard senateScenarioCard">
       <div className="districtHeader">
         <div>
-          <div className="eyebrow">STATEWIDE MAP FOUNDATION</div>
-          <h3>Senate and gubernatorial map groundwork</h3>
-          <p className="small">The geometry, zoom/pan controls, race schema, and weekly CSV ingestion path are ready. Add statewide projections later without redesigning the map system.</p>
+          <div className="eyebrow">2026 SENATE SCENARIO MAP</div>
+          <h3>HillCast Senate prior + real-time racial margin and turnout adjustments</h3>
+          <p className="small">The uploaded HillCast/Datawrapper Senate wrapper supplies the race-by-race prior. The same demographic projection baseline used by the House engine then estimates how changes in group vote margins and relative turnout redistribute each state&apos;s Senate margin.</p>
         </div>
-        <div className="districtCounts"><span>D-led <b>{counts.d}</b></span><span>R-led <b>{counts.r}</b></span><span>Within 0.5 <b>{counts.toss}</b></span><span>Tracked <b>{counts.tracked}</b></span></div>
+        <div className="districtCounts">
+          <span>D-led <b>{counts.d}</b> <em>{seatDelta(counts.d - baselineCounts.d)}</em></span>
+          <span>R-led <b>{counts.r}</b> <em>{seatDelta(counts.r - baselineCounts.r)}</em></span>
+          <span>Within 0.5 <b>{counts.toss}</b> <em>{seatDelta(counts.toss - baselineCounts.toss)}</em></span>
+          <span>Races <b>{counts.tracked}</b></span>
+        </div>
       </div>
 
-      <div className="statewideModeTabs" role="tablist" aria-label="Statewide election map type">
-        <button className={mode === "senate" ? "active" : ""} onClick={() => { setMode("senate"); viewport.reset(); }}>U.S. Senate</button>
-        <button className={mode === "governors" ? "active" : ""} onClick={() => { setMode("governors"); viewport.reset(); }}>Governors</button>
+      <div className="liveScenarioRibbon senateRibbon">
+        <div><span>National demographic swing</span><b>{formatMargin(nationalDemoSwing)}</b></div>
+        <div><span>Adjustment mode</span><b>{preserveNational ? "Geographic only" : "Full coalition"}</b></div>
+        <div><span>D flips from prior</span><b>{counts.dFlips}</b></div>
+        <div><span>R flips from prior</span><b>{counts.rFlips}</b></div>
+        <div><span>HillCast wrapper</span><b>{bundle?.senateSourceAsOf ?? "Loaded"}</b></div>
+      </div>
+
+      <div className="demographicProjectionHeader senateDemoHeader">
+        <div>
+          <div className="eyebrow">SENATE DEMOGRAPHIC SCENARIO</div>
+          <h4>Adjust projected group margins and turnout; every Senate race recalculates immediately</h4>
+          <p className="small">The published 2026 demographic projection is the zero-change state. Moving White voters from R+9.5 to R+5.0, for example, is a 4.5-point Democratic shift within that group. Differential turnout changes each state according to its demographic composition.</p>
+        </div>
+        <label className="overallTurnoutControl">
+          <span>Projected overall turnout</span>
+          <strong>{overallTurnout.toFixed(1)}%</strong>
+          <small>{BASELINE.turnoutMeasure}</small>
+          <input type="range" min="35" max="65" step="0.1" value={overallTurnout} onChange={(event) => setOverallTurnout(Number(event.target.value))} />
+          <small>Overall turnout changes vote volume; partisan margins move when turnout composition changes.</small>
+        </label>
+      </div>
+
+      <div className="baselineMarginStrip">
+        {GROUPS.map(({ key, label }) => <div key={key}><span>{label}</span><b>{formatMargin(BASELINE.groups[key].margin)}</b></div>)}
+      </div>
+
+      <div className="demographicSliders">
+        {GROUPS.map(({ key, label }) => {
+          const turnoutDelta = impliedTurnout[key] - BASELINE.overallTurnout;
+          return <div className="demoSlider" key={key}>
+            <strong>{label}</strong>
+            <div className="demoBaselineLine"><span>Projected baseline</span><b>{formatMargin(BASELINE.groups[key].margin)}</b></div>
+            <label>Scenario vote margin <span>{formatMargin(settings[key].margin)}</span>
+              <input type="range" min="-100" max="100" step="0.5" value={settings[key].margin} onChange={(event) => setGroup(key, "margin", Number(event.target.value))} />
+            </label>
+            <label>Relative turnout <span>{settings[key].turnout}%</span>
+              <input type="range" min="50" max="150" step="1" value={settings[key].turnout} onChange={(event) => setGroup(key, "turnout", Number(event.target.value))} />
+            </label>
+            <div className="impliedTurnout"><span>Implied group turnout</span><b>{impliedTurnout[key].toFixed(1)}%</b></div>
+            <div className="sliderDelta"><span>Turnout vs baseline</span><b>{turnoutDelta >= 0 ? "+" : ""}{turnoutDelta.toFixed(1)} pt</b></div>
+          </div>;
+        })}
+      </div>
+
+      <div className="scenarioActions senateActions">
+        <button type="button" onClick={() => { setSettings(projectedSettings()); setOverallTurnout(BASELINE.overallTurnout); }}>Reset to 2026 projection</button>
+        <button type="button" className="toggle" onClick={() => setPreserveNational((value) => !value)}>{preserveNational ? "Preserve national Senate environment" : "Allow full national coalition swing"}</button>
+        <span className="small">Preserve mode subtracts the national component of the demographic swing and applies only each state&apos;s relative geographic effect. Full-coalition mode lets broad demographic movement shift every race as well.</span>
       </div>
 
       <div className="statewideMapGrid">
         <div className="mapPane" ref={paneRef}>
           <div className="mapToolbar">
-            <div className="mapToolbarTitle"><strong>{mode === "senate" ? "2026 Senate map" : "2026 gubernatorial map"}</strong><span>{viewport.zoomPercent}% zoom</span></div>
+            <div className="mapToolbarTitle"><strong>2026 U.S. Senate scenario</strong><span>{viewport.zoomPercent}% zoom</span></div>
             <div className="mapToolbarButtons">
               <button type="button" aria-label="Zoom in" onClick={() => viewport.zoomCenter(svgRef.current, .78)}>＋</button>
               <button type="button" aria-label="Zoom out" onClick={() => viewport.zoomCenter(svgRef.current, 1.28)}>−</button>
@@ -213,14 +423,14 @@ export default function StatewideMapFoundation() {
               <button type="button" onClick={() => void toggleFullscreen()}>Fullscreen</button>
             </div>
           </div>
-          <div className="mapInteractionHint">Scroll to zoom · drag to pan · click a state to inspect</div>
+          <div className="mapInteractionHint">Scroll to zoom · drag to pan · click a state to inspect · map colors update with the sliders</div>
           {geo && bounds ? (
             <svg
               ref={svgRef}
               className={`statewideMap ${viewport.dragging ? "dragging" : ""}`}
               viewBox={`${viewport.view.x} ${viewport.view.y} ${viewport.view.width} ${viewport.view.height}`}
               role="img"
-              aria-label={mode === "senate" ? "Interactive Senate map foundation" : "Interactive governor map foundation"}
+              aria-label="Interactive 2026 Senate demographic scenario map"
               onWheel={viewport.onWheel}
               onPointerDown={viewport.onPointerDown}
               onPointerMove={viewport.onPointerMove}
@@ -231,8 +441,31 @@ export default function StatewideMapFoundation() {
               {geo.features.map((feature, i) => {
                 const id = stateId(feature);
                 if (!id) return null;
-                const row = raceMap.get(id);
-                return <path key={`${id}-${i}`} d={pathFor(feature, bounds)} fill={colorForMargin(row?.margin)} fillRule="evenodd" className={`stateShape ${selectedState === id ? "selected" : ""}`} onClick={(event) => { event.stopPropagation(); setSelectedState(id); }}><title>{id}: {row?.margin != null ? formatMargin(row.margin) : "No projection loaded"}</title></path>;
+                const scenario = scenarios.get(id);
+                const label = scenario
+                  ? `${id}: ${formatMargin(scenario.margin)} scenario, ${formatMargin(scenario.priorMargin)} HillCast prior`
+                  : `${id}: no 2026 Senate race in the loaded wrapper`;
+                return <path
+                  key={`${id}-${i}`}
+                  d={pathFor(feature, bounds)}
+                  fill={colorForMargin(scenario?.margin)}
+                  fillRule="evenodd"
+                  className={`stateShape ${selectedState === id ? "selected" : ""}`}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={label}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    if (viewport.shouldSuppressClick()) return;
+                    setSelectedState(id);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setSelectedState(id);
+                    }
+                  }}
+                ><title>{label}</title></path>;
               })}
             </svg>
           ) : <div className="mapPlaceholder"><div>State geometry is not available in this deployment.</div><button className="secondary" onClick={() => void load()}>Retry Census map</button></div>}
@@ -242,21 +475,40 @@ export default function StatewideMapFoundation() {
         <aside className="districtInspector">
           <div className="eyebrow">{selectedState}</div>
           <div className="statewideStateName">{stateName}</div>
-          {selected ? <>
-            <div className="districtMargin">{selected.margin != null ? formatMargin(selected.margin) : "—"}</div>
+          {selectedScenario ? <>
+            <div className="districtMargin">{formatMargin(selectedScenario.margin)}</div>
+            <div className="districtScenarioDelta">Scenario shift <b>{formatMargin(selectedScenario.scenarioShift)}</b> from the HillCast prior</div>
             <div className="districtBreakdown">
-              <div><span>Rating</span><b>{selected.rating ?? "—"}</b></div>
-              <div><span>As of</span><b>{selected.asOf ?? "—"}</b></div>
+              <div><span>HillCast Senate prior</span><b>{formatMargin(selectedScenario.priorMargin)}</b></div>
+              <div><span>Local demographic swing</span><b>{formatMargin(selectedScenario.localDemoSwing)}</b></div>
+              <div><span>National demographic swing</span><b>{formatMargin(nationalDemoSwing)}</b></div>
+              <div><span>Applied demographic effect</span><b>{formatMargin(selectedScenario.demographicEffect)}</b></div>
+              <div className="finalProjectionRow"><span>Scenario margin</span><b>{formatMargin(selectedScenario.margin)}</b></div>
             </div>
-            <p className="small"><strong>Republican:</strong> {selected.republican ?? "Not listed"}<br/><strong>Democrat:</strong> {selected.democrat ?? "Not listed"}</p>
-            {selected.source && <p className="small"><strong>Source:</strong> {selected.source}</p>}
+            <div className="turnoutInspector">
+              <div><span>Estimated state turnout</span><b>{selectedScenario.turnoutRate ? `${selectedScenario.turnoutRate.toFixed(1)}%` : "—"}</b></div>
+              <div><span>Baseline turnout</span><b>{selectedScenario.baselineTurnoutRate ? `${selectedScenario.baselineTurnoutRate.toFixed(1)}%` : "—"}</b></div>
+              <div><span>Approx. votes cast</span><b>{selectedScenario.projectedVotes ? selectedScenario.projectedVotes.toLocaleString() : "—"}</b></div>
+            </div>
+            <p className="small"><strong>Republican:</strong> {selectedScenario.row.republican ?? "Not listed"}<br/><strong>Democrat:</strong> {selectedScenario.row.democrat ?? "Not listed"}{selectedScenario.row.other ? <><br/><strong>Other:</strong> {selectedScenario.row.other}</> : null}</p>
+            <p className="small"><strong>Original HillCast rating:</strong> {selectedScenario.row.rating ?? "—"}</p>
+            {(selectedScenario.row.democraticOdds != null || selectedScenario.row.republicanOdds != null) && <p className="small"><strong>Original HillCast win odds:</strong> D {selectedScenario.row.democraticOdds?.toFixed(1) ?? "—"}% · R {selectedScenario.row.republicanOdds?.toFixed(1) ?? "—"}%<br/><span className="small">Odds are reference values from the source wrapper and are not recalibrated by the scenario sliders.</span></p>}
+            {selectedDemo && <div className="demoShares">
+              {GROUPS.map(({ key, label }) => <span key={key}>{label}<b>{(selectedDemo.shares[key] ?? 0).toFixed(1)}%</b></span>)}
+            </div>}
           </> : <>
-            <div className="statewideEmpty">No {mode === "senate" ? "Senate" : "governor"} projection loaded for this state yet.</div>
-            <p className="small">Upload a dated CSV to <code>data/statewide_uploads/</code>. The build will normalize it into the map automatically.</p>
+            <div className="statewideEmpty">No 2026 Senate race is listed for this state in the loaded HillCast wrapper.</div>
+            {selectedDemo && <div className="demoShares">
+              {GROUPS.map(({ key, label }) => <span key={key}>{label}<b>{(selectedDemo.shares[key] ?? 0).toFixed(1)}%</b></span>)}
+            </div>}
           </>}
         </aside>
       </div>
-      <p className="small districtFootnote">State boundaries use U.S. Census January 1, 2024 generalized state geography. Gray states currently mean “no projection loaded,” not tossup. {loadNote ?? ""}</p>
+
+      <div className="demographicSourceNote senateSourceNote">
+        <strong>Senate model order:</strong> HillCast/Datawrapper race prior → demographic change relative to the same 2026 baseline used by the House engine → optional national normalization → scenario margin. The demographic layer is a scenario adjustment, not a replacement for the Senate forecast&apos;s candidate and state-specific fundamentals.
+      </div>
+      <p className="small districtFootnote">Gray states mean no 2026 Senate race in the loaded wrapper, not tossup. State demographics use the same Census-derived CVAP approximation as the House engine, aggregated to states when available. Current Senate wrapper: {bundle?.senateSourceFile ?? "none"}{bundle?.senateSourceAsOf ? ` (${bundle.senateSourceAsOf})` : ""}. {demographics?.methodNote ?? ""} {loadNote ?? ""}</p>
     </section>
   );
 }

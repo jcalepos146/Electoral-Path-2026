@@ -1,53 +1,22 @@
-# Zoomable maps + Senate/Governor groundwork
+# Zoomable House + Senate maps
 
-## House map changes
+## House map
 
-The House district map is now deliberately wider and taller, and uses the more detailed Census 5M geometry when the dedicated geometry Action can fetch it.
+The 435-district House map supports wheel/trackpad zoom, drag-to-pan, click-to-inspect, keyboard selection, reset, and fullscreen mode.
 
-Controls:
+## Senate map
 
-- mouse wheel / trackpad: zoom around the pointer
-- click + drag: pan
-- double-click: zoom in
-- `+` / `-`: zoom buttons
-- `Reset`: return to the full national view
-- `Fullscreen`: expand the map pane to the browser viewport
+The statewide map is now Senate-only. It uses the HillCast/Datawrapper Senate wrapper as the race prior and applies the same 2026 demographic scenario controls used by the House map.
 
-The current zoom level is displayed in the toolbar.
+Upload dated Senate CSVs to `data/senate_uploads/`, for example:
 
-## Geometry Action
+- `senate-hillcast-2026-09-04.csv`
+- `senate-hillcast-2026-09-11.csv`
 
-`.github/workflows/refresh-geometry.yml` now builds both:
+The build selects the newest dated file and generates `public/data/statewide-races.json`.
 
-- `public/data/cd119.geojson` — 435 districts
-- `public/data/states.geojson` — 50 states + DC
+The build also aggregates the House Census demographic rows to state-level shares and writes `public/data/state-demographics.json`.
 
-It prefers Census 5M geometry so zoomed boundaries are less blocky, with 500K/20M fallbacks.
+The Senate scenario margin is the HillCast prior plus a demographic change from the published 2026 baseline. In preserve-national mode, the national component is subtracted so only relative state geography changes; full-coalition mode applies the full local demographic swing.
 
-## Senate and governor maps
-
-A new statewide map section is present below the House engine. It has tabs for:
-
-- U.S. Senate
-- Governors
-
-The map is fully zoomable/pannable already. Gray states mean no statewide projection has been loaded yet — not tossup.
-
-### Weekly/manual data ingestion
-
-Add dated CSVs to `data/statewide_uploads/`:
-
-- `senate-2026-09-11.csv`
-- `governors-2026-09-11.csv`
-
-Minimum format:
-
-```csv
-state,margin
-PA,D+3.2
-GA,R+1.1
-```
-
-Optional candidate, rating, source and date columns are documented in `data/statewide_uploads/README.md`.
-
-`npm run update-statewide` selects the newest dated file for each map and writes `public/data/statewide-races.json`.
+The gubernatorial map is intentionally removed from the UI for now. The reusable state geometry remains in place for a future governor model.

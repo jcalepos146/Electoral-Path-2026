@@ -54,7 +54,7 @@ jobs:
       - name: Build weekly HillCast district map data
         run: npm run update-districts
 
-      - name: Build optional Senate and governor map data
+      - name: Build Senate scenario data
         run: npm run update-statewide
 
       - name: Build static Next.js site

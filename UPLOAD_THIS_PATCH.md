@@ -1,15 +1,15 @@
-# Build rescue patch
+# Upload Election Path v0.8
 
-This patch fixes the Next.js error:
+Upload **everything inside this folder** to the root of the GitHub `main` branch and replace matching files.
 
-`Module not found: Can't resolve '@/data/demographic-baseline-2026.json'`
+This patch assumes the current working v0.7 master is already deployed. It adds the HillCast/Datawrapper Senate wrapper, the Senate demographic scenario engine, and removes the gubernatorial map UI.
 
-Upload the contents of this folder to the repository root on `main`.
+After committing, let **Build, refresh data, and deploy Pages** finish. The build order is:
 
-The required resulting path is exactly:
+1. refresh live aggregate data
+2. rebuild HillCast House district data and district demographics
+3. build Senate race data and aggregate district demographics to states
+4. build the static Next.js site
+5. deploy Pages
 
-`data/demographic-baseline-2026.json`
-
-Do not place it under `public/data/` and do not rename it.
-
-After committing, the existing GitHub Pages build workflow should run again automatically.
+For weekly Senate updates, add the newest Datawrapper CSV to `data/senate_uploads/` with a dated filename such as `senate-hillcast-2026-09-11.csv`.

@@ -109,3 +109,16 @@ For weekly updates, rename Preston Hill's file `hillcast-YYYY-MM-DD.csv`, upload
 The congressional map geometry is now managed by a dedicated GitHub Action instead of being fetched during every Pages build. See `MAP_GEOMETRY_ACTION.md`.
 
 The live-source section now presents RCP, VoteHub, HillCast, and America First Insight as side-by-side topline mirrors with explicit live/cached/unavailable status. See `AGGREGATE_MIRRORS.md`.
+
+## Real-time House scenario engine (v0.7)
+
+The House map now treats the published 2026 demographic projections as the zero-change baseline. Slider movements are converted into a **local demographic swing** and a **national demographic swing** in real time. In Preserve national anchor mode, the national component is subtracted so only geographic redistribution is applied to districts. This prevents the demographic layer from double-counting the HillCast prior.
+
+Districts are directly clickable while zoom/pan remains enabled. The map delays pointer capture until the user has actually dragged, so a normal click selects the district instead of being swallowed by the panning system. The inspector shows the HillCast prior, national residual, local demographic swing, national demographic swing, normalized geographic effect, final margin, estimated turnout, and approximate votes cast.
+
+See `DISTRICT_MAP.md` for the exact arithmetic.
+
+
+## Senate demographic scenario
+
+The master build now ingests the HillCast/Datawrapper 2026 Senate wrapper from `data/senate_uploads/` and applies the same racial/ethnic margin and turnout scenario engine used by the House map. The governor map is hidden for now. See `SENATE_SCENARIO.md`.
