@@ -1,0 +1,51 @@
+{
+  "label": "2026 demographic projection baseline",
+  "asOf": "2026-08-16",
+  "overallTurnout": 52.8,
+  "turnoutMeasure": "Citizen voting-age population (CVAP)",
+  "turnoutNote": "Starting point is the mean of Census-reported 2018 (53.4%) and 2022 (52.2%) midterm CVAP turnout.",
+  "groups": {
+    "whiteNH": {
+      "label": "White non-Hispanic",
+      "margin": -9.5,
+      "basis": "Average of Morning Consult Aug. 16 White R+9 and Pew July White R+10. The map uses non-Hispanic White district shares, so this is an approximation."
+    },
+    "black": {
+      "label": "Black",
+      "margin": 58.5,
+      "basis": "Average of Morning Consult Aug. 16 Black D+57 and Pew July Black D+60."
+    },
+    "hispanic": {
+      "label": "Hispanic",
+      "margin": 18.0,
+      "basis": "Average of Morning Consult Aug. 16 Hispanic D+13 and Pew July Hispanic D+23."
+    },
+    "asian": {
+      "label": "Asian",
+      "margin": 35.0,
+      "basis": "Pew July 2026 Asian registered voters: D 56, R 21 (D+35)."
+    },
+    "other": {
+      "label": "Other / residual",
+      "margin": 22.0,
+      "basis": "Morning Consult Aug. 16 Other voters: D 53, R 31 (D+22)."
+    }
+  },
+  "sources": [
+    {
+      "name": "Morning Consult 2026 Midterm Tracking",
+      "asOf": "2026-08-16",
+      "url": "https://pro-assets.morningconsult.com/wp-uploads/2026/08/MCPI-Midterm-Ballot.html"
+    },
+    {
+      "name": "Pew Research Center 2026 Midterm Voting Preferences",
+      "asOf": "2026-07-12",
+      "url": "https://www.pewresearch.org/politics/2026/07/23/midterm-voting-preferences-by-race-and-ethnicity-age-and-other-demographics/"
+    },
+    {
+      "name": "U.S. Census Bureau midterm turnout",
+      "asOf": "2022-11-08",
+      "url": "https://www.census.gov/library/stories/2023/05/high-registration-and-early-voting-in-2022-midterm-elections.html"
+    }
+  ]
+}

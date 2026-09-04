@@ -1,18 +1,15 @@
-# Upload instructions
+# Build rescue patch
 
-Upload every file/folder inside this patch to the root of `main`, replacing matching files.
+This patch fixes the Next.js error:
 
-Important hidden workflow files:
+`Module not found: Can't resolve '@/data/demographic-baseline-2026.json'`
 
-- `.github/workflows/pages.yml`
-- `.github/workflows/refresh-geometry.yml`
+Upload the contents of this folder to the repository root on `main`.
 
-Visible copies are also included under `workflow-backup/`.
+The required resulting path is exactly:
 
-After the commit:
+`data/demographic-baseline-2026.json`
 
-1. The normal Pages workflow will run automatically.
-2. Open **Actions → Refresh congressional district geometry → Run workflow** once if it did not start automatically.
-3. Wait for that workflow to commit `public/data/cd119.geojson`.
-4. A successful geometry workflow triggers another Pages build.
-5. Hard-refresh the deployed site after the second Pages deployment finishes.
+Do not place it under `public/data/` and do not rename it.
+
+After committing, the existing GitHub Pages build workflow should run again automatically.
