@@ -1,5 +1,8 @@
 # Election Path 2026
 
+> **GitHub Pages quick deploy:** Upload this repository to `main`, make sure `.github/workflows/pages.yml` is present, then set **Settings → Pages → Source** to **GitHub Actions**. No source-branch `index.html` is required.
+
+
 > **One-folder release:** This directory is the complete repository. Upload everything inside this folder to the root of a new GitHub repository; no other download is required. See [START_HERE.md](START_HERE.md) for the shortest deployment path.
 
 A GitHub-Pages-ready Next.js static site that takes a 2026 House generic-ballot aggregate and estimates the Election Day national House popular-vote margin from the historical path of the last five midterms: **2006, 2010, 2014, 2018, and 2022**.
