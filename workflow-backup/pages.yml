@@ -26,6 +26,11 @@ jobs:
       DATA_SOURCE_2_KEY: ${{ secrets.DATA_SOURCE_2_KEY }}
       DATA_SOURCE_3_KEY: ${{ secrets.DATA_SOURCE_3_KEY }}
       ELECTION_PATH_USER_AGENT: ${{ vars.ELECTION_PATH_USER_AGENT }}
+      # Optional America First Insight topline fallback when its client-rendered chart cannot be parsed.
+      AFI_GENERIC_DEM: ${{ vars.AFI_GENERIC_DEM }}
+      AFI_GENERIC_REP: ${{ vars.AFI_GENERIC_REP }}
+      AFI_GENERIC_MARGIN: ${{ vars.AFI_GENERIC_MARGIN }}
+      AFI_GENERIC_ASOF: ${{ vars.AFI_GENERIC_ASOF }}
 
     steps:
       - name: Checkout repository
@@ -41,6 +46,9 @@ jobs:
 
       - name: Refresh polling aggregate data
         run: npm run update-data
+
+      - name: Build weekly HillCast district map data
+        run: npm run update-districts
 
       - name: Build static Next.js site
         run: npm run build

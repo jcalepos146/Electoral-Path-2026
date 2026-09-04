@@ -1,9 +1,5 @@
-# Upload These Files
+Upload EVERYTHING inside this patch folder to the root of your existing GitHub repository on `main` and allow matching paths to replace the current files.
 
-This is a patch for an existing Election Path 2026 repository.
+After committing, GitHub Actions will rebuild the site automatically.
 
-Upload **everything inside this patch folder** to the repository root and allow GitHub to replace matching files.
-
-You do not need to delete the rest of the repository. Your existing `.github/workflows/pages.yml`, `next.config.ts`, source configuration, license, and GitHub Pages settings can remain in place.
-
-After the commit reaches `main`, the existing GitHub Pages Action should refresh the live data and deploy automatically.
+For future weekly Preston Hill updates, only upload a newly dated CSV to `data/hillcast_uploads/`; no new code patch is needed.

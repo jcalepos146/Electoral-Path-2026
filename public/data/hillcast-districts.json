@@ -1,0 +1,4362 @@
+{
+  "generatedAt": "2026-09-04T17:20:08.719Z",
+  "sourceFile": "hillcast-2026-09-04.csv",
+  "sourceAsOf": "2026-09-04",
+  "districtCount": 435,
+  "hillcastNationalMargin": 4.64,
+  "hillcastNationalAsOf": "2026-09-03",
+  "hillcastNationalSource": "last-known-hillcast",
+  "convention": "Positive margins are Democratic; negative margins are Republican.",
+  "districts": [
+    {
+      "id": "AL-01",
+      "republican": "Republican Nominee",
+      "democrat": "Clyde Jones Jr.",
+      "margin": -31,
+      "marginLabel": "R+31.0",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "AL-02",
+      "republican": "Republican Nominee",
+      "democrat": "Shomari Figures*",
+      "margin": -4.4,
+      "marginLabel": "R+4.4",
+      "republicanOdds": 73.66,
+      "democraticOdds": 26.34,
+      "rating": "Lean R"
+    },
+    {
+      "id": "AL-03",
+      "republican": "Mike Rogers*",
+      "democrat": "Lee McInnis",
+      "margin": -40.6,
+      "marginLabel": "R+40.6",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "AL-04",
+      "republican": "Robert Aderholt*",
+      "democrat": "Amanda Pusczek",
+      "margin": -57.8,
+      "marginLabel": "R+57.8",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "AL-05",
+      "republican": "Dale Strong*",
+      "democrat": "Democratic Nominee",
+      "margin": -25,
+      "marginLabel": "R+25.0",
+      "republicanOdds": 99.98,
+      "democraticOdds": 0.02,
+      "rating": "Safe R"
+    },
+    {
+      "id": "AL-06",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -27.8,
+      "marginLabel": "R+27.8",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "AL-07",
+      "republican": "Republican Nominee",
+      "democrat": "Terri Sewell*",
+      "margin": 25.5,
+      "marginLabel": "D+25.5",
+      "republicanOdds": 0.01,
+      "democraticOdds": 99.99,
+      "rating": "Safe D"
+    },
+    {
+      "id": "AK-01",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -7.8,
+      "marginLabel": "R+7.8",
+      "republicanOdds": 86.68,
+      "democraticOdds": 13.32,
+      "rating": "Likely R"
+    },
+    {
+      "id": "AZ-01",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": 3,
+      "marginLabel": "D+3.0",
+      "republicanOdds": 33.26,
+      "democraticOdds": 66.74,
+      "rating": "Lean D"
+    },
+    {
+      "id": "AZ-02",
+      "republican": "Eli Crane*",
+      "democrat": "Jonathan Nez",
+      "margin": -3.7,
+      "marginLabel": "R+3.7",
+      "republicanOdds": 70.29,
+      "democraticOdds": 29.71,
+      "rating": "Lean R"
+    },
+    {
+      "id": "AZ-03",
+      "republican": "Republican Nominee",
+      "democrat": "Yassamin Ansari*",
+      "margin": 49.7,
+      "marginLabel": "D+49.7",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "AZ-04",
+      "republican": "Zuhdi Jasser",
+      "democrat": "Democratic Nominee",
+      "margin": 16.4,
+      "marginLabel": "D+16.4",
+      "republicanOdds": 0.96,
+      "democraticOdds": 99.04,
+      "rating": "Safe D"
+    },
+    {
+      "id": "AZ-05",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -13.8,
+      "marginLabel": "R+13.8",
+      "republicanOdds": 97.57,
+      "democraticOdds": 2.43,
+      "rating": "Likely R"
+    },
+    {
+      "id": "AZ-06",
+      "republican": "Juan Ciscomani*",
+      "democrat": "JoAnna Mendoza",
+      "margin": 4,
+      "marginLabel": "D+4.0",
+      "republicanOdds": 28.63,
+      "democraticOdds": 71.37,
+      "rating": "Lean D"
+    },
+    {
+      "id": "AZ-07",
+      "republican": "Daniel Butierez",
+      "democrat": "Adelita Grijalva*",
+      "margin": 32.4,
+      "marginLabel": "D+32.4",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "AZ-08",
+      "republican": "Abraham Hamadeh*",
+      "democrat": "Democratic Nominee",
+      "margin": -9.2,
+      "marginLabel": "R+9.2",
+      "republicanOdds": 90.49,
+      "democraticOdds": 9.51,
+      "rating": "Likely R"
+    },
+    {
+      "id": "AZ-09",
+      "republican": "Paul Gosar*",
+      "democrat": "Dani Sterbinsky",
+      "margin": -23.7,
+      "marginLabel": "R+23.7",
+      "republicanOdds": 99.96,
+      "democraticOdds": 0.04,
+      "rating": "Safe R"
+    },
+    {
+      "id": "AR-01",
+      "republican": "Rick Crawford*",
+      "democrat": "Terri Green",
+      "margin": -41.2,
+      "marginLabel": "R+41.2",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "AR-02",
+      "republican": "French Hill*",
+      "democrat": "Chris Jones",
+      "margin": -11.9,
+      "marginLabel": "R+11.9",
+      "republicanOdds": 95.49,
+      "democraticOdds": 4.51,
+      "rating": "Likely R"
+    },
+    {
+      "id": "AR-03",
+      "republican": "Steve Womack*",
+      "democrat": "Robb Ryerse",
+      "margin": -24.1,
+      "marginLabel": "R+24.1",
+      "republicanOdds": 99.97,
+      "democraticOdds": 0.03,
+      "rating": "Safe R"
+    },
+    {
+      "id": "AR-04",
+      "republican": "Bruce Westerman*",
+      "democrat": "James Russell",
+      "margin": -36.1,
+      "marginLabel": "R+36.1",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "CA-01",
+      "republican": "James Gallagher*",
+      "democrat": "Mike McGuire",
+      "margin": 17.1,
+      "marginLabel": "D+17.1",
+      "republicanOdds": 0.72,
+      "democraticOdds": 99.28,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-02",
+      "republican": "Robin Littau",
+      "democrat": "Jared Huffman*",
+      "margin": 31.7,
+      "marginLabel": "D+31.7",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-03",
+      "republican": "Robb Tucker",
+      "democrat": "Ami Bera*",
+      "margin": 16.6,
+      "marginLabel": "D+16.6",
+      "republicanOdds": 0.88,
+      "democraticOdds": 99.12,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-04",
+      "republican": "N/A",
+      "democrat": "Mike Thompson*/Eric Jones",
+      "margin": 23,
+      "marginLabel": "D+23.0",
+      "republicanOdds": 0.05,
+      "democraticOdds": 99.95,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-05",
+      "republican": "Tom McClintock*",
+      "democrat": "Michael Masuda",
+      "margin": -18.5,
+      "marginLabel": "R+18.5",
+      "republicanOdds": 99.6,
+      "democraticOdds": 0.4,
+      "rating": "Safe R"
+    },
+    {
+      "id": "CA-06",
+      "republican": "N/A",
+      "democrat": "Richard Pan",
+      "margin": 13.6,
+      "marginLabel": "D+13.6",
+      "republicanOdds": 2.58,
+      "democraticOdds": 97.42,
+      "rating": "Likely D"
+    },
+    {
+      "id": "CA-07",
+      "republican": "N/A",
+      "democrat": "Doris Matsui/Mai Vang",
+      "margin": 22.8,
+      "marginLabel": "D+22.8",
+      "republicanOdds": 0.06,
+      "democraticOdds": 99.94,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-08",
+      "republican": "Rudy Recile",
+      "democrat": "John Garamendi*",
+      "margin": 43.2,
+      "marginLabel": "D+43.2",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-09",
+      "republican": "John McBride",
+      "democrat": "Josh Harder*",
+      "margin": 24.3,
+      "marginLabel": "D+24.3",
+      "republicanOdds": 0.03,
+      "democraticOdds": 99.97,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-10",
+      "republican": "Jeff Frese",
+      "democrat": "Mark DeSaulnier*",
+      "margin": 40.6,
+      "marginLabel": "D+40.6",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-11",
+      "republican": "N/A",
+      "democrat": "Scott Weiner/Connie Chan",
+      "margin": 69.8,
+      "marginLabel": "D+69.8",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-12",
+      "republican": "N/A",
+      "democrat": "Jamie Joyce/Lateefah Simon*",
+      "margin": 80.6,
+      "marginLabel": "D+80.6",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-13",
+      "republican": "Kevin Lincoln",
+      "democrat": "Adam Gray*",
+      "margin": 16,
+      "marginLabel": "D+16.0",
+      "republicanOdds": 1.13,
+      "democraticOdds": 98.87,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-14",
+      "republican": "N/A",
+      "democrat": "Melissa hernandez/Aisha Wahab",
+      "margin": 41,
+      "marginLabel": "D+41.0",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-15",
+      "republican": "Charles Hoelter",
+      "democrat": "Kevin Mullin*",
+      "margin": 52.3,
+      "marginLabel": "D+52.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-16",
+      "republican": "Peter Soule",
+      "democrat": "Sam Liccardo*",
+      "margin": 54.8,
+      "marginLabel": "D+54.8",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-17",
+      "republican": "Ritesh Tandon",
+      "democrat": "Ro Khanna*",
+      "margin": 44.8,
+      "marginLabel": "D+44.8",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-18",
+      "republican": "Shane Lewis",
+      "democrat": "Zoe Lofgren*",
+      "margin": 36,
+      "marginLabel": "D+36.0",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-19",
+      "republican": "Peter Coe Verbica",
+      "democrat": "Jimmy Panetta*",
+      "margin": 43.4,
+      "marginLabel": "D+43.4",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-20",
+      "republican": "Vince Fong*",
+      "democrat": "Sandra Van Scotter",
+      "margin": -28.2,
+      "marginLabel": "R+28.2",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "CA-21",
+      "republican": "Kyle Kirkland",
+      "democrat": "Jim Costa*",
+      "margin": 16.1,
+      "marginLabel": "D+16.1",
+      "republicanOdds": 1.07,
+      "democraticOdds": 98.93,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-22",
+      "republican": "David Valadao*",
+      "democrat": "Randy Villegas",
+      "margin": 3.4,
+      "marginLabel": "D+3.4",
+      "republicanOdds": 31.21,
+      "democraticOdds": 68.79,
+      "rating": "Lean D"
+    },
+    {
+      "id": "CA-23",
+      "republican": "Jay Obernolte*",
+      "democrat": "Tessa Lynn Hodge",
+      "margin": -13.8,
+      "marginLabel": "R+13.8",
+      "republicanOdds": 97.57,
+      "democraticOdds": 2.43,
+      "rating": "Likely R"
+    },
+    {
+      "id": "CA-24",
+      "republican": "Bob Smith",
+      "democrat": "Salud Carbajal*",
+      "margin": 31.6,
+      "marginLabel": "D+31.6",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-25",
+      "republican": "Joe Males",
+      "democrat": "Raul Ruiz*",
+      "margin": 19.7,
+      "marginLabel": "D+19.7",
+      "republicanOdds": 0.24,
+      "democraticOdds": 99.76,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-26",
+      "republican": "Sam Gallucci",
+      "democrat": "Jacqui Irwin*",
+      "margin": 24.7,
+      "marginLabel": "D+24.7",
+      "republicanOdds": 0.02,
+      "democraticOdds": 99.98,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-27",
+      "republican": "Jason Gibbs",
+      "democrat": "George Whitesides*",
+      "margin": 21.4,
+      "marginLabel": "D+21.4",
+      "republicanOdds": 0.11,
+      "democraticOdds": 99.89,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-28",
+      "republican": "April Verlato",
+      "democrat": "Judy Chu*",
+      "margin": 34.3,
+      "marginLabel": "D+34.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-29",
+      "republican": "N/A",
+      "democrat": "Angelica Duenas/Luz Rivas",
+      "margin": 46.7,
+      "marginLabel": "D+46.7",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-30",
+      "republican": "Scott Meyers",
+      "democrat": "Laura Friedman*",
+      "margin": 44.8,
+      "marginLabel": "D+44.8",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-31",
+      "republican": "Eric Ching",
+      "democrat": "Gil Cisneros*",
+      "margin": 23.4,
+      "marginLabel": "D+23.4",
+      "republicanOdds": 0.04,
+      "democraticOdds": 99.96,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-32",
+      "republican": "Larry Thompson",
+      "democrat": "Brad Sherman*",
+      "margin": 32.9,
+      "marginLabel": "D+32.9",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-33",
+      "republican": "Stephanie Vargas",
+      "democrat": "Pete Aguilar*",
+      "margin": 23.8,
+      "marginLabel": "D+23.8",
+      "republicanOdds": 0.03,
+      "democraticOdds": 99.97,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-34",
+      "republican": "N/A",
+      "democrat": "Jimmy Gomez*/Angela Gonzales-Torres",
+      "margin": 60.7,
+      "marginLabel": "D+60.7",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-35",
+      "republican": "Mike Cargile",
+      "democrat": "Norma Torres*",
+      "margin": 21.6,
+      "marginLabel": "D+21.6",
+      "republicanOdds": 0.1,
+      "democraticOdds": 99.9,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-36",
+      "republican": "Houston Brignano",
+      "democrat": "Ted Lieu*",
+      "margin": 44.4,
+      "marginLabel": "D+44.4",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-37",
+      "republican": "N/A",
+      "democrat": "Sydney Kamlager-Dove*/Samantha Mota",
+      "margin": 68.9,
+      "marginLabel": "D+68.9",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-38",
+      "republican": "Pedro Casas",
+      "democrat": "Hilda Solis*",
+      "margin": 24.6,
+      "marginLabel": "D+24.6",
+      "republicanOdds": 0.02,
+      "democraticOdds": 99.98,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-39",
+      "republican": "Steve Manos",
+      "democrat": "Mark Takano*",
+      "margin": 21.3,
+      "marginLabel": "D+21.3",
+      "republicanOdds": 0.12,
+      "democraticOdds": 99.88,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-40",
+      "republican": "Young Kim/Ken Calvert",
+      "democrat": "N/A",
+      "margin": -10.5,
+      "marginLabel": "R+10.5",
+      "republicanOdds": 93.34,
+      "democraticOdds": 6.66,
+      "rating": "Likely R"
+    },
+    {
+      "id": "CA-41",
+      "republican": "Mitch Clemmons*",
+      "democrat": "Linda Sanchez",
+      "margin": 25.5,
+      "marginLabel": "D+25.5",
+      "republicanOdds": 0.01,
+      "democraticOdds": 99.99,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-42",
+      "republican": "Brian Burley",
+      "democrat": "Robert Garcia*",
+      "margin": 23.3,
+      "marginLabel": "D+23.3",
+      "republicanOdds": 0.04,
+      "democraticOdds": 99.96,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-43",
+      "republican": "Cristian Morales",
+      "democrat": "Maxine Waters*",
+      "margin": 55.1,
+      "marginLabel": "D+55.1",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-44",
+      "republican": "Genevieve Angel",
+      "democrat": "Nanette Barrag√°n*",
+      "margin": 47.7,
+      "marginLabel": "D+47.7",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-45",
+      "republican": "Chuong Vo",
+      "democrat": "Derek Tran*",
+      "margin": 15.4,
+      "marginLabel": "D+15.4",
+      "republicanOdds": 1.4,
+      "democraticOdds": 98.6,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-46",
+      "republican": "David Pan",
+      "democrat": "Lou Correa*",
+      "margin": 30.3,
+      "marginLabel": "D+30.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-47",
+      "republican": "Jenny Le Roux",
+      "democrat": "Dave Min*",
+      "margin": 20,
+      "marginLabel": "D+20.0",
+      "republicanOdds": 0.21,
+      "democraticOdds": 99.79,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-48",
+      "republican": "Jim Desmond",
+      "democrat": "Marni von Wilpert",
+      "margin": 7.7,
+      "marginLabel": "D+7.7",
+      "republicanOdds": 13.66,
+      "democraticOdds": 86.34,
+      "rating": "Likely D"
+    },
+    {
+      "id": "CA-49",
+      "republican": "Armen Kurdian",
+      "democrat": "Mike Levin*",
+      "margin": 19.1,
+      "marginLabel": "D+19.1",
+      "republicanOdds": 0.32,
+      "democraticOdds": 99.68,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-50",
+      "republican": "Steve Cohen",
+      "democrat": "Scott Peters*",
+      "margin": 24,
+      "marginLabel": "D+24.0",
+      "republicanOdds": 0.03,
+      "democraticOdds": 99.97,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-51",
+      "republican": "Ricardo Cabrera",
+      "democrat": "Sara Jacobs*",
+      "margin": 24.4,
+      "marginLabel": "D+24.4",
+      "republicanOdds": 0.02,
+      "democraticOdds": 99.98,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CA-52",
+      "republican": "Jeff Belle",
+      "democrat": "Juan Vargas*",
+      "margin": 32.8,
+      "marginLabel": "D+32.8",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CO-01",
+      "republican": "Christy Peterson",
+      "democrat": "Melat Kiros",
+      "margin": 58.6,
+      "marginLabel": "D+58.6",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CO-02",
+      "republican": "Kelley Dennison",
+      "democrat": "Joe Neguse*",
+      "margin": 44.2,
+      "marginLabel": "D+44.2",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CO-03",
+      "republican": "Jeff Hurd*",
+      "democrat": "Dwayne Romero",
+      "margin": -3.9,
+      "marginLabel": "R+3.9",
+      "republicanOdds": 71.13,
+      "democraticOdds": 28.87,
+      "rating": "Lean R"
+    },
+    {
+      "id": "CO-04",
+      "republican": "Lauren Boebert*",
+      "democrat": "Eileen Laubacher",
+      "margin": -4.2,
+      "marginLabel": "R+4.2",
+      "republicanOdds": 72.53,
+      "democraticOdds": 27.47,
+      "rating": "Lean R"
+    },
+    {
+      "id": "CO-05",
+      "republican": "Jeff Crank*",
+      "democrat": "Jessica Killin",
+      "margin": -5.1,
+      "marginLabel": "R+5.1",
+      "republicanOdds": 76.47,
+      "democraticOdds": 23.53,
+      "rating": "Likely R"
+    },
+    {
+      "id": "CO-06",
+      "republican": "Mel Tewahade",
+      "democrat": "Jason Crow*",
+      "margin": 27.3,
+      "marginLabel": "D+27.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CO-07",
+      "republican": "Tim Bennett",
+      "democrat": "Brittany Pettersen*",
+      "margin": 21.6,
+      "marginLabel": "D+21.6",
+      "republicanOdds": 0.1,
+      "democraticOdds": 99.9,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CO-08",
+      "republican": "Gabe Evans*",
+      "democrat": "Manny Rutinel",
+      "margin": 2.5,
+      "marginLabel": "D+2.5",
+      "republicanOdds": 36.05,
+      "democraticOdds": 63.95,
+      "rating": "Lean D"
+    },
+    {
+      "id": "CT-01",
+      "republican": "Amy Chai",
+      "democrat": "Democratic Nominee",
+      "margin": 32.5,
+      "marginLabel": "D+32.5",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CT-02",
+      "republican": "George Austin",
+      "democrat": "Joe Courtney*",
+      "margin": 21.6,
+      "marginLabel": "D+21.6",
+      "republicanOdds": 0.1,
+      "democraticOdds": 99.9,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CT-03",
+      "republican": "Republican Nominee",
+      "democrat": "Rosa DeLauro*",
+      "margin": 24.3,
+      "marginLabel": "D+24.3",
+      "republicanOdds": 0.03,
+      "democraticOdds": 99.97,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CT-04",
+      "republican": "Republican Nominee",
+      "democrat": "Jim Himes*",
+      "margin": 30.3,
+      "marginLabel": "D+30.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "CT-05",
+      "republican": "Republican Nominee",
+      "democrat": "Jahana Hayes*",
+      "margin": 14.1,
+      "marginLabel": "D+14.1",
+      "republicanOdds": 2.2,
+      "democraticOdds": 97.8,
+      "rating": "Likely D"
+    },
+    {
+      "id": "DE-01",
+      "republican": "Republican Nominee",
+      "democrat": "Sarah McBride*",
+      "margin": 24.4,
+      "marginLabel": "D+24.4",
+      "republicanOdds": 0.02,
+      "democraticOdds": 99.98,
+      "rating": "Safe D"
+    },
+    {
+      "id": "FL-01",
+      "republican": "Jimmy Patronis*",
+      "democrat": "Gay Valimont",
+      "margin": -27,
+      "marginLabel": "R+27.0",
+      "republicanOdds": 99.99,
+      "democraticOdds": 0.01,
+      "rating": "Safe R"
+    },
+    {
+      "id": "FL-02",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -11.9,
+      "marginLabel": "R+11.9",
+      "republicanOdds": 95.57,
+      "democraticOdds": 4.43,
+      "rating": "Likely R"
+    },
+    {
+      "id": "FL-03",
+      "republican": "Kat Cammack*",
+      "democrat": "Democratic Nominee",
+      "margin": -16.2,
+      "marginLabel": "R+16.2",
+      "republicanOdds": 98.97,
+      "democraticOdds": 1.03,
+      "rating": "Safe R"
+    },
+    {
+      "id": "FL-04",
+      "republican": "Aaron Bean*",
+      "democrat": "Democratic Nominee",
+      "margin": -8.1,
+      "marginLabel": "R+8.1",
+      "republicanOdds": 87.7,
+      "democraticOdds": 12.3,
+      "rating": "Likely R"
+    },
+    {
+      "id": "FL-05",
+      "republican": "John Rutherford*",
+      "democrat": "Democratic Nominee",
+      "margin": -16.8,
+      "marginLabel": "R+16.8",
+      "republicanOdds": 99.18,
+      "democraticOdds": 0.82,
+      "rating": "Safe R"
+    },
+    {
+      "id": "FL-06",
+      "republican": "Randy Fine*",
+      "democrat": "Democratic Nominee",
+      "margin": -23.5,
+      "marginLabel": "R+23.5",
+      "republicanOdds": 99.96,
+      "democraticOdds": 0.04,
+      "rating": "Safe R"
+    },
+    {
+      "id": "FL-07",
+      "republican": "Cory Mills*",
+      "democrat": "Democratic Nominee",
+      "margin": -4.1,
+      "marginLabel": "R+4.1",
+      "republicanOdds": 72.29,
+      "democraticOdds": 27.71,
+      "rating": "Lean R"
+    },
+    {
+      "id": "FL-08",
+      "republican": "Mike Haridopolos*",
+      "democrat": "Democratic Nominee",
+      "margin": -12.7,
+      "marginLabel": "R+12.7",
+      "republicanOdds": 96.55,
+      "democraticOdds": 3.45,
+      "rating": "Likely R"
+    },
+    {
+      "id": "FL-09",
+      "republican": "Republican Nominee",
+      "democrat": "Darren Soto*",
+      "margin": -5.1,
+      "marginLabel": "R+5.1",
+      "republicanOdds": 76.77,
+      "democraticOdds": 23.23,
+      "rating": "Likely R"
+    },
+    {
+      "id": "FL-10",
+      "republican": "Republican Nominee",
+      "democrat": "Maxwell Frost*",
+      "margin": 32.3,
+      "marginLabel": "D+32.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "FL-11",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -9.5,
+      "marginLabel": "R+9.5",
+      "republicanOdds": 91.33,
+      "democraticOdds": 8.67,
+      "rating": "Likely R"
+    },
+    {
+      "id": "FL-12",
+      "republican": "Gus Bilirakis*",
+      "democrat": "Democratic Nominee",
+      "margin": -12.4,
+      "marginLabel": "R+12.4",
+      "republicanOdds": 96.18,
+      "democraticOdds": 3.82,
+      "rating": "Likely R"
+    },
+    {
+      "id": "FL-13",
+      "republican": "Anna Paulina Luna*",
+      "democrat": "Democratic Nominee",
+      "margin": -4.8,
+      "marginLabel": "R+4.8",
+      "republicanOdds": 75.13,
+      "democraticOdds": 24.87,
+      "rating": "Lean R"
+    },
+    {
+      "id": "FL-14",
+      "republican": "Republican Nominee",
+      "democrat": "Kathy Castor*",
+      "margin": 0.5,
+      "marginLabel": "D+0.5",
+      "republicanOdds": 47.44,
+      "democraticOdds": 52.56,
+      "rating": "Toss-up"
+    },
+    {
+      "id": "FL-15",
+      "republican": "Laurel Lee*",
+      "democrat": "Democratic Nominee",
+      "margin": -14.1,
+      "marginLabel": "R+14.1",
+      "republicanOdds": 97.78,
+      "democraticOdds": 2.22,
+      "rating": "Likely R"
+    },
+    {
+      "id": "FL-16",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -7.4,
+      "marginLabel": "R+7.4",
+      "republicanOdds": 85.41,
+      "democraticOdds": 14.59,
+      "rating": "Likely R"
+    },
+    {
+      "id": "FL-17",
+      "republican": "Greg Steube*",
+      "democrat": "Democratic Nominee",
+      "margin": -17.6,
+      "marginLabel": "R+17.6",
+      "republicanOdds": 99.41,
+      "democraticOdds": 0.59,
+      "rating": "Safe R"
+    },
+    {
+      "id": "FL-18",
+      "republican": "Scott Franklin*",
+      "democrat": "Democratic Nominee",
+      "margin": -12.7,
+      "marginLabel": "R+12.7",
+      "republicanOdds": 96.5,
+      "democraticOdds": 3.5,
+      "rating": "Likely R"
+    },
+    {
+      "id": "FL-19",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -22.3,
+      "marginLabel": "R+22.3",
+      "republicanOdds": 99.93,
+      "democraticOdds": 0.07,
+      "rating": "Safe R"
+    },
+    {
+      "id": "FL-20",
+      "republican": "Republican Nominee",
+      "democrat": "Debbie Wasserman-Schultz*",
+      "margin": 44.3,
+      "marginLabel": "D+44.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "FL-21",
+      "republican": "Brian Mast*",
+      "democrat": "Democratic Nominee",
+      "margin": -14.5,
+      "marginLabel": "R+14.5",
+      "republicanOdds": 98.11,
+      "democraticOdds": 1.89,
+      "rating": "Likely R"
+    },
+    {
+      "id": "FL-22",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -1.2,
+      "marginLabel": "R+1.2",
+      "republicanOdds": 57.03,
+      "democraticOdds": 42.97,
+      "rating": "Toss-up"
+    },
+    {
+      "id": "FL-23",
+      "republican": "Republican Nominee",
+      "democrat": "Lois Frankel*",
+      "margin": 23.4,
+      "marginLabel": "D+23.4",
+      "republicanOdds": 0.04,
+      "democraticOdds": 99.96,
+      "rating": "Safe D"
+    },
+    {
+      "id": "FL-24",
+      "republican": "Patricia Gonazlez",
+      "democrat": "Democratic Nominee",
+      "margin": 45.9,
+      "marginLabel": "D+45.9",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "FL-25",
+      "republican": "Republican Nominee",
+      "democrat": "Jared Moskowitz*",
+      "margin": 1,
+      "marginLabel": "D+1.0",
+      "republicanOdds": 44.49,
+      "democraticOdds": 55.51,
+      "rating": "Toss-up"
+    },
+    {
+      "id": "FL-26",
+      "republican": "Mario Diaz-Balart*",
+      "democrat": "Democratic Nominee",
+      "margin": -12.7,
+      "marginLabel": "R+12.7",
+      "republicanOdds": 96.46,
+      "democraticOdds": 3.54,
+      "rating": "Likely R"
+    },
+    {
+      "id": "FL-27",
+      "republican": "Maria Salazar*",
+      "democrat": "Democratic Nominee",
+      "margin": -7.7,
+      "marginLabel": "R+7.7",
+      "republicanOdds": 86.43,
+      "democraticOdds": 13.57,
+      "rating": "Likely R"
+    },
+    {
+      "id": "FL-28",
+      "republican": "Carlos Gimenez*",
+      "democrat": "Democratic Nominee",
+      "margin": -15.4,
+      "marginLabel": "R+15.4",
+      "republicanOdds": 98.59,
+      "democraticOdds": 1.41,
+      "rating": "Safe R"
+    },
+    {
+      "id": "GA-01",
+      "republican": "Jim Kingston",
+      "democrat": "Amanda Hollowell",
+      "margin": -12.9,
+      "marginLabel": "R+12.9",
+      "republicanOdds": 96.68,
+      "democraticOdds": 3.32,
+      "rating": "Likely R"
+    },
+    {
+      "id": "GA-02",
+      "republican": "Matt Day",
+      "democrat": "Sanford Bishop*",
+      "margin": 19.3,
+      "marginLabel": "D+19.3",
+      "republicanOdds": 0.3,
+      "democraticOdds": 99.7,
+      "rating": "Safe D"
+    },
+    {
+      "id": "GA-03",
+      "republican": "Brian Jack*",
+      "democrat": "Maura Keller",
+      "margin": -26.2,
+      "marginLabel": "R+26.2",
+      "republicanOdds": 99.99,
+      "democraticOdds": 0.01,
+      "rating": "Safe R"
+    },
+    {
+      "id": "GA-04",
+      "republican": "James Duffie",
+      "democrat": "Hank Johnson*",
+      "margin": 54.3,
+      "marginLabel": "D+54.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "GA-05",
+      "republican": "John Oscar Salvesen",
+      "democrat": "Nikema Williams*",
+      "margin": 71.2,
+      "marginLabel": "D+71.2",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "GA-06",
+      "republican": "Kevin Martin",
+      "democrat": "Lucy McBath*",
+      "margin": 51.3,
+      "marginLabel": "D+51.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "GA-07",
+      "republican": "Rich McCormick*",
+      "democrat": "Anthony Kozycki",
+      "margin": -20.5,
+      "marginLabel": "R+20.5",
+      "republicanOdds": 99.83,
+      "democraticOdds": 0.17,
+      "rating": "Safe R"
+    },
+    {
+      "id": "GA-08",
+      "republican": "Austin Scott*",
+      "democrat": "Kelly Esti",
+      "margin": -27.5,
+      "marginLabel": "R+27.5",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "GA-09",
+      "republican": "Andrew Clyde*",
+      "democrat": "Caitlyn Gegen",
+      "margin": -29.7,
+      "marginLabel": "R+29.7",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "GA-10",
+      "republican": "Houston Gaines",
+      "democrat": "Pam Delancy",
+      "margin": -18.1,
+      "marginLabel": "R+18.1",
+      "republicanOdds": 99.51,
+      "democraticOdds": 0.49,
+      "rating": "Safe R"
+    },
+    {
+      "id": "GA-11",
+      "republican": "John Cowan",
+      "democrat": "Chris Harden",
+      "margin": -18.2,
+      "marginLabel": "R+18.2",
+      "republicanOdds": 99.53,
+      "democraticOdds": 0.47,
+      "rating": "Safe R"
+    },
+    {
+      "id": "GA-12",
+      "republican": "Rick Allen*",
+      "democrat": "Ceretta Smith",
+      "margin": -13.6,
+      "marginLabel": "R+13.6",
+      "republicanOdds": 97.38,
+      "democraticOdds": 2.62,
+      "rating": "Likely R"
+    },
+    {
+      "id": "GA-13",
+      "republican": "Jonathan Chavez",
+      "democrat": "Jasmine Clark",
+      "margin": 44.9,
+      "marginLabel": "D+44.9",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "GA-14",
+      "republican": "Clay Fuller*",
+      "democrat": "Shawn Harris",
+      "margin": -24.7,
+      "marginLabel": "R+24.7",
+      "republicanOdds": 99.98,
+      "democraticOdds": 0.02,
+      "rating": "Safe R"
+    },
+    {
+      "id": "HI-01",
+      "republican": "Adriel Lam",
+      "democrat": "Democratic Nominee",
+      "margin": 40.4,
+      "marginLabel": "D+40.4",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "HI-02",
+      "republican": "Brenton Awa",
+      "democrat": "Democratic Nominee",
+      "margin": 38.1,
+      "marginLabel": "D+38.1",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "ID-01",
+      "republican": "Russ Fulcher*",
+      "democrat": "Kaylee Peterson",
+      "margin": -37.6,
+      "marginLabel": "R+37.6",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "ID-02",
+      "republican": "Mike Simpson*",
+      "democrat": "Ellie Gilbreath",
+      "margin": -23.3,
+      "marginLabel": "R+23.3",
+      "republicanOdds": 99.96,
+      "democraticOdds": 0.04,
+      "rating": "Safe R"
+    },
+    {
+      "id": "IL-01",
+      "republican": "Christian Maxwell",
+      "democrat": "Jonathan Jackson*",
+      "margin": 38.9,
+      "marginLabel": "D+38.9",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-02",
+      "republican": "Michael Noack",
+      "democrat": "Donna Miller",
+      "margin": 38.7,
+      "marginLabel": "D+38.7",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-03",
+      "republican": "Angel Oakley",
+      "democrat": "Delia Ramirez*",
+      "margin": 40.1,
+      "marginLabel": "D+40.1",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-04",
+      "republican": "Lupe Castillo",
+      "democrat": "Patty Garcia",
+      "margin": 37.6,
+      "marginLabel": "D+37.6",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-05",
+      "republican": "Tommy Hanson",
+      "democrat": "Mike Quigley*",
+      "margin": 43.5,
+      "marginLabel": "D+43.5",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-06",
+      "republican": "Niki Conforti",
+      "democrat": "Sean Casten*",
+      "margin": 16.1,
+      "marginLabel": "D+16.1",
+      "republicanOdds": 1.07,
+      "democraticOdds": 98.93,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-07",
+      "republican": "Chad Koppie",
+      "democrat": "La Shawn Ford",
+      "margin": 65.5,
+      "marginLabel": "D+65.5",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-08",
+      "republican": "Jennifer Davis",
+      "democrat": "Melissa Bean",
+      "margin": 17.5,
+      "marginLabel": "D+17.5",
+      "republicanOdds": 0.63,
+      "democraticOdds": 99.37,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-09",
+      "republican": "John Elleson",
+      "democrat": "Daniel Biss",
+      "margin": 42.6,
+      "marginLabel": "D+42.6",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-10",
+      "republican": "Carl Lambrecht",
+      "democrat": "Brad Schneider*",
+      "margin": 28.3,
+      "marginLabel": "D+28.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-11",
+      "republican": "Jeff Walter",
+      "democrat": "Bill Foster*",
+      "margin": 19.3,
+      "marginLabel": "D+19.3",
+      "republicanOdds": 0.29,
+      "democraticOdds": 99.71,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-12",
+      "republican": "Mike Bost*",
+      "democrat": "Julie Fortier",
+      "margin": -38.5,
+      "marginLabel": "R+38.5",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "IL-13",
+      "republican": "Jeff Wilson",
+      "democrat": "Nikki Budzinski*",
+      "margin": 20.6,
+      "marginLabel": "D+20.6",
+      "republicanOdds": 0.16,
+      "democraticOdds": 99.84,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-14",
+      "republican": "James Marter",
+      "democrat": "Lauren Underwood*",
+      "margin": 17.5,
+      "marginLabel": "D+17.5",
+      "republicanOdds": 0.63,
+      "democraticOdds": 99.37,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IL-15",
+      "republican": "Mary Miller*",
+      "democrat": "Jennifer Todd",
+      "margin": -36.1,
+      "marginLabel": "R+36.1",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "IL-16",
+      "republican": "Darin LaHood*",
+      "democrat": "Paul Nolley",
+      "margin": -20.7,
+      "marginLabel": "R+20.7",
+      "republicanOdds": 99.85,
+      "democraticOdds": 0.15,
+      "rating": "Safe R"
+    },
+    {
+      "id": "IL-17",
+      "republican": "Dillan Vancil",
+      "democrat": "Eric Sorensen*",
+      "margin": 15.3,
+      "marginLabel": "D+15.3",
+      "republicanOdds": 1.45,
+      "democraticOdds": 98.55,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IN-01",
+      "republican": "Barb Regnitz",
+      "democrat": "Frank Mrvan*",
+      "margin": 13.7,
+      "marginLabel": "D+13.7",
+      "republicanOdds": 2.54,
+      "democraticOdds": 97.46,
+      "rating": "Likely D"
+    },
+    {
+      "id": "IN-02",
+      "republican": "Rudy Yakym*",
+      "democrat": "Jamee Decio",
+      "margin": -21.9,
+      "marginLabel": "R+21.9",
+      "republicanOdds": 99.91,
+      "democraticOdds": 0.09,
+      "rating": "Safe R"
+    },
+    {
+      "id": "IN-03",
+      "republican": "Marlin Stutzman*",
+      "democrat": "Kelly Thompson",
+      "margin": -28.9,
+      "marginLabel": "R+28.9",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "IN-04",
+      "republican": "Jim Baird*",
+      "democrat": "Drew Cox",
+      "margin": -26.8,
+      "marginLabel": "R+26.8",
+      "republicanOdds": 99.99,
+      "democraticOdds": 0.01,
+      "rating": "Safe R"
+    },
+    {
+      "id": "IN-05",
+      "republican": "Victoria Spartz*",
+      "democrat": "J. D. Ford",
+      "margin": -12,
+      "marginLabel": "R+12.0",
+      "republicanOdds": 95.73,
+      "democraticOdds": 4.27,
+      "rating": "Likely R"
+    },
+    {
+      "id": "IN-06",
+      "republican": "Jefferson Shreve*",
+      "democrat": "Cinde Wirth",
+      "margin": -28.2,
+      "marginLabel": "R+28.2",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "IN-07",
+      "republican": "Patrick McAuley",
+      "democrat": "Andre Carson*",
+      "margin": 45,
+      "marginLabel": "D+45.0",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "IN-08",
+      "republican": "Mark Messmer*",
+      "democrat": "Mary Allen",
+      "margin": -33.1,
+      "marginLabel": "R+33.1",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "IN-09",
+      "republican": "Erin Houchin*",
+      "democrat": "Brad Meyer",
+      "margin": -25.1,
+      "marginLabel": "R+25.1",
+      "republicanOdds": 99.98,
+      "democraticOdds": 0.02,
+      "rating": "Safe R"
+    },
+    {
+      "id": "IA-01",
+      "republican": "Mariannette Miller-Meeks*",
+      "democrat": "Christina Bohannan",
+      "margin": 5,
+      "marginLabel": "D+5.0",
+      "republicanOdds": 23.58,
+      "democraticOdds": 76.42,
+      "rating": "Likely D"
+    },
+    {
+      "id": "IA-02",
+      "republican": "Joe Mitchell",
+      "democrat": "Lindsay James",
+      "margin": -1.3,
+      "marginLabel": "R+1.3",
+      "republicanOdds": 57.14,
+      "democraticOdds": 42.86,
+      "rating": "Toss-up"
+    },
+    {
+      "id": "IA-03",
+      "republican": "Zach Nunn*",
+      "democrat": "Sarah Trone Garriott",
+      "margin": 1.2,
+      "marginLabel": "D+1.2",
+      "republicanOdds": 43.19,
+      "democraticOdds": 56.81,
+      "rating": "Toss-up"
+    },
+    {
+      "id": "IA-04",
+      "republican": "Chris McGowan",
+      "democrat": "David Dawson",
+      "margin": -25.1,
+      "marginLabel": "R+25.1",
+      "republicanOdds": 99.98,
+      "democraticOdds": 0.02,
+      "rating": "Safe R"
+    },
+    {
+      "id": "KS-01",
+      "republican": "Tracey Mann*",
+      "democrat": "Democratic Nominee",
+      "margin": -29.8,
+      "marginLabel": "R+29.8",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "KS-02",
+      "republican": "Derek Schmidt*",
+      "democrat": "Don Coover",
+      "margin": -15.8,
+      "marginLabel": "R+15.8",
+      "republicanOdds": 98.8,
+      "democraticOdds": 1.2,
+      "rating": "Safe R"
+    },
+    {
+      "id": "KS-03",
+      "republican": "Republican Nominee",
+      "democrat": "Sharice Davids*",
+      "margin": 17.3,
+      "marginLabel": "D+17.3",
+      "republicanOdds": 0.67,
+      "democraticOdds": 99.33,
+      "rating": "Safe D"
+    },
+    {
+      "id": "KS-04",
+      "republican": "Ron Estes*",
+      "democrat": "Democratic Nominee",
+      "margin": -21.8,
+      "marginLabel": "R+21.8",
+      "republicanOdds": 99.91,
+      "democraticOdds": 0.09,
+      "rating": "Safe R"
+    },
+    {
+      "id": "KY-01",
+      "republican": "James Comer*",
+      "democrat": "Drew Williams",
+      "margin": -41,
+      "marginLabel": "R+41.0",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "KY-02",
+      "republican": "Brett Guthrie*",
+      "democrat": "Megan Wingfield",
+      "margin": -37.4,
+      "marginLabel": "R+37.4",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "KY-03",
+      "republican": "Maria Rodriquez",
+      "democrat": "Morgan McGarvey*",
+      "margin": 25.4,
+      "marginLabel": "D+25.4",
+      "republicanOdds": 0.01,
+      "democraticOdds": 99.99,
+      "rating": "Safe D"
+    },
+    {
+      "id": "KY-04",
+      "republican": "Ed Gallrein",
+      "democrat": "Melissa Strange",
+      "margin": -27,
+      "marginLabel": "R+27.0",
+      "republicanOdds": 99.99,
+      "democraticOdds": 0.01,
+      "rating": "Safe R"
+    },
+    {
+      "id": "KY-05",
+      "republican": "Hal Rogers*",
+      "democrat": "Ned Pillersdorf",
+      "margin": -55,
+      "marginLabel": "R+55.0",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "KY-06",
+      "republican": "Ralph Alvarado",
+      "democrat": "Zach Dembo",
+      "margin": -7.1,
+      "marginLabel": "R+7.1",
+      "republicanOdds": 84.34,
+      "democraticOdds": 15.66,
+      "rating": "Likely R"
+    },
+    {
+      "id": "LA-01",
+      "republican": "Steve Scalise*",
+      "democrat": "Lauren Jewett",
+      "margin": -35.8,
+      "marginLabel": "R+35.8",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "LA-02",
+      "republican": "Republican Nominee",
+      "democrat": "Troy Carter*",
+      "margin": 55.9,
+      "marginLabel": "D+55.9",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "LA-03",
+      "republican": "Clay Higgins*",
+      "democrat": "Democratic Nominee",
+      "margin": -30.1,
+      "marginLabel": "R+30.1",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "LA-04",
+      "republican": "Mike Johnson*",
+      "democrat": "Democratic Nominee",
+      "margin": -28.1,
+      "marginLabel": "R+28.1",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "LA-05",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -26.4,
+      "marginLabel": "R+26.4",
+      "republicanOdds": 99.99,
+      "democraticOdds": 0.01,
+      "rating": "Safe R"
+    },
+    {
+      "id": "LA-06",
+      "republican": "Garret Graves",
+      "democrat": "Cleo Fields*",
+      "margin": -18.9,
+      "marginLabel": "R+18.9",
+      "republicanOdds": 99.65,
+      "democraticOdds": 0.35,
+      "rating": "Safe R"
+    },
+    {
+      "id": "ME-01",
+      "republican": "Ronald Russell",
+      "democrat": "Chellie Pingree*",
+      "margin": 29.2,
+      "marginLabel": "D+29.2",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "ME-02",
+      "republican": "Paul LePage",
+      "democrat": "Matt Dunlap",
+      "margin": -4.1,
+      "marginLabel": "R+4.1",
+      "republicanOdds": 72.05,
+      "democraticOdds": 27.95,
+      "rating": "Lean R"
+    },
+    {
+      "id": "MD-01",
+      "republican": "Andy Harris*",
+      "democrat": "Dan Schwartz",
+      "margin": -15.3,
+      "marginLabel": "R+15.3",
+      "republicanOdds": 98.56,
+      "democraticOdds": 1.44,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MD-02",
+      "republican": "Dave Wallace",
+      "democrat": "Johnny Olszewski*",
+      "margin": 27,
+      "marginLabel": "D+27.0",
+      "republicanOdds": 0.01,
+      "democraticOdds": 99.99,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MD-03",
+      "republican": "Berney Flowers",
+      "democrat": "Sarah Elfreth*",
+      "margin": 30.5,
+      "marginLabel": "D+30.5",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MD-04",
+      "republican": "George McDermott",
+      "democrat": "Glenn Ivey*",
+      "margin": 75.6,
+      "marginLabel": "D+75.6",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MD-05",
+      "republican": "Chris Chaffee",
+      "democrat": "Adrian Boafo",
+      "margin": 37.7,
+      "marginLabel": "D+37.7",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MD-06",
+      "republican": "Robin Ficker",
+      "democrat": "April McClain Delaney",
+      "margin": 15.7,
+      "marginLabel": "D+15.7",
+      "republicanOdds": 1.23,
+      "democraticOdds": 98.77,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MD-07",
+      "republican": "Scott Collier",
+      "democrat": "Kweisi Mfume*",
+      "margin": 64.1,
+      "marginLabel": "D+64.1",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MD-08",
+      "republican": "Cheryl Riley",
+      "democrat": "Jamie Raskin*",
+      "margin": 58.6,
+      "marginLabel": "D+58.6",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MA-01",
+      "republican": "Republican Nominee",
+      "democrat": "Richard Neal",
+      "margin": 24.6,
+      "marginLabel": "D+24.6",
+      "republicanOdds": 0.02,
+      "democraticOdds": 99.98,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MA-02",
+      "republican": "Republican Nominee",
+      "democrat": "Jim McGovern*",
+      "margin": 33.7,
+      "marginLabel": "D+33.7",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MA-03",
+      "republican": "Gary Grossi",
+      "democrat": "Lori Trahan*",
+      "margin": 29.3,
+      "marginLabel": "D+29.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MA-04",
+      "republican": "Tom Stalcup",
+      "democrat": "Jack Auchincloss*",
+      "margin": 30,
+      "marginLabel": "D+30.0",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MA-05",
+      "republican": "Republican Nominee",
+      "democrat": "Katherine Clark*",
+      "margin": 52,
+      "marginLabel": "D+52.0",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MA-06",
+      "republican": "Micah Jones",
+      "democrat": "Democratic Nominee",
+      "margin": 28.9,
+      "marginLabel": "D+28.9",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MA-07",
+      "republican": "Republican Nominee",
+      "democrat": "Ayanna Pressley*",
+      "margin": 68.9,
+      "marginLabel": "D+68.9",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MA-08",
+      "republican": "Robert Burke",
+      "democrat": "Stephen Lynch*",
+      "margin": 40.9,
+      "marginLabel": "D+40.9",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MA-09",
+      "republican": "Republican Nominee",
+      "democrat": "William Keating*",
+      "margin": 20,
+      "marginLabel": "D+20.0",
+      "republicanOdds": 0.21,
+      "democraticOdds": 99.79,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MI-01",
+      "republican": "Jack Bergman*",
+      "democrat": "Democratic Nominee",
+      "margin": -17.5,
+      "marginLabel": "R+17.5",
+      "republicanOdds": 99.37,
+      "democraticOdds": 0.63,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MI-02",
+      "republican": "John Moolenaar*",
+      "democrat": "Democratic Nominee",
+      "margin": -27.3,
+      "marginLabel": "R+27.3",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MI-03",
+      "republican": "Republican Nominee",
+      "democrat": "Hillary Scholten*",
+      "margin": 16.5,
+      "marginLabel": "D+16.5",
+      "republicanOdds": 0.93,
+      "democraticOdds": 99.07,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MI-04",
+      "republican": "Bill Huizenga*",
+      "democrat": "Democratic Nominee",
+      "margin": -3.7,
+      "marginLabel": "R+3.7",
+      "republicanOdds": 70.24,
+      "democraticOdds": 29.76,
+      "rating": "Lean R"
+    },
+    {
+      "id": "MI-05",
+      "republican": "Tim Walberg*",
+      "democrat": "Christian Vukasovich",
+      "margin": -24.8,
+      "marginLabel": "R+24.8",
+      "republicanOdds": 99.98,
+      "democraticOdds": 0.02,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MI-06",
+      "republican": "Heather Smiley",
+      "democrat": "Debbie Dingell*",
+      "margin": 31.5,
+      "marginLabel": "D+31.5",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MI-07",
+      "republican": "Tom Barrett*",
+      "democrat": "Democratic Nominee",
+      "margin": -0.3,
+      "marginLabel": "R+0.3",
+      "republicanOdds": 51.71,
+      "democraticOdds": 48.29,
+      "rating": "Toss-up"
+    },
+    {
+      "id": "MI-08",
+      "republican": "Republican Nominee",
+      "democrat": "Kristen McDonald Rivet*",
+      "margin": 14.3,
+      "marginLabel": "D+14.3",
+      "republicanOdds": 2.03,
+      "democraticOdds": 97.97,
+      "rating": "Likely D"
+    },
+    {
+      "id": "MI-09",
+      "republican": "Lisa McClain*",
+      "democrat": "Ray Pooley",
+      "margin": -30.5,
+      "marginLabel": "R+30.5",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MI-10",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": 0,
+      "marginLabel": "R+0.0",
+      "republicanOdds": 50.17,
+      "democraticOdds": 49.83,
+      "rating": "Toss-up"
+    },
+    {
+      "id": "MI-11",
+      "republican": "Ethan Baker",
+      "democrat": "Democratic Nominee",
+      "margin": 23.1,
+      "marginLabel": "D+23.1",
+      "republicanOdds": 0.05,
+      "democraticOdds": 99.95,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MI-12",
+      "republican": "James Hooper",
+      "democrat": "Rashida Tlaib*",
+      "margin": 46,
+      "marginLabel": "D+46.0",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MI-13",
+      "republican": "TP Nykoriak",
+      "democrat": "Shri Thanedar*",
+      "margin": 47.8,
+      "marginLabel": "D+47.8",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MN-01",
+      "republican": "Brad Finstad*",
+      "democrat": "Democratic Nominee",
+      "margin": -8.8,
+      "marginLabel": "R+8.8",
+      "republicanOdds": 89.64,
+      "democraticOdds": 10.36,
+      "rating": "Likely R"
+    },
+    {
+      "id": "MN-02",
+      "republican": "Eric Pratt",
+      "democrat": "Democratic Nominee",
+      "margin": 15.3,
+      "marginLabel": "D+15.3",
+      "republicanOdds": 1.45,
+      "democraticOdds": 98.55,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MN-03",
+      "republican": "Republican Nominee",
+      "democrat": "Kelly Morrison*",
+      "margin": 26.6,
+      "marginLabel": "D+26.6",
+      "republicanOdds": 0.01,
+      "democraticOdds": 99.99,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MN-04",
+      "republican": "Republican Nominee",
+      "democrat": "Betty McCollum*",
+      "margin": 39.8,
+      "marginLabel": "D+39.8",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MN-05",
+      "republican": "Republican Nominee",
+      "democrat": "Ilhan Omar*",
+      "margin": 56.9,
+      "marginLabel": "D+56.9",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MN-06",
+      "republican": "Tom Emmer*",
+      "democrat": "Democratic Nominee",
+      "margin": -17.2,
+      "marginLabel": "R+17.2",
+      "republicanOdds": 99.29,
+      "democraticOdds": 0.71,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MN-07",
+      "republican": "Michelle Fischbach*",
+      "democrat": "Democratic Nominee",
+      "margin": -32.5,
+      "marginLabel": "R+32.5",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MN-08",
+      "republican": "Pete Stauber*",
+      "democrat": "Democratic Nominee",
+      "margin": -11.4,
+      "marginLabel": "R+11.4",
+      "republicanOdds": 94.84,
+      "democraticOdds": 5.16,
+      "rating": "Likely R"
+    },
+    {
+      "id": "MS-01",
+      "republican": "Trent Kelly*",
+      "democrat": "Cliff Johnson",
+      "margin": -31.2,
+      "marginLabel": "R+31.2",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MS-02",
+      "republican": "Ron Eller",
+      "democrat": "Bennie Thompson*",
+      "margin": 29.2,
+      "marginLabel": "D+29.2",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MS-03",
+      "republican": "Michael Guest*",
+      "democrat": "Michael Chiaradio",
+      "margin": -25.1,
+      "marginLabel": "R+25.1",
+      "republicanOdds": 99.98,
+      "democraticOdds": 0.02,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MS-04",
+      "republican": "Mike Ezell*",
+      "democrat": "Jeffrey Hulum III",
+      "margin": -37.6,
+      "marginLabel": "R+37.6",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MO-01",
+      "republican": "Wesley Bell*",
+      "democrat": "Democratic Nominee",
+      "margin": 63.6,
+      "marginLabel": "D+63.6",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "MO-02",
+      "republican": "Ann Wagner*",
+      "democrat": "Democratic Nominee",
+      "margin": -7.5,
+      "marginLabel": "R+7.5",
+      "republicanOdds": 85.9,
+      "democraticOdds": 14.1,
+      "rating": "Likely R"
+    },
+    {
+      "id": "MO-03",
+      "republican": "Bod Onder*",
+      "democrat": "Democratic Nominee",
+      "margin": -15.4,
+      "marginLabel": "R+15.4",
+      "republicanOdds": 98.61,
+      "democraticOdds": 1.39,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MO-04",
+      "republican": "Mark Alford*",
+      "democrat": "Democratic Nominee",
+      "margin": -17.6,
+      "marginLabel": "R+17.6",
+      "republicanOdds": 99.4,
+      "democraticOdds": 0.6,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MO-05",
+      "republican": "Republican Nominee",
+      "democrat": "Emanuel Cleaver*",
+      "margin": -9.3,
+      "marginLabel": "R+9.3",
+      "republicanOdds": 90.78,
+      "democraticOdds": 9.22,
+      "rating": "Likely R"
+    },
+    {
+      "id": "MO-06",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -22.2,
+      "marginLabel": "R+22.2",
+      "republicanOdds": 99.92,
+      "democraticOdds": 0.08,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MO-07",
+      "republican": "Eric Burlison*",
+      "democrat": "Missi Hesketh",
+      "margin": -37.6,
+      "marginLabel": "R+37.6",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MO-08",
+      "republican": "Jason Smith*",
+      "democrat": "Democratic Nominee",
+      "margin": -45.2,
+      "marginLabel": "R+45.2",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "MT-01",
+      "republican": "Aaron Flint",
+      "democrat": "Sam Forstag",
+      "margin": -4.8,
+      "marginLabel": "R+4.8",
+      "republicanOdds": 75.31,
+      "democraticOdds": 24.69,
+      "rating": "Lean R"
+    },
+    {
+      "id": "MT-02",
+      "republican": "Troy Downing*",
+      "democrat": "Brian Miller",
+      "margin": -25.7,
+      "marginLabel": "R+25.7",
+      "republicanOdds": 99.99,
+      "democraticOdds": 0.01,
+      "rating": "Safe R"
+    },
+    {
+      "id": "NE-01",
+      "republican": "Mike Flood*",
+      "democrat": "Chris Backemeyer",
+      "margin": -11.6,
+      "marginLabel": "R+11.6",
+      "republicanOdds": 95.15,
+      "democraticOdds": 4.85,
+      "rating": "Likely R"
+    },
+    {
+      "id": "NE-02",
+      "republican": "Brinker Harding",
+      "democrat": "Denise Powell",
+      "margin": 9.5,
+      "marginLabel": "D+9.5",
+      "republicanOdds": 8.69,
+      "democraticOdds": 91.31,
+      "rating": "Likely D"
+    },
+    {
+      "id": "NE-03",
+      "republican": "Adrian Smith*",
+      "democrat": "Becky Stille",
+      "margin": -48.3,
+      "marginLabel": "R+48.3",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "NV-01",
+      "republican": "Carrie Buck",
+      "democrat": "Dina Titus*",
+      "margin": 13.3,
+      "marginLabel": "D+13.3",
+      "republicanOdds": 2.88,
+      "democraticOdds": 97.12,
+      "rating": "Likely D"
+    },
+    {
+      "id": "NV-02",
+      "republican": "David Flippo",
+      "democrat": "Teresa Benitez-Thompson",
+      "margin": -6.3,
+      "marginLabel": "R+6.3",
+      "republicanOdds": 81.52,
+      "democraticOdds": 18.48,
+      "rating": "Likely R"
+    },
+    {
+      "id": "NV-03",
+      "republican": "Marty O'Donnell",
+      "democrat": "Susie Lee*",
+      "margin": 9.4,
+      "marginLabel": "D+9.4",
+      "republicanOdds": 8.97,
+      "democraticOdds": 91.03,
+      "rating": "Likely D"
+    },
+    {
+      "id": "NV-04",
+      "republican": "Cody Whipple",
+      "democrat": "Steven Horsford*",
+      "margin": 14.3,
+      "marginLabel": "D+14.3",
+      "republicanOdds": 2.08,
+      "democraticOdds": 97.92,
+      "rating": "Likely D"
+    },
+    {
+      "id": "NH-01",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": 8.8,
+      "marginLabel": "D+8.8",
+      "republicanOdds": 10.36,
+      "democraticOdds": 89.64,
+      "rating": "Likely D"
+    },
+    {
+      "id": "NH-02",
+      "republican": "Lily Tang Williams",
+      "democrat": "Democratic Nominee",
+      "margin": 13.7,
+      "marginLabel": "D+13.7",
+      "republicanOdds": 2.52,
+      "democraticOdds": 97.48,
+      "rating": "Likely D"
+    },
+    {
+      "id": "NJ-01",
+      "republican": "Damon Galdo",
+      "democrat": "Donald Norcross*",
+      "margin": 25.1,
+      "marginLabel": "D+25.1",
+      "republicanOdds": 0.02,
+      "democraticOdds": 99.98,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NJ-02",
+      "republican": "Jeff Van Drew*",
+      "democrat": "Zack Mullock",
+      "margin": -10.1,
+      "marginLabel": "R+10.1",
+      "republicanOdds": 92.57,
+      "democraticOdds": 7.43,
+      "rating": "Likely R"
+    },
+    {
+      "id": "NJ-03",
+      "republican": "Michael McGuire",
+      "democrat": "Herb Conaway*",
+      "margin": 17.5,
+      "marginLabel": "D+17.5",
+      "republicanOdds": 0.61,
+      "democraticOdds": 99.39,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NJ-04",
+      "republican": "Chris Smith*",
+      "democrat": "Rachel Peace",
+      "margin": -27.2,
+      "marginLabel": "R+27.2",
+      "republicanOdds": 99.99,
+      "democraticOdds": 0.01,
+      "rating": "Safe R"
+    },
+    {
+      "id": "NJ-05",
+      "republican": "Sean Kirrane",
+      "democrat": "Josh Gottheimer*",
+      "margin": 17.4,
+      "marginLabel": "D+17.4",
+      "republicanOdds": 0.64,
+      "democraticOdds": 99.36,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NJ-06",
+      "republican": "Hillary Herzig",
+      "democrat": "Frank Pallone*",
+      "margin": 21.1,
+      "marginLabel": "D+21.1",
+      "republicanOdds": 0.13,
+      "democraticOdds": 99.87,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NJ-07",
+      "republican": "Thomas Kean Jr.*",
+      "democrat": "Rebecca Bennett",
+      "margin": 3.1,
+      "marginLabel": "D+3.1",
+      "republicanOdds": 33.1,
+      "democraticOdds": 66.9,
+      "rating": "Lean D"
+    },
+    {
+      "id": "NJ-08",
+      "republican": "Republican Nominee",
+      "democrat": "Rob Menendez*",
+      "margin": 36.4,
+      "marginLabel": "D+36.4",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NJ-09",
+      "republican": "Rosie Pino",
+      "democrat": "Nellie Pou*",
+      "margin": 15.1,
+      "marginLabel": "D+15.1",
+      "republicanOdds": 1.57,
+      "democraticOdds": 98.43,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NJ-10",
+      "republican": "Carmen Bucco",
+      "democrat": "LaMonica McIver*",
+      "margin": 55.6,
+      "marginLabel": "D+55.6",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NJ-11",
+      "republican": "Joe Hathaway",
+      "democrat": "Analilia Mejia*",
+      "margin": 20.5,
+      "marginLabel": "D+20.5",
+      "republicanOdds": 0.17,
+      "democraticOdds": 99.83,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NJ-12",
+      "republican": "Gregg Mele",
+      "democrat": "Adam Hamawy",
+      "margin": 31,
+      "marginLabel": "D+31.0",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NM-01",
+      "republican": "Didi Okpareke",
+      "democrat": "Melanie Stansbury*",
+      "margin": 20.9,
+      "marginLabel": "D+20.9",
+      "republicanOdds": 0.14,
+      "democraticOdds": 99.86,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NM-02",
+      "republican": "Greg Cunningham",
+      "democrat": "Gabe Vasquez*",
+      "margin": 9.4,
+      "marginLabel": "D+9.4",
+      "republicanOdds": 8.99,
+      "democraticOdds": 91.01,
+      "rating": "Likely D"
+    },
+    {
+      "id": "NM-03",
+      "republican": "Martin Zamora",
+      "democrat": "Teresa Leger Fern√°ndez*",
+      "margin": 18.4,
+      "marginLabel": "D+18.4",
+      "republicanOdds": 0.44,
+      "democraticOdds": 99.56,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-01",
+      "republican": "Nick LaLota*",
+      "democrat": "Chris Gallant",
+      "margin": -3.4,
+      "marginLabel": "R+3.4",
+      "republicanOdds": 68.69,
+      "democraticOdds": 31.31,
+      "rating": "Lean R"
+    },
+    {
+      "id": "NY-02",
+      "republican": "Andrew Garbarino*",
+      "democrat": "Patrick Halpin",
+      "margin": -11.9,
+      "marginLabel": "R+11.9",
+      "republicanOdds": 95.57,
+      "democraticOdds": 4.43,
+      "rating": "Likely R"
+    },
+    {
+      "id": "NY-03",
+      "republican": "Mike LiPetri",
+      "democrat": "Tom Suozzi*",
+      "margin": 10.5,
+      "marginLabel": "D+10.5",
+      "republicanOdds": 6.74,
+      "democraticOdds": 93.26,
+      "rating": "Likely D"
+    },
+    {
+      "id": "NY-04",
+      "republican": "Jeanine Driscoll",
+      "democrat": "Laura Gillen*",
+      "margin": 13.8,
+      "marginLabel": "D+13.8",
+      "republicanOdds": 2.47,
+      "democraticOdds": 97.53,
+      "rating": "Likely D"
+    },
+    {
+      "id": "NY-05",
+      "republican": "George Marsh",
+      "democrat": "Gregory Meeks*",
+      "margin": 49.5,
+      "marginLabel": "D+49.5",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-06",
+      "republican": "Joseph Chou",
+      "democrat": "Grace Meng",
+      "margin": 28.2,
+      "marginLabel": "D+28.2",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-07",
+      "republican": "Melvin Rivera",
+      "democrat": "Claire Valdez",
+      "margin": 53.8,
+      "marginLabel": "D+53.8",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-08",
+      "republican": "Lewis Mizrahi",
+      "democrat": "Hakeem Jeffries*",
+      "margin": 52.5,
+      "marginLabel": "D+52.5",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-09",
+      "republican": "Joel Anabilah-Azumah",
+      "democrat": "Yvette Clark*",
+      "margin": 51.2,
+      "marginLabel": "D+51.2",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-10",
+      "republican": "Jennifer Moore",
+      "democrat": "Brad Lander",
+      "margin": 68.2,
+      "marginLabel": "D+68.2",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-11",
+      "republican": "Nicole Malliotakis*",
+      "democrat": "Michael DeCillis",
+      "margin": -19.6,
+      "marginLabel": "R+19.6",
+      "republicanOdds": 99.74,
+      "democraticOdds": 0.26,
+      "rating": "Safe R"
+    },
+    {
+      "id": "NY-12",
+      "republican": "Caroline Shinkle",
+      "democrat": "Micah Lasher",
+      "margin": 65.5,
+      "marginLabel": "D+65.5",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-13",
+      "republican": "Jomo M. Williams",
+      "democrat": "Darializa Avila Chevalier",
+      "margin": 66.5,
+      "marginLabel": "D+66.5",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-14",
+      "republican": "Diamant Hysenaj",
+      "democrat": "Alexandria Ocasio-Cortez*",
+      "margin": 45,
+      "marginLabel": "D+45.0",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-15",
+      "republican": "Gonzalo Duran",
+      "democrat": "Richie Torres*",
+      "margin": 58.6,
+      "marginLabel": "D+58.6",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-16",
+      "republican": "Joseph Cinquemani",
+      "democrat": "George Latimer*",
+      "margin": 45.5,
+      "marginLabel": "D+45.5",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-17",
+      "republican": "Mike Lawler*",
+      "democrat": "Cait Conley",
+      "margin": 1.2,
+      "marginLabel": "D+1.2",
+      "republicanOdds": 42.97,
+      "democraticOdds": 57.03,
+      "rating": "Toss-up"
+    },
+    {
+      "id": "NY-18",
+      "republican": "Jacqueline Auringer",
+      "democrat": "Pat Ryan*",
+      "margin": 19.2,
+      "marginLabel": "D+19.2",
+      "republicanOdds": 0.3,
+      "democraticOdds": 99.7,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-19",
+      "republican": "Peter Oberacker",
+      "democrat": "Josh Riley*",
+      "margin": 12.9,
+      "marginLabel": "D+12.9",
+      "republicanOdds": 3.24,
+      "democraticOdds": 96.76,
+      "rating": "Likely D"
+    },
+    {
+      "id": "NY-20",
+      "republican": "Ralph Ambrosio",
+      "democrat": "Paul Tonko*",
+      "margin": 26.1,
+      "marginLabel": "D+26.1",
+      "republicanOdds": 0.01,
+      "democraticOdds": 99.99,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-21",
+      "republican": "Anthony Constantino",
+      "democrat": "Blake Gendebein",
+      "margin": -11.4,
+      "marginLabel": "R+11.4",
+      "republicanOdds": 94.88,
+      "democraticOdds": 5.12,
+      "rating": "Likely R"
+    },
+    {
+      "id": "NY-22",
+      "republican": "Kailee Buller",
+      "democrat": "John Mannion*",
+      "margin": 19.5,
+      "marginLabel": "D+19.5",
+      "republicanOdds": 0.27,
+      "democraticOdds": 99.73,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-23",
+      "republican": "Nick Langworthy*",
+      "democrat": "Aaron Gies",
+      "margin": -21.7,
+      "marginLabel": "R+21.7",
+      "republicanOdds": 99.9,
+      "democraticOdds": 0.1,
+      "rating": "Safe R"
+    },
+    {
+      "id": "NY-24",
+      "republican": "Claudia Tenney*",
+      "democrat": "Alissa Ellman",
+      "margin": -22.9,
+      "marginLabel": "R+22.9",
+      "republicanOdds": 99.95,
+      "democraticOdds": 0.05,
+      "rating": "Safe R"
+    },
+    {
+      "id": "NY-25",
+      "republican": "Virginia McIntyre",
+      "democrat": "Joseph Morelle*",
+      "margin": 27,
+      "marginLabel": "D+27.0",
+      "republicanOdds": 0.01,
+      "democraticOdds": 99.99,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NY-26",
+      "republican": "Dennis Hannon",
+      "democrat": "Tim Kennedy*",
+      "margin": 31.7,
+      "marginLabel": "D+31.7",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NC-01",
+      "republican": "Laurie Buckhout",
+      "democrat": "Don Davis*",
+      "margin": 0.7,
+      "marginLabel": "D+0.7",
+      "republicanOdds": 46.3,
+      "democraticOdds": 53.7,
+      "rating": "Toss-up"
+    },
+    {
+      "id": "NC-02",
+      "republican": "Eugene Douglass",
+      "democrat": "Deborah Ross*",
+      "margin": 40.1,
+      "marginLabel": "D+40.1",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NC-03",
+      "republican": "Greg Murphy*",
+      "democrat": "Raymond Smith Jr.",
+      "margin": -11.1,
+      "marginLabel": "R+11.1",
+      "republicanOdds": 94.38,
+      "democraticOdds": 5.62,
+      "rating": "Likely R"
+    },
+    {
+      "id": "NC-04",
+      "republican": "Max Ganorkar",
+      "democrat": "Valerie Foushee*",
+      "margin": 50.8,
+      "marginLabel": "D+50.8",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NC-05",
+      "republican": "Virginia Foxx*",
+      "democrat": "Chuck Hubbard",
+      "margin": -11.2,
+      "marginLabel": "R+11.2",
+      "republicanOdds": 94.47,
+      "democraticOdds": 5.53,
+      "rating": "Likely R"
+    },
+    {
+      "id": "NC-06",
+      "republican": "Addison McDowell*",
+      "democrat": "Cyril Jefferson",
+      "margin": -15,
+      "marginLabel": "R+15.0",
+      "republicanOdds": 98.42,
+      "democraticOdds": 1.58,
+      "rating": "Safe R"
+    },
+    {
+      "id": "NC-07",
+      "republican": "David Rouzer*",
+      "democrat": "Kimberly Hardy",
+      "margin": -10,
+      "marginLabel": "R+10.0",
+      "republicanOdds": 92.26,
+      "democraticOdds": 7.74,
+      "rating": "Likely R"
+    },
+    {
+      "id": "NC-08",
+      "republican": "Mark Harris*",
+      "democrat": "Colby Watson",
+      "margin": -15.1,
+      "marginLabel": "R+15.1",
+      "republicanOdds": 98.46,
+      "democraticOdds": 1.54,
+      "rating": "Safe R"
+    },
+    {
+      "id": "NC-09",
+      "republican": "Richard Hudson*",
+      "democrat": "Richard Ojeda",
+      "margin": -11.5,
+      "marginLabel": "R+11.5",
+      "republicanOdds": 94.92,
+      "democraticOdds": 5.08,
+      "rating": "Likely R"
+    },
+    {
+      "id": "NC-10",
+      "republican": "Pat Harrigan*",
+      "democrat": "Ashley Bell",
+      "margin": -14.5,
+      "marginLabel": "R+14.5",
+      "republicanOdds": 98.1,
+      "democraticOdds": 1.9,
+      "rating": "Likely R"
+    },
+    {
+      "id": "NC-11",
+      "republican": "Chuck Edwards*",
+      "democrat": "Jamie Ager",
+      "margin": -1.7,
+      "marginLabel": "R+1.7",
+      "republicanOdds": 59.54,
+      "democraticOdds": 40.46,
+      "rating": "Toss-up"
+    },
+    {
+      "id": "NC-12",
+      "republican": "Jack Codiga",
+      "democrat": "Alma Adams*",
+      "margin": 51.2,
+      "marginLabel": "D+51.2",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "NC-13",
+      "republican": "Brad Knott*",
+      "democrat": "Paul Barringer",
+      "margin": -12.1,
+      "marginLabel": "R+12.1",
+      "republicanOdds": 95.78,
+      "democraticOdds": 4.22,
+      "rating": "Likely R"
+    },
+    {
+      "id": "NC-14",
+      "republican": "Tim Moore*",
+      "democrat": "Lakesha Womack",
+      "margin": -12.2,
+      "marginLabel": "R+12.2",
+      "republicanOdds": 95.98,
+      "democraticOdds": 4.02,
+      "rating": "Likely R"
+    },
+    {
+      "id": "ND-01",
+      "republican": "Julie Fedorchak*",
+      "democrat": "Democratic Nominee",
+      "margin": -31.5,
+      "marginLabel": "R+31.5",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OH-01",
+      "republican": "Eric Conroy",
+      "democrat": "Greg Landsman*",
+      "margin": 7.8,
+      "marginLabel": "D+7.8",
+      "republicanOdds": 13.41,
+      "democraticOdds": 86.59,
+      "rating": "Likely D"
+    },
+    {
+      "id": "OH-02",
+      "republican": "David Taylor*",
+      "democrat": "Jennifer Mazzuckelli",
+      "margin": -37,
+      "marginLabel": "R+37.0",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OH-03",
+      "republican": "Cleophus Dulaney",
+      "democrat": "Joyce Beatty*",
+      "margin": 45.3,
+      "marginLabel": "D+45.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "OH-04",
+      "republican": "Jim Jordan*",
+      "democrat": "Joshua Kolasinski",
+      "margin": -34.7,
+      "marginLabel": "R+34.7",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OH-05",
+      "republican": "Bob Latta*",
+      "democrat": "Brian Shaver",
+      "margin": -21.7,
+      "marginLabel": "R+21.7",
+      "republicanOdds": 99.9,
+      "democraticOdds": 0.1,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OH-06",
+      "republican": "Michael Rulli*",
+      "democrat": "Elizabeth Kirtley",
+      "margin": -28,
+      "marginLabel": "R+28.0",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OH-07",
+      "republican": "Max Miller*",
+      "democrat": "Brian Poindexter",
+      "margin": 0.9,
+      "marginLabel": "D+0.9",
+      "republicanOdds": 45,
+      "democraticOdds": 55,
+      "rating": "Toss-up"
+    },
+    {
+      "id": "OH-08",
+      "republican": "Warren Davidson*",
+      "democrat": "Vanessa Enoch",
+      "margin": -11.6,
+      "marginLabel": "R+11.6",
+      "republicanOdds": 95.13,
+      "democraticOdds": 4.87,
+      "rating": "Likely R"
+    },
+    {
+      "id": "OH-09",
+      "republican": "Derek Merrin",
+      "democrat": "Marcy Kaptur*",
+      "margin": 2.3,
+      "marginLabel": "D+2.3",
+      "republicanOdds": 37.23,
+      "democraticOdds": 62.77,
+      "rating": "Lean D"
+    },
+    {
+      "id": "OH-10",
+      "republican": "Mike Turner*",
+      "democrat": "Kristina Knickerbocker",
+      "margin": -10.2,
+      "marginLabel": "R+10.2",
+      "republicanOdds": 92.77,
+      "democraticOdds": 7.23,
+      "rating": "Likely R"
+    },
+    {
+      "id": "OH-11",
+      "republican": "Mike Kirchner",
+      "democrat": "Shontel Brown*",
+      "margin": 60.1,
+      "marginLabel": "D+60.1",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "OH-12",
+      "republican": "Troy Balderson*",
+      "democrat": "Jerrad Christian",
+      "margin": -26.6,
+      "marginLabel": "R+26.6",
+      "republicanOdds": 99.99,
+      "democraticOdds": 0.01,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OH-13",
+      "republican": "Carey Coleman",
+      "democrat": "Emilia Sykes*",
+      "margin": 13.5,
+      "marginLabel": "D+13.5",
+      "republicanOdds": 2.7,
+      "democraticOdds": 97.3,
+      "rating": "Likely D"
+    },
+    {
+      "id": "OH-14",
+      "republican": "David Joyce*",
+      "democrat": "Maria Jukic",
+      "margin": -19.8,
+      "marginLabel": "R+19.8",
+      "republicanOdds": 99.77,
+      "democraticOdds": 0.23,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OH-15",
+      "republican": "Mike Carey*",
+      "democrat": "Don Leonard",
+      "margin": -7.2,
+      "marginLabel": "R+7.2",
+      "republicanOdds": 84.78,
+      "democraticOdds": 15.22,
+      "rating": "Likely R"
+    },
+    {
+      "id": "OK-01",
+      "republican": "Mark Tedford*",
+      "democrat": "John Croisant",
+      "margin": -17.8,
+      "marginLabel": "R+17.8",
+      "republicanOdds": 99.44,
+      "democraticOdds": 0.56,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OK-02",
+      "republican": "Josh Brecheen*",
+      "democrat": "Brandon Wade",
+      "margin": -45.6,
+      "marginLabel": "R+45.6",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OK-03",
+      "republican": "Frank Lucas*",
+      "democrat": "Democratic Nominee",
+      "margin": -39.6,
+      "marginLabel": "R+39.6",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OK-04",
+      "republican": "Tom Cole*",
+      "democrat": "Mitchell Jacob",
+      "margin": -29.5,
+      "marginLabel": "R+29.5",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OK-05",
+      "republican": "Stephanie Bice*",
+      "democrat": "Jena Nelson",
+      "margin": -15.3,
+      "marginLabel": "R+15.3",
+      "republicanOdds": 98.58,
+      "democraticOdds": 1.42,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OR-01",
+      "republican": "Barbara Kahl",
+      "democrat": "Suzanne Bonamici*",
+      "margin": 45,
+      "marginLabel": "D+45.0",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "OR-02",
+      "republican": "Cliff Bentz*",
+      "democrat": "Chris Beck",
+      "margin": -24.7,
+      "marginLabel": "R+24.7",
+      "republicanOdds": 99.98,
+      "democraticOdds": 0.02,
+      "rating": "Safe R"
+    },
+    {
+      "id": "OR-03",
+      "republican": "Loran Ayles",
+      "democrat": "Maxine Dexter*",
+      "margin": 50.4,
+      "marginLabel": "D+50.4",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "OR-04",
+      "republican": "Monique DeSpain",
+      "democrat": "Val Hoyle*",
+      "margin": 16.4,
+      "marginLabel": "D+16.4",
+      "republicanOdds": 0.95,
+      "democraticOdds": 99.05,
+      "rating": "Safe D"
+    },
+    {
+      "id": "OR-05",
+      "republican": "Patti Adair",
+      "democrat": "Janelle Bynum*",
+      "margin": 16.6,
+      "marginLabel": "D+16.6",
+      "republicanOdds": 0.89,
+      "democraticOdds": 99.11,
+      "rating": "Safe D"
+    },
+    {
+      "id": "OR-06",
+      "republican": "David Russ",
+      "democrat": "Andrea Salinas*",
+      "margin": 16.6,
+      "marginLabel": "D+16.6",
+      "republicanOdds": 0.9,
+      "democraticOdds": 99.1,
+      "rating": "Safe D"
+    },
+    {
+      "id": "PA-01",
+      "republican": "Brian Fitzpatrick*",
+      "democrat": "Bob Harvie",
+      "margin": -2.9,
+      "marginLabel": "R+2.9",
+      "republicanOdds": 65.96,
+      "democraticOdds": 34.04,
+      "rating": "Lean R"
+    },
+    {
+      "id": "PA-02",
+      "republican": "Jessica Arriaga",
+      "democrat": "Brendan Boyle*",
+      "margin": 45.7,
+      "marginLabel": "D+45.7",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "PA-03",
+      "republican": "Republican Nominee",
+      "democrat": "Chris Rabb",
+      "margin": 75.9,
+      "marginLabel": "D+75.9",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "PA-04",
+      "republican": "Aurora Stuski",
+      "democrat": "Madeleine Dean*",
+      "margin": 24.3,
+      "marginLabel": "D+24.3",
+      "republicanOdds": 0.03,
+      "democraticOdds": 99.97,
+      "rating": "Safe D"
+    },
+    {
+      "id": "PA-05",
+      "republican": "Nicholas Manganaro",
+      "democrat": "Mary Gay Scanlon*",
+      "margin": 36.2,
+      "marginLabel": "D+36.2",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "PA-06",
+      "republican": "Marty Young",
+      "democrat": "Chrissy Houlahan*",
+      "margin": 18.8,
+      "marginLabel": "D+18.8",
+      "republicanOdds": 0.36,
+      "democraticOdds": 99.64,
+      "rating": "Safe D"
+    },
+    {
+      "id": "PA-07",
+      "republican": "Ryan Mackenzie*",
+      "democrat": "Bob Brooks",
+      "margin": 2.3,
+      "marginLabel": "D+2.3",
+      "republicanOdds": 37.34,
+      "democraticOdds": 62.66,
+      "rating": "Lean D"
+    },
+    {
+      "id": "PA-08",
+      "republican": "Rob Bresnahan*",
+      "democrat": "Paige Cognetti",
+      "margin": -0.2,
+      "marginLabel": "R+0.2",
+      "republicanOdds": 50.85,
+      "democraticOdds": 49.15,
+      "rating": "Toss-up"
+    },
+    {
+      "id": "PA-09",
+      "republican": "Dan Meuser*",
+      "democrat": "Rachel Wallace",
+      "margin": -33.1,
+      "marginLabel": "R+33.1",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "PA-10",
+      "republican": "Scott Perry*",
+      "democrat": "Janelle Stelson",
+      "margin": 5.4,
+      "marginLabel": "D+5.4",
+      "republicanOdds": 22.11,
+      "democraticOdds": 77.89,
+      "rating": "Likely D"
+    },
+    {
+      "id": "PA-11",
+      "republican": "Lloyd Smucker*",
+      "democrat": "Nancy Mannion",
+      "margin": -18.6,
+      "marginLabel": "R+18.6",
+      "republicanOdds": 99.6,
+      "democraticOdds": 0.4,
+      "rating": "Safe R"
+    },
+    {
+      "id": "PA-12",
+      "republican": "James Hayes",
+      "democrat": "Summer Lee*",
+      "margin": 20.8,
+      "marginLabel": "D+20.8",
+      "republicanOdds": 0.15,
+      "democraticOdds": 99.85,
+      "rating": "Safe D"
+    },
+    {
+      "id": "PA-13",
+      "republican": "John Joyce*",
+      "democrat": "Beth Farnham",
+      "margin": -40.2,
+      "marginLabel": "R+40.2",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "PA-14",
+      "republican": "Guy Reschenthaler*",
+      "democrat": "Alan Bradstock",
+      "margin": -26.2,
+      "marginLabel": "R+26.2",
+      "republicanOdds": 99.99,
+      "democraticOdds": 0.01,
+      "rating": "Safe R"
+    },
+    {
+      "id": "PA-15",
+      "republican": "Glenn Thompson*",
+      "democrat": "Ray Bilger",
+      "margin": -34.3,
+      "marginLabel": "R+34.3",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "PA-16",
+      "republican": "Mike Kelly*",
+      "democrat": "Justin Wagner",
+      "margin": -19.8,
+      "marginLabel": "R+19.8",
+      "republicanOdds": 99.77,
+      "democraticOdds": 0.23,
+      "rating": "Safe R"
+    },
+    {
+      "id": "PA-17",
+      "republican": "Tony Guy",
+      "democrat": "Chris Deluzio*",
+      "margin": 14.5,
+      "marginLabel": "D+14.5",
+      "republicanOdds": 1.9,
+      "democraticOdds": 98.1,
+      "rating": "Likely D"
+    },
+    {
+      "id": "RI-01",
+      "republican": "Republican Nominee",
+      "democrat": "Gabe Amo*",
+      "margin": 35.1,
+      "marginLabel": "D+35.1",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "RI-02",
+      "republican": "Republican Nominee",
+      "democrat": "Seth Magaziner*",
+      "margin": 19.8,
+      "marginLabel": "D+19.8",
+      "republicanOdds": 0.23,
+      "democraticOdds": 99.77,
+      "rating": "Safe D"
+    },
+    {
+      "id": "SC-01",
+      "republican": "Jenny Costa Honeycutt",
+      "democrat": "Nancy Lacore",
+      "margin": -4.9,
+      "marginLabel": "R+4.9",
+      "republicanOdds": 75.76,
+      "democraticOdds": 24.24,
+      "rating": "Lean R"
+    },
+    {
+      "id": "SC-02",
+      "republican": "Joe Wilson*",
+      "democrat": "Zyon Khalifa",
+      "margin": -13.1,
+      "marginLabel": "R+13.1",
+      "republicanOdds": 96.95,
+      "democraticOdds": 3.05,
+      "rating": "Likely R"
+    },
+    {
+      "id": "SC-03",
+      "republican": "Sheri Biggs*",
+      "democrat": "Eunice Lehmacher",
+      "margin": -38.7,
+      "marginLabel": "R+38.7",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "SC-04",
+      "republican": "William Timmons*",
+      "democrat": "Courtney McClain",
+      "margin": -17.8,
+      "marginLabel": "R+17.8",
+      "republicanOdds": 99.45,
+      "democraticOdds": 0.55,
+      "rating": "Safe R"
+    },
+    {
+      "id": "SC-05",
+      "republican": "Wes Climer",
+      "democrat": "Mallory Dittmer",
+      "margin": -17.8,
+      "marginLabel": "R+17.8",
+      "republicanOdds": 99.45,
+      "democraticOdds": 0.55,
+      "rating": "Safe R"
+    },
+    {
+      "id": "SC-06",
+      "republican": "John Peterson",
+      "democrat": "Jim Clyburn*",
+      "margin": 31.1,
+      "marginLabel": "D+31.1",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "SC-07",
+      "republican": "Russell Fry*",
+      "democrat": "John Vincent",
+      "margin": -21.9,
+      "marginLabel": "R+21.9",
+      "republicanOdds": 99.91,
+      "democraticOdds": 0.09,
+      "rating": "Safe R"
+    },
+    {
+      "id": "SD-01",
+      "republican": "Marty Jackley",
+      "democrat": "Nikki Gronli",
+      "margin": -25,
+      "marginLabel": "R+25.0",
+      "republicanOdds": 99.98,
+      "democraticOdds": 0.02,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TN-01",
+      "republican": "Diana Harshbarger*",
+      "democrat": "Democratic Nominee",
+      "margin": -49.8,
+      "marginLabel": "R+49.8",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TN-02",
+      "republican": "Tim Burchett*",
+      "democrat": "Michaela Barnett",
+      "margin": -30.9,
+      "marginLabel": "R+30.9",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TN-03",
+      "republican": "Chuck Fleischmann*",
+      "democrat": "Democratic Nominee",
+      "margin": -30.8,
+      "marginLabel": "R+30.8",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TN-04",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -18.8,
+      "marginLabel": "R+18.8",
+      "republicanOdds": 99.64,
+      "democraticOdds": 0.36,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TN-05",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -13,
+      "marginLabel": "R+13.0",
+      "republicanOdds": 96.85,
+      "democraticOdds": 3.15,
+      "rating": "Likely R"
+    },
+    {
+      "id": "TN-06",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -20.7,
+      "marginLabel": "R+20.7",
+      "republicanOdds": 99.84,
+      "democraticOdds": 0.16,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TN-07",
+      "republican": "Matt Van Epps*",
+      "democrat": "Democratic Nominee",
+      "margin": -15.9,
+      "marginLabel": "R+15.9",
+      "republicanOdds": 98.86,
+      "democraticOdds": 1.14,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TN-08",
+      "republican": "David Kustoff*",
+      "democrat": "Democratic Nominee",
+      "margin": -18.4,
+      "marginLabel": "R+18.4",
+      "republicanOdds": 99.58,
+      "democraticOdds": 0.42,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TN-09",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -11.6,
+      "marginLabel": "R+11.6",
+      "republicanOdds": 95.1,
+      "democraticOdds": 4.9,
+      "rating": "Likely R"
+    },
+    {
+      "id": "TX-01",
+      "republican": "Nathaniel Moran*",
+      "democrat": "Yolanda Prince",
+      "margin": -42.3,
+      "marginLabel": "R+42.3",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-02",
+      "republican": "Steve Toth",
+      "democrat": "Shaun Finnie",
+      "margin": -14.8,
+      "marginLabel": "R+14.8",
+      "republicanOdds": 98.26,
+      "democraticOdds": 1.74,
+      "rating": "Likely R"
+    },
+    {
+      "id": "TX-03",
+      "republican": "Keith Self*",
+      "democrat": "Evan Hunt",
+      "margin": -19.3,
+      "marginLabel": "R+19.3",
+      "republicanOdds": 99.71,
+      "democraticOdds": 0.29,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-04",
+      "republican": "Pat Fallon*",
+      "democrat": "Jason Pearce",
+      "margin": -20.7,
+      "marginLabel": "R+20.7",
+      "republicanOdds": 99.84,
+      "democraticOdds": 0.16,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-05",
+      "republican": "Lance Gooden*",
+      "democrat": "Chelsey Hockett",
+      "margin": -17.1,
+      "marginLabel": "R+17.1",
+      "republicanOdds": 99.27,
+      "democraticOdds": 0.73,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-06",
+      "republican": "Jake Ellzey*",
+      "democrat": "Danny Minton",
+      "margin": -18.7,
+      "marginLabel": "R+18.7",
+      "republicanOdds": 99.62,
+      "democraticOdds": 0.38,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-07",
+      "republican": "Alexander Hale",
+      "democrat": "Lizzie Fletcher*",
+      "margin": 29.8,
+      "marginLabel": "D+29.8",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "TX-08",
+      "republican": "Jessica Hart Steinmann",
+      "democrat": "Laura Jones",
+      "margin": -20.9,
+      "marginLabel": "R+20.9",
+      "republicanOdds": 99.86,
+      "democraticOdds": 0.14,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-09",
+      "republican": "Alex Mealer",
+      "democrat": "Leticia Gutierrez",
+      "margin": -11.3,
+      "marginLabel": "R+11.3",
+      "republicanOdds": 94.68,
+      "democraticOdds": 5.32,
+      "rating": "Likely R"
+    },
+    {
+      "id": "TX-10",
+      "republican": "Chris Gober",
+      "democrat": "Caitlin Rourk",
+      "margin": -15.9,
+      "marginLabel": "R+15.9",
+      "republicanOdds": 98.86,
+      "democraticOdds": 1.14,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-11",
+      "republican": "August Pfluger*",
+      "democrat": "Claire Reynolds",
+      "margin": -29.8,
+      "marginLabel": "R+29.8",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-12",
+      "republican": "Craig Goldman*",
+      "democrat": "Angela Rodriguez Prilliman",
+      "margin": -20.6,
+      "marginLabel": "R+20.6",
+      "republicanOdds": 99.84,
+      "democraticOdds": 0.16,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-13",
+      "republican": "Ronny Jackson*",
+      "democrat": "Mark Nair",
+      "margin": -40.5,
+      "marginLabel": "R+40.5",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-14",
+      "republican": "Randy Weber*",
+      "democrat": "Thurman Bartie",
+      "margin": -20.6,
+      "marginLabel": "R+20.6",
+      "republicanOdds": 99.84,
+      "democraticOdds": 0.16,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-15",
+      "republican": "Monica De La Cruz*",
+      "democrat": "Bobby Pulido",
+      "margin": -2.2,
+      "marginLabel": "R+2.2",
+      "republicanOdds": 62.23,
+      "democraticOdds": 37.77,
+      "rating": "Lean R"
+    },
+    {
+      "id": "TX-16",
+      "republican": "Adam Bauman",
+      "democrat": "Veronica Escobar*",
+      "margin": 27.3,
+      "marginLabel": "D+27.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "TX-17",
+      "republican": "Pete Sessions*",
+      "democrat": "Casey Shepard",
+      "margin": -18.2,
+      "marginLabel": "R+18.2",
+      "republicanOdds": 99.54,
+      "democraticOdds": 0.46,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-18",
+      "republican": "Ronald Whitfield",
+      "democrat": "Christian Menefee*",
+      "margin": 59.3,
+      "marginLabel": "D+59.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "TX-19",
+      "republican": "Tom Sell",
+      "democrat": "Kyle Rable",
+      "margin": -42.9,
+      "marginLabel": "R+42.9",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-20",
+      "republican": "Edgardo Rafael Baez",
+      "democrat": "Joaquin Castro*",
+      "margin": 38.8,
+      "marginLabel": "D+38.8",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "TX-21",
+      "republican": "Mark Teixeira",
+      "democrat": "Kristin Hook",
+      "margin": -16.8,
+      "marginLabel": "R+16.8",
+      "republicanOdds": 99.18,
+      "democraticOdds": 0.82,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-22",
+      "republican": "Trever Nehls",
+      "democrat": "Marquette Greene-Scott",
+      "margin": -17.3,
+      "marginLabel": "R+17.3",
+      "republicanOdds": 99.31,
+      "democraticOdds": 0.69,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-23",
+      "republican": "Brandon Herrera",
+      "democrat": "Katy Padilla Stout",
+      "margin": -5.5,
+      "marginLabel": "R+5.5",
+      "republicanOdds": 78.27,
+      "democraticOdds": 21.73,
+      "rating": "Likely R"
+    },
+    {
+      "id": "TX-24",
+      "republican": "Beth Van Duyne*",
+      "democrat": "Kevin Burge",
+      "margin": -11,
+      "marginLabel": "R+11.0",
+      "republicanOdds": 94.18,
+      "democraticOdds": 5.82,
+      "rating": "Likely R"
+    },
+    {
+      "id": "TX-25",
+      "republican": "Roger Williams*",
+      "democrat": "Dione Sims",
+      "margin": -20.2,
+      "marginLabel": "R+20.2",
+      "republicanOdds": 99.8,
+      "democraticOdds": 0.2,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-26",
+      "republican": "Brandon Gill*",
+      "democrat": "Steven Shook",
+      "margin": -20.4,
+      "marginLabel": "R+20.4",
+      "republicanOdds": 99.82,
+      "democraticOdds": 0.18,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-27",
+      "republican": "Michael Cloud*",
+      "democrat": "Tanya Lloyd",
+      "margin": -17.6,
+      "marginLabel": "R+17.6",
+      "republicanOdds": 99.39,
+      "democraticOdds": 0.61,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-28",
+      "republican": "Tano Tijerina",
+      "democrat": "Henry Cuellar*",
+      "margin": 8.3,
+      "marginLabel": "D+8.3",
+      "republicanOdds": 11.67,
+      "democraticOdds": 88.33,
+      "rating": "Likely D"
+    },
+    {
+      "id": "TX-29",
+      "republican": "Martha Fierro",
+      "democrat": "Sylvia Garcia*",
+      "margin": 42.7,
+      "marginLabel": "D+42.7",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "TX-30",
+      "republican": "Everett Jackson",
+      "democrat": "Frederick Haynes III",
+      "margin": 52.6,
+      "marginLabel": "D+52.6",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "TX-31",
+      "republican": "John Carter*",
+      "democrat": "Justin Early",
+      "margin": -20.4,
+      "marginLabel": "R+20.4",
+      "republicanOdds": 99.82,
+      "democraticOdds": 0.18,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-32",
+      "republican": "Jace Yarbrough",
+      "democrat": "Dan Barrios",
+      "margin": -12.3,
+      "marginLabel": "R+12.3",
+      "republicanOdds": 96.06,
+      "democraticOdds": 3.94,
+      "rating": "Likely R"
+    },
+    {
+      "id": "TX-33",
+      "republican": "Patrick Gillespie",
+      "democrat": "Colin Allred",
+      "margin": 41.5,
+      "marginLabel": "D+41.5",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "TX-34",
+      "republican": "Eric Flores",
+      "democrat": "Vicente Gonzalez*",
+      "margin": 2.8,
+      "marginLabel": "D+2.8",
+      "republicanOdds": 34.56,
+      "democraticOdds": 65.44,
+      "rating": "Lean D"
+    },
+    {
+      "id": "TX-35",
+      "republican": "Carlos De La Cruz",
+      "democrat": "Johnny Garcia",
+      "margin": -2.3,
+      "marginLabel": "R+2.3",
+      "republicanOdds": 62.98,
+      "democraticOdds": 37.02,
+      "rating": "Lean R"
+    },
+    {
+      "id": "TX-36",
+      "republican": "Brian Babin*",
+      "democrat": "Rhonda Hart",
+      "margin": -19.7,
+      "marginLabel": "R+19.7",
+      "republicanOdds": 99.75,
+      "democraticOdds": 0.25,
+      "rating": "Safe R"
+    },
+    {
+      "id": "TX-37",
+      "republican": "Lauren Pe√±a",
+      "democrat": "Greg Casar*",
+      "margin": 62,
+      "marginLabel": "D+62.0",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "TX-38",
+      "republican": "Jon Bonck",
+      "democrat": "Melissa McDonough",
+      "margin": -15.5,
+      "marginLabel": "R+15.5",
+      "republicanOdds": 98.67,
+      "democraticOdds": 1.33,
+      "rating": "Safe R"
+    },
+    {
+      "id": "UT-01",
+      "republican": "Riley Owen",
+      "democrat": "Ben McAdams",
+      "margin": 31.8,
+      "marginLabel": "D+31.8",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "UT-02",
+      "republican": "Blake Moore*",
+      "democrat": "Peter Crosby",
+      "margin": -25.8,
+      "marginLabel": "R+25.8",
+      "republicanOdds": 99.99,
+      "democraticOdds": 0.01,
+      "rating": "Safe R"
+    },
+    {
+      "id": "UT-03",
+      "republican": "Celeste Maloy*",
+      "democrat": "Kent Udell",
+      "margin": -42.8,
+      "marginLabel": "R+42.8",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "UT-04",
+      "republican": "Mike Kennedy*",
+      "democrat": "Jonny Larsen",
+      "margin": -29.2,
+      "marginLabel": "R+29.2",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "VT-01",
+      "republican": "Republican Nominee",
+      "democrat": "Becca Balint*",
+      "margin": 39.2,
+      "marginLabel": "D+39.2",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "VA-01",
+      "republican": "Rob Wittman*",
+      "democrat": "Democratic Nominee",
+      "margin": -2.5,
+      "marginLabel": "R+2.5",
+      "republicanOdds": 63.9,
+      "democraticOdds": 36.1,
+      "rating": "Lean R"
+    },
+    {
+      "id": "VA-02",
+      "republican": "Jen Kiggans*",
+      "democrat": "Democratic Nominee",
+      "margin": 2.4,
+      "marginLabel": "D+2.4",
+      "republicanOdds": 36.37,
+      "democraticOdds": 63.63,
+      "rating": "Lean D"
+    },
+    {
+      "id": "VA-03",
+      "republican": "Edwin Rivera",
+      "democrat": "Bobby Scott*",
+      "margin": 43.7,
+      "marginLabel": "D+43.7",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "VA-04",
+      "republican": "Republican Nominee",
+      "democrat": "Jennifer McClellan*",
+      "margin": 39.1,
+      "marginLabel": "D+39.1",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "VA-05",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -8.9,
+      "marginLabel": "R+8.9",
+      "republicanOdds": 89.87,
+      "democraticOdds": 10.13,
+      "rating": "Likely R"
+    },
+    {
+      "id": "VA-06",
+      "republican": "Ben Cline*",
+      "democrat": "Beth Macy",
+      "margin": -20.2,
+      "marginLabel": "R+20.2",
+      "republicanOdds": 99.8,
+      "democraticOdds": 0.2,
+      "rating": "Safe R"
+    },
+    {
+      "id": "VA-07",
+      "republican": "Republican Nominee",
+      "democrat": "Eugene Vindman*",
+      "margin": 12,
+      "marginLabel": "D+12.0",
+      "republicanOdds": 4.31,
+      "democraticOdds": 95.69,
+      "rating": "Likely D"
+    },
+    {
+      "id": "VA-08",
+      "republican": "Tony Sabio",
+      "democrat": "Democratic Nominee",
+      "margin": 53.1,
+      "marginLabel": "D+53.1",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "VA-09",
+      "republican": "Morgan Griffith*",
+      "democrat": "Democratic Nominee",
+      "margin": -37.8,
+      "marginLabel": "R+37.8",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "VA-10",
+      "republican": "Republican Nominee",
+      "democrat": "Suhas Subramanyam*",
+      "margin": 15.5,
+      "marginLabel": "D+15.5",
+      "republicanOdds": 1.33,
+      "democraticOdds": 98.67,
+      "rating": "Safe D"
+    },
+    {
+      "id": "VA-11",
+      "republican": "Arthur Purves",
+      "democrat": "James Walkinshaw*",
+      "margin": 39.4,
+      "marginLabel": "D+39.4",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "WA-01",
+      "republican": "Mary Silva",
+      "democrat": "Democratic Nominee",
+      "margin": 34.1,
+      "marginLabel": "D+34.1",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "WA-02",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": 33,
+      "marginLabel": "D+33.0",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "WA-03",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": 9.7,
+      "marginLabel": "D+9.7",
+      "republicanOdds": 8.23,
+      "democraticOdds": 91.77,
+      "rating": "Likely D"
+    },
+    {
+      "id": "WA-04",
+      "republican": "Republican Nominee",
+      "democrat": "John Duresky",
+      "margin": -16.4,
+      "marginLabel": "R+16.4",
+      "republicanOdds": 99.03,
+      "democraticOdds": 0.97,
+      "rating": "Safe R"
+    },
+    {
+      "id": "WA-05",
+      "republican": "Michael Baumgartner*",
+      "democrat": "Democratic Nominee",
+      "margin": -13.5,
+      "marginLabel": "R+13.5",
+      "republicanOdds": 97.31,
+      "democraticOdds": 2.69,
+      "rating": "Likely R"
+    },
+    {
+      "id": "WA-06",
+      "republican": "Teresa Fox",
+      "democrat": "Emily Randall*",
+      "margin": 23,
+      "marginLabel": "D+23.0",
+      "republicanOdds": 0.05,
+      "democraticOdds": 99.95,
+      "rating": "Safe D"
+    },
+    {
+      "id": "WA-07",
+      "republican": "Nirav Sheth",
+      "democrat": "Democratic Nominee",
+      "margin": 70,
+      "marginLabel": "D+70.0",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "WA-08",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": 15.5,
+      "marginLabel": "D+15.5",
+      "republicanOdds": 1.35,
+      "democraticOdds": 98.65,
+      "rating": "Safe D"
+    },
+    {
+      "id": "WA-09",
+      "republican": "Doug Basler",
+      "democrat": "Democratic Nominee",
+      "margin": 49.3,
+      "marginLabel": "D+49.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "WA-10",
+      "republican": "Chris Chung",
+      "democrat": "Democratic Nominee",
+      "margin": 23.6,
+      "marginLabel": "D+23.6",
+      "republicanOdds": 0.04,
+      "democraticOdds": 99.96,
+      "rating": "Safe D"
+    },
+    {
+      "id": "WV-01",
+      "republican": "Carol Miller*",
+      "democrat": "Vince George",
+      "margin": -37.3,
+      "marginLabel": "R+37.3",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "WV-02",
+      "republican": "Riley Moore*",
+      "democrat": "Ace Parsi",
+      "margin": -35.8,
+      "marginLabel": "R+35.8",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    },
+    {
+      "id": "WI-01",
+      "republican": "Bryan Steil*",
+      "democrat": "Democratic Nominee",
+      "margin": -4.3,
+      "marginLabel": "R+4.3",
+      "republicanOdds": 73.14,
+      "democraticOdds": 26.86,
+      "rating": "Lean R"
+    },
+    {
+      "id": "WI-02",
+      "republican": "Republican Nominee",
+      "democrat": "Mark Pocan*",
+      "margin": 44.3,
+      "marginLabel": "D+44.3",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "WI-03",
+      "republican": "Derrick Van Orden*",
+      "democrat": "Rebecca Cooke",
+      "margin": 2.4,
+      "marginLabel": "D+2.4",
+      "republicanOdds": 36.75,
+      "democraticOdds": 63.25,
+      "rating": "Lean D"
+    },
+    {
+      "id": "WI-04",
+      "republican": "Purnima Nath",
+      "democrat": "Gwen Moore*",
+      "margin": 55.1,
+      "marginLabel": "D+55.1",
+      "republicanOdds": 0,
+      "democraticOdds": 100,
+      "rating": "Safe D"
+    },
+    {
+      "id": "WI-05",
+      "republican": "Scott Fitzgerald*",
+      "democrat": "Andrew Beck",
+      "margin": -21.2,
+      "marginLabel": "R+21.2",
+      "republicanOdds": 99.88,
+      "democraticOdds": 0.12,
+      "rating": "Safe R"
+    },
+    {
+      "id": "WI-06",
+      "republican": "Glenn Grothman*",
+      "democrat": "Democratic Nominee",
+      "margin": -15.2,
+      "marginLabel": "R+15.2",
+      "republicanOdds": 98.52,
+      "democraticOdds": 1.48,
+      "rating": "Safe R"
+    },
+    {
+      "id": "WI-07",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -17.1,
+      "marginLabel": "R+17.1",
+      "republicanOdds": 99.27,
+      "democraticOdds": 0.73,
+      "rating": "Safe R"
+    },
+    {
+      "id": "WI-08",
+      "republican": "Tony Wied*",
+      "democrat": "Democratic Nominee",
+      "margin": -12,
+      "marginLabel": "R+12.0",
+      "republicanOdds": 95.68,
+      "democraticOdds": 4.32,
+      "rating": "Likely R"
+    },
+    {
+      "id": "WY-01",
+      "republican": "Republican Nominee",
+      "democrat": "Democratic Nominee",
+      "margin": -37.9,
+      "marginLabel": "R+37.9",
+      "republicanOdds": 100,
+      "democraticOdds": 0,
+      "rating": "Safe R"
+    }
+  ]
+}

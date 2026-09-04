@@ -129,3 +129,53 @@ select:disabled { opacity: .65; }
 @media (max-width: 820px) {
   .environmentGrid, .lensGrid, .sixControls { grid-template-columns: 1fr; }
 }
+
+/* District scenario map */
+.districtScenarioCard { border-color: #465274; }
+.districtHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.districtCounts { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.districtCounts span { background: rgba(255,255,255,.035); border: 1px solid var(--line); border-radius: 999px; padding: 8px 10px; color: var(--muted); font-size: .78rem; }
+.districtCounts b { color: var(--text); margin-left: 4px; }
+.districtTopControls { display: grid; grid-template-columns: 1.5fr 1.1fr .8fr .8fr; gap: 12px; margin: 18px 0; }
+.scenarioStat { background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 5px; }
+.scenarioStat span { color: var(--muted); font-size: .72rem; }
+.scenarioStat b { font-size: 1.15rem; }
+.demographicSliders { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 18px 0; }
+.demoSlider { background: rgba(255,255,255,.025); border: 1px solid var(--line); border-radius: 14px; padding: 13px; min-width: 0; }
+.demoSlider > strong { display: block; min-height: 34px; font-size: .86rem; }
+.demoSlider label { margin-top: 10px; gap: 4px; }
+.demoSlider label span { color: var(--text); font-variant-numeric: tabular-nums; }
+.demoSlider input[type="range"] { padding: 0; border: 0; background: transparent; accent-color: var(--gold); }
+.scenarioActions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+.districtMapGrid { display: grid; grid-template-columns: minmax(0, 2.3fr) minmax(250px, .8fr); gap: 16px; align-items: stretch; }
+.mapPane, .districtInspector { background: #0d1426; border: 1px solid var(--line); border-radius: 16px; }
+.mapPane { padding: 10px; overflow: hidden; }
+.districtMap { width: 100%; height: auto; display: block; }
+.districtShape { stroke: #101728; stroke-width: .65; vector-effect: non-scaling-stroke; cursor: pointer; transition: filter .12s ease, stroke-width .12s ease; }
+.districtShape:hover { filter: brightness(1.18); stroke: #ffffff; stroke-width: 1.2; }
+.districtShape.selected { stroke: #ffffff; stroke-width: 2; }
+.mapPlaceholder { min-height: 420px; display: grid; place-items: center; color: var(--muted); text-align: center; padding: 30px; }
+.mapLegend { display: flex; gap: 11px; flex-wrap: wrap; color: var(--muted); font-size: .72rem; justify-content: center; padding: 6px 0 4px; }
+.mapLegend span { display: inline-flex; align-items: center; gap: 5px; }
+.mapLegend i { width: 13px; height: 10px; border-radius: 3px; display: inline-block; }
+.legendDStrong { background: #2458b8; }.legendD { background: #4f7bd2; }.legendT { background: #b3b8c6; }.legendR { background: #cf615a; }.legendRStrong { background: #a93634; }
+.districtInspector { padding: 18px; }
+.districtMargin { font-size: 2.6rem; font-weight: 900; letter-spacing: -.05em; margin: 8px 0 14px; }
+.districtBreakdown { display: grid; gap: 8px; margin-bottom: 14px; }
+.districtBreakdown div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 7px; font-size: .82rem; }
+.districtBreakdown span { color: var(--muted); }
+.demoShares { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+.demoShares span { color: var(--muted); font-size: .72rem; display: flex; justify-content: space-between; gap: 5px; }
+.demoShares b { color: var(--text); }
+.districtFootnote { margin-bottom: 0; }
+@media (max-width: 1000px) {
+  .districtTopControls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .demographicSliders { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .districtMapGrid { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .districtHeader { flex-direction: column; }
+  .districtCounts { justify-content: flex-start; }
+  .districtTopControls, .demographicSliders { grid-template-columns: 1fr; }
+  .mapPane { padding: 4px; }
+}

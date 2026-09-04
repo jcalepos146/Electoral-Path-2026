@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import enthusiasmData from "@/data/echelon-enthusiasm.json";
 import exitPollData from "@/data/exit-poll-calibration-2025.json";
+import DistrictScenarioMap from "@/app/DistrictScenarioMap";
 import {
   ELECTION_DATE_2026,
   HISTORICAL_GROUP_ORDER,
@@ -27,6 +28,9 @@ type LiveSource = {
   fetchedAt?: string;
   message?: string;
   note?: string;
+  providerMode?: "published" | "api-derived" | "repository-variable" | string;
+  providerDetail?: string;
+  fetchWarning?: string;
 };
 
 type ApprovalSource = {
@@ -59,6 +63,7 @@ type LiveData = {
     margin: number;
     asOf?: string;
     sourceCount: number;
+    shareSourceCount?: number;
     method: string;
     label: string;
   };
@@ -199,7 +204,7 @@ export default function Home() {
   );
 
   const usableSources = liveData?.sources.filter(
-    (source) => source.status !== "error" && source.dem !== undefined && source.rep !== undefined,
+    (source) => source.status !== "error" && source.margin !== undefined,
   ) ?? [];
 
   function applySource(id: string) {
@@ -212,11 +217,19 @@ export default function Home() {
       return;
     }
     const source = liveData.sources.find((item) => item.id === id);
-    if (source?.dem !== undefined && source.rep !== undefined) {
+    if (!source || source.margin === undefined) return;
+    if (source.dem !== undefined && source.rep !== undefined) {
       setDem(source.dem);
       setRep(source.rep);
-      setSnapshotDate(clampDate(source.asOf ?? todayEasternish()));
+    } else {
+      // Margin-only sources (currently HillCast, and optionally AFI) use the
+      // composite's observed D+R total so the model can preserve undecided/other
+      // support without inventing a new major-party participation level.
+      const majorPartyTotal = liveData.composite.dem + liveData.composite.rep;
+      setDem((majorPartyTotal + source.margin) / 2);
+      setRep((majorPartyTotal - source.margin) / 2);
     }
+    setSnapshotDate(clampDate(source.asOf ?? todayEasternish()));
   }
 
   const allFresh = liveData?.sources.some((source) => source.status === "ok");
@@ -247,7 +260,7 @@ export default function Home() {
           </div>
           <div className="shares"><div><b>{dem.toFixed(1)}%</b><span>Democrats</span></div><div><b>{rep.toFixed(1)}%</b><span>Republicans</span></div></div>
           <div className="sourceLine"><span>Input source</span><strong>{currentSourceLabel}</strong></div>
-          <p className="small">{liveData ? `Data file generated ${niceTimestamp(liveData.generatedAt)}. ${liveData.composite.sourceCount} source${liveData.composite.sourceCount === 1 ? "" : "s"} feed the composite.` : liveError ? `Static data file could not be loaded: ${liveError}` : "Loading the latest deployed aggregate snapshot…"}</p>
+          <p className="small">{liveData ? `Data file generated ${niceTimestamp(liveData.generatedAt)}. ${liveData.composite.sourceCount} margin source${liveData.composite.sourceCount === 1 ? "" : "s"} feed the composite${liveData.composite.shareSourceCount ? `; ${liveData.composite.shareSourceCount} provide full D/R shares` : ""}.` : liveError ? `Static data file could not be loaded: ${liveError}` : "Loading the latest deployed aggregate snapshot…"}</p>
         </article>
 
         <article className="card forecastCard">
@@ -342,13 +355,18 @@ export default function Home() {
 
       <section className="shell card sourceCard">
         <div className="eyebrow">LIVE GENERIC-BALLOT SOURCES</div>
-        <h3>RCP, VoteHub, DDHQ, and any configured API slots</h3>
+        <h3>RCP, VoteHub, HillCast, America First Insight, and optional API slots</h3>
         <div className="sourceGrid">
           {liveData?.sources.map((source) => (
             <article className="sourceTile" key={source.id}>
               <div className="sourceTileTop"><strong>{source.name}</strong><span className={`sourceStatus ${source.status}`}>{source.status}</span></div>
               {source.margin !== undefined ? <div className="sourceMargin">{formatMargin(source.margin)}</div> : <div className="sourceMargin">Unavailable</div>}
-              {source.dem !== undefined && source.rep !== undefined && <div className="small">D {source.dem.toFixed(1)} · R {source.rep.toFixed(1)} · weight {source.weight}</div>}
+              {source.dem !== undefined && source.rep !== undefined
+                ? <div className="small">D {source.dem.toFixed(1)} · R {source.rep.toFixed(1)} · weight {source.weight}</div>
+                : source.margin !== undefined ? <div className="small">Margin-only source · weight {source.weight}</div> : null}
+              {source.providerMode && <div className="small"><strong>Mode:</strong> {source.providerMode === "published" ? "published average" : source.providerMode === "api-derived" ? "VoteHub API-derived blend" : source.providerMode === "repository-variable" ? "topline via repository variables" : source.providerMode === "published-margin" ? "published margin" : source.providerMode === "repository-variable-margin" ? "margin via repository variables" : source.providerMode}</div>}
+              {source.providerDetail && <p className="sourceNote">{source.providerDetail}</p>}
+              {source.fetchWarning && <div className="sourceMessage">Automatic fallback note: {source.fetchWarning}</div>}
               {source.message && <div className="sourceMessage">Fetch note: {source.message}</div>}
               {source.note && <p className="sourceNote">{source.note}</p>}
               <a href={source.sourceUrl} target="_blank" rel="noreferrer">Open source</a>
@@ -356,6 +374,9 @@ export default function Home() {
           )) ?? <p className="small">Loading…</p>}
         </div>
       </section>
+
+
+      <DistrictScenarioMap rawNationalMargin={dem - rep} projectedNationalMargin={result.projectedMargin} />
 
       <section className="shell card chartCard">
         <div className="chartHeader">
@@ -400,7 +421,7 @@ export default function Home() {
       </section>
 
       <footer className="shell">
-        Historical generic-ballot cycles: 2004–2024. Live generic filters: RealClearPolling, VoteHub, Decision Desk HQ, composite, and manual what-if. Approval and enthusiasm are displayed as independent context rather than silently folded into the House-vote correction. This project is not affiliated with any polling provider.
+        Historical generic-ballot cycles: 2004–2024. Live generic filters: RealClearPolling, VoteHub, HillCast, America First Insight, composite, and manual what-if. Margin-only sources affect the composite margin while D/R support levels remain anchored to sources that publish both party shares. Approval and enthusiasm are displayed as independent context rather than silently folded into the House-vote correction. This project is not affiliated with any polling provider.
       </footer>
     </main>
   );

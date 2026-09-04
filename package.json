@@ -1,12 +1,13 @@
 {
   "name": "election-path",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "update-data": "node scripts/update_live_data.mjs",
-    "rebuild-history": "python scripts/build_historical_data.py --pdf-dir ./source_pdfs --out ./data/historical-generic.json"
+    "rebuild-history": "python scripts/build_historical_data.py --pdf-dir ./source_pdfs --out ./data/historical-generic.json",
+    "update-districts": "node scripts/update_district_data.mjs"
   },
   "dependencies": {
     "next": "^15.5.2",

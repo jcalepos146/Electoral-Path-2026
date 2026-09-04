@@ -33,7 +33,8 @@ The scheduled GitHub Action attempts to refresh:
 
 - RealClearPolling
 - VoteHub
-- Decision Desk HQ
+- HillCast
+- America First Insight
 - Any optional JSON/CSV sources configured in `config/sources.json`
 
 If a public page changes markup or rejects the request, the updater can fall back to the bundled last-known reading rather than breaking the Pages build.
@@ -91,3 +92,14 @@ See `SOURCES.md` and `MODEL_NOTES.md` for methodology and source notes.
 ## License
 
 MIT. See `LICENSE`.
+
+
+## Live-source connectivity
+
+See [`LIVE_SOURCES.md`](LIVE_SOURCES.md) for the current RCP, VoteHub, HillCast, and America First Insight setup. VoteHub requires no key; HillCast is ingested as a public margin source; AFI uses public-page parsing with repository-variable fallback when its client-rendered dashboard does not expose the topline to a static request.
+
+## District map and weekly HillCast CSVs
+
+The site now includes an interactive 435-seat district scenario map. The latest CSV in `data/hillcast_uploads/` supplies the HillCast district prior; the selected national Election Path projection is applied only as a residual relative to HillCast's national baseline, and demographic vote-margin/turnout sliders can redistribute the national environment geographically.
+
+For weekly updates, rename Preston Hill's file `hillcast-YYYY-MM-DD.csv`, upload it to `data/hillcast_uploads/`, and commit to `main`. The Pages Action regenerates the map automatically. See `DISTRICT_MAP.md` for the model order and demographic methodology.
