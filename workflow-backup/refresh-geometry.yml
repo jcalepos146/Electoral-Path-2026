@@ -1,0 +1,60 @@
+name: Refresh congressional district geometry
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Boundaries are effectively static for this project; monthly refresh is plenty.
+    - cron: "23 7 1 * *"
+  push:
+    branches: ["main"]
+    paths:
+      - "scripts/refresh_geometry.mjs"
+      - ".github/workflows/refresh-geometry.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "district-geometry"
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch official Census 119th-district geometry
+        run: node scripts/refresh_geometry.mjs
+
+      - name: Validate geometry
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const p = 'public/data/cd119.geojson';
+          const geo = JSON.parse(fs.readFileSync(p, 'utf8'));
+          if (!Array.isArray(geo.features) || geo.features.length !== 435) {
+            throw new Error(`Expected 435 House districts, found ${geo.features?.length ?? 0}`);
+          }
+          console.log(`Validated ${geo.features.length} congressional districts.`);
+          NODE
+
+      - name: Commit refreshed geometry when changed
+        run: |
+          if git diff --quiet -- public/data/cd119.geojson && git ls-files --error-unmatch public/data/cd119.geojson >/dev/null 2>&1; then
+            echo "Geometry is unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/cd119.geojson
+          git commit -m "Refresh Census 119th district geometry"
+          git push

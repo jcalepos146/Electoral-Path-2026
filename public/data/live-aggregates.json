@@ -1,18 +1,19 @@
 {
-  "generatedAt": "2026-09-04T16:54:30.252Z",
+  "generatedAt": "2026-09-04T17:35:29.531Z",
   "calibration": {
     "id": "rcp-generic-2004-2024",
     "label": "RCP historical generic-ballot archive, 2004–2024",
     "note": "The live-source filter changes the current input. Historical filters use the supplied RCP generic-ballot archives for presidential, midterm, overall, low-turnout midterm, and high-turnout midterm comparisons."
   },
   "composite": {
-    "dem": 47,
-    "rep": 41.1,
-    "margin": 5.899999999999999,
+    "dem": 47.79833333333334,
+    "rep": 42.35166666666667,
+    "margin": 5.4466666666666725,
     "asOf": "2026-09-04",
     "sourceCount": 3,
-    "method": "weighted_mean",
-    "label": "RCP + VoteHub + DDHQ composite"
+    "shareSourceCount": 2,
+    "method": "weighted_margin_with_share_anchor",
+    "label": "RCP + VoteHub + HillCast + AFI composite"
   },
   "sources": [
     {
@@ -38,21 +39,29 @@
       "asOf": "2026-09-04",
       "weight": 1,
       "sourceUrl": "https://votehub.com/polls/?poll=generic_ballot_2026",
-      "note": "Reads VoteHub's publicly displayed live generic-ballot average. VoteHub currently displays whole-number party shares on its public pages.",
+      "note": "Uses VoteHub's public published average when readable. If that page changes, it falls back to a clearly labeled VoteHub-API-derived blend from VoteHub's free raw-poll API.",
       "message": "fetch failed"
     },
     {
-      "id": "ddhq",
-      "name": "Decision Desk HQ",
+      "id": "hillcast",
+      "name": "HillCast",
       "status": "fallback",
-      "dem": 45,
-      "rep": 39,
-      "margin": 6,
-      "asOf": "2026-09-02",
+      "margin": 4.64,
+      "asOf": "2026-09-03",
+      "marginOnly": true,
       "weight": 1,
-      "sourceUrl": "https://votes.decisiondeskhq.com/polls/generic-ballot/national/lv-rv-adults",
-      "note": "Reads DDHQ's public national LV/RV/Adults generic-ballot topline.",
+      "sourceUrl": "https://realprestonhill.substack.com/p/hillcast-generic-congressional-ballot",
+      "note": "Automatically reads HillCast's published generic-ballot net margin. It is treated as margin-only when the article does not expose Democratic and Republican support shares.",
       "message": "fetch failed"
+    },
+    {
+      "id": "afi",
+      "name": "America First Insight",
+      "status": "error",
+      "weight": 1,
+      "sourceUrl": "https://americafirstinsight.com/america-first-insight-election-polling-averages-charts/?race=NATIONAL_GENERIC_GENERAL_2026",
+      "note": "Attempts to read AFI's public generic-ballot dashboard. Because the current chart is client-rendered, repository variables can provide the displayed topline when static fetching cannot see it.",
+      "message": "fetch failed; AFI public page did not expose a parsable topline; set AFI_GENERIC_DEM/AFI_GENERIC_REP or AFI_GENERIC_MARGIN in GitHub Actions variables"
     }
   ],
   "environment": {

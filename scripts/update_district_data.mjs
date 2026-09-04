@@ -9,11 +9,6 @@ const PUBLIC_DIR = path.join(ROOT, "public", "data");
 const LIVE_PATH = path.join(PUBLIC_DIR, "live-aggregates.json");
 const LAST_HILLCAST = path.join(ROOT, "data", "last-known-hillcast.json");
 
-const CENSUS_GEOJSON_URLS = [
-  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/Legislative/MapServer/6/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson",
-  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/Legislative/MapServer/7/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson",
-  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2025/Legislative/MapServer/6/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson",
-];
 const CENSUS_ACS_BASE = "https://api.census.gov/data/2024/acs/acs5";
 
 const STATE_ABBR = {
@@ -221,43 +216,12 @@ async function buildDemographics() {
   return out;
 }
 
-async function buildGeometry() {
-  const errors = [];
-  for (const url of CENSUS_GEOJSON_URLS) {
-    try {
-      const geo = await fetchJson(url, 3);
-      if (!Array.isArray(geo.features) || geo.features.length < 430) {
-        throw new Error(`Census GeoJSON returned only ${geo.features?.length ?? 0} features`);
-      }
-      // Keep the 50 states only; DC/territories are not part of the 435-seat HillCast wrapper.
-      geo.features = geo.features.filter((f) => STATE_ABBR[String(f.properties?.STATE ?? "").padStart(2, "0")]);
-      if (geo.features.length < 430) throw new Error(`Only ${geo.features.length} state district features remained after filtering`);
-      await fs.writeFile(path.join(PUBLIC_DIR, "cd119.geojson"), JSON.stringify(geo));
-      return geo.features.length;
-    } catch (e) {
-      errors.push(e instanceof Error ? e.message : String(e));
-    }
-  }
-
-  // Do not delete a previously committed/generated geometry file if Census is temporarily unavailable.
-  try {
-    const existing = JSON.parse(await fs.readFile(path.join(PUBLIC_DIR, "cd119.geojson"), "utf8"));
-    if (Array.isArray(existing.features) && existing.features.length >= 430) {
-      console.warn(`Census geometry refresh failed; preserving existing cd119.geojson (${existing.features.length} features).`);
-      return existing.features.length;
-    }
-  } catch {}
-
-  throw new Error(`All Census geometry endpoints failed: ${errors.join(" | ")}`);
-}
 
 await fs.mkdir(PUBLIC_DIR, { recursive: true });
 const bundle = await buildHillcastBundle();
-let demographics = null, geometryCount = null;
+let demographics = null;
 try { demographics = await buildDemographics(); }
 catch (e) { console.warn(`Demographics refresh failed: ${e instanceof Error ? e.message : e}`); }
-try { geometryCount = await buildGeometry(); }
-catch (e) { console.warn(`District geometry refresh failed: ${e instanceof Error ? e.message : e}`); }
 console.log(`HillCast district bundle: ${bundle.districtCount} districts from ${bundle.sourceFile}`);
 if (demographics) console.log(`Census demographic rows: ${demographics.districts.length}`);
-if (geometryCount) console.log(`Census GeoJSON features: ${geometryCount}`);
+console.log("Congressional district geometry is managed by the dedicated refresh-geometry workflow and committed to public/data/cd119.geojson.");

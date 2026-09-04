@@ -83,6 +83,16 @@ function validateReading(reading) {
   };
 }
 
+function validateMarginReading(reading) {
+  const margin = numberValue(reading.margin, "Generic-ballot margin");
+  if (margin < -100 || margin > 100) throw new Error("Generic-ballot margin was outside the valid range");
+  return {
+    margin,
+    asOf: normalizeDate(reading.asOf),
+    marginOnly: true,
+  };
+}
+
 function authRequest(source) {
   const headers = {
     Accept: source.adapter === "json" ? "application/json" : "text/html,application/xhtml+xml,*/*",
@@ -207,6 +217,213 @@ function parseVoteHub(html) {
   }
 
   throw new Error("Could not parse VoteHub's published live generic-ballot average");
+}
+
+function populationPriority(value) {
+  const population = String(value ?? "").toLowerCase();
+  if (population === "lv") return 3;
+  if (population === "rv") return 2;
+  if (population === "a") return 1;
+  return 0;
+}
+
+function deriveVoteHubFromApi(json) {
+  const polls = Array.isArray(json?.polls) ? json.polls : [];
+  const parsed = polls.map((poll) => {
+    const answers = Array.isArray(poll.answers) ? poll.answers : [];
+    const demAnswer = answers.find((a) => /^(dem|democrat|democratic)$/i.test(String(a.choice ?? "").trim()));
+    const repAnswer = answers.find((a) => /^(rep|republican)$/i.test(String(a.choice ?? "").trim()));
+    if (!demAnswer || !repAnswer || !poll.end_date || !poll.pollster) return null;
+    const end = new Date(`${poll.end_date}T12:00:00Z`);
+    if (Number.isNaN(end.getTime())) return null;
+    return {
+      pollster: String(poll.pollster),
+      end,
+      endDate: String(poll.end_date),
+      population: String(poll.population ?? ""),
+      dem: numberValue(demAnswer.pct, "VoteHub Democratic share"),
+      rep: numberValue(repAnswer.pct, "VoteHub Republican share"),
+    };
+  }).filter(Boolean);
+
+  if (!parsed.length) throw new Error("VoteHub API returned no usable 2026 generic-ballot polls");
+  const newestMs = Math.max(...parsed.map((p) => p.end.getTime()));
+  const newest = new Date(newestMs);
+  const cutoffMs = newestMs - 28 * 86400000;
+
+  // One current observation per pollster, with LV > RV > adults on the same end date.
+  const byPollster = new Map();
+  for (const poll of parsed.filter((p) => p.end.getTime() >= cutoffMs)) {
+    const key = poll.pollster.toLowerCase();
+    const existing = byPollster.get(key);
+    if (!existing || poll.end > existing.end ||
+        (poll.end.getTime() === existing.end.getTime() && populationPriority(poll.population) > populationPriority(existing.population))) {
+      byPollster.set(key, poll);
+    }
+  }
+
+  const selected = [...byPollster.values()];
+  if (!selected.length) throw new Error("VoteHub API had no polls inside the 28-day derivation window");
+  const halfLifeDays = 14;
+  const weighted = selected.map((poll) => {
+    const ageDays = Math.max(0, (newestMs - poll.end.getTime()) / 86400000);
+    return { ...poll, w: Math.pow(0.5, ageDays / halfLifeDays) };
+  });
+  const totalWeight = weighted.reduce((sum, p) => sum + p.w, 0);
+  const dem = weighted.reduce((sum, p) => sum + p.dem * p.w, 0) / totalWeight;
+  const rep = weighted.reduce((sum, p) => sum + p.rep * p.w, 0) / totalWeight;
+
+  return {
+    ...validateReading({ dem, rep, asOf: newest.toISOString().slice(0, 10) }),
+    providerMode: "api-derived",
+    providerDetail: `Derived from ${selected.length} pollster observations in VoteHub's free API; 28-day window, 14-day half-life. This is not VoteHub's official published average because its current methodology also uses pollster quality and house-effect adjustments.`,
+  };
+}
+
+function monthNumber(name) {
+  const months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+  return months.indexOf(String(name).toLowerCase()) + 1;
+}
+
+function parseHillCast(html) {
+  const body = stripHtml(html);
+  const patterns = [
+    /As of\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})[^.]{0,220}?average shows\s+(Democrats|Republicans)\s+leading\s+(?:Democrats|Republicans)[^0-9]{0,80}?(\d{1,2}(?:\.\d+)?)\s+points/i,
+    /(?:average|generic ballot)[^.!?]{0,180}?(Democrats|Republicans)\s+(?:leading|ahead)[^0-9]{0,80}?(\d{1,2}(?:\.\d+)?)\s+points/i,
+    /(?:sits at|stands at|average is)\s*([DR])\s*\+\s*(\d{1,2}(?:\.\d+)?)/i,
+  ];
+
+  let party;
+  let points;
+  let asOf;
+  let match = body.match(patterns[0]);
+  if (match) {
+    const month = monthNumber(match[1]);
+    const day = Number(match[2]);
+    party = match[3];
+    points = Number(match[4]);
+    const year = new Date().getUTCFullYear();
+    asOf = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  } else if ((match = body.match(patterns[1]))) {
+    party = match[1];
+    points = Number(match[2]);
+  } else if ((match = body.match(patterns[2]))) {
+    party = match[1].toUpperCase() === "D" ? "Democrats" : "Republicans";
+    points = Number(match[2]);
+  } else {
+    throw new Error("Could not parse the HillCast published generic-ballot margin");
+  }
+
+  return {
+    ...validateMarginReading({ margin: /^dem/i.test(party) ? points : -points, asOf }),
+    providerMode: "published-margin",
+    providerDetail: "HillCast's published generic-ballot margin. The article exposes the net margin reliably, so Election Path treats this as a margin-only source rather than inventing party shares.",
+  };
+}
+
+function parseAfi(html) {
+  const body = stripHtml(html);
+  const marker = body.toLowerCase().indexOf("current polling outlook");
+  const section = marker >= 0 ? body.slice(marker, marker + 3000) : body;
+
+  const dem = section.match(/(?:Democrat|Democratic)[^0-9]{0,80}(\d{1,2}(?:\.\d+)?)\s*%/i)
+    ?? section.match(/(\d{1,2}(?:\.\d+)?)\s*%[^A-Za-z]{0,20}(?:Democrat|Democratic)/i);
+  const rep = section.match(/Republican[^0-9]{0,80}(\d{1,2}(?:\.\d+)?)\s*%/i)
+    ?? section.match(/(\d{1,2}(?:\.\d+)?)\s*%[^A-Za-z]{0,20}Republican/i);
+  if (dem && rep) {
+    return {
+      ...validateReading({ dem: dem[1], rep: rep[1] }),
+      providerMode: "published",
+      providerDetail: "America First Insight's public generic-ballot dashboard topline.",
+    };
+  }
+
+  const marginMatch = section.match(/(?:Margin|Generic Ballot)[^DR]{0,80}([DR])\s*\+\s*(\d{1,2}(?:\.\d+)?)/i);
+  if (marginMatch) {
+    return {
+      ...validateMarginReading({ margin: marginMatch[1].toUpperCase() === "D" ? marginMatch[2] : -Number(marginMatch[2]) }),
+      providerMode: "published-margin",
+      providerDetail: "America First Insight public dashboard margin. Party shares were not available in the fetched markup, so this is treated as margin-only.",
+    };
+  }
+
+  throw new Error("AFI's current dashboard is client-rendered and the topline was not present in the fetched HTML");
+}
+
+function readAfiEnvironment(source) {
+  const env = source.env ?? {};
+  const dem = env.dem ? process.env[env.dem] : undefined;
+  const rep = env.rep ? process.env[env.rep] : undefined;
+  const margin = env.margin ? process.env[env.margin] : undefined;
+  const asOf = env.asOf ? process.env[env.asOf] : undefined;
+
+  if (dem !== undefined && dem !== "" && rep !== undefined && rep !== "") {
+    return {
+      ...validateReading({ dem, rep, asOf }),
+      providerMode: "repository-variable",
+      providerDetail: "AFI topline entered through GitHub repository variables because the public dashboard is client-rendered.",
+    };
+  }
+  if (margin !== undefined && margin !== "") {
+    return {
+      ...validateMarginReading({ margin, asOf }),
+      providerMode: "repository-variable-margin",
+      providerDetail: "AFI margin entered through GitHub repository variables. It participates in the composite margin without inventing party shares.",
+    };
+  }
+  throw new Error(`AFI public page did not expose a parsable topline; set ${env.dem}/${env.rep} or ${env.margin} in GitHub Actions variables`);
+}
+
+async function retrieveAfi(source) {
+  try {
+    return parseAfi(await fetchText({ adapter: "html", url: source.fetchUrl ?? source.url, headers: source.headers }));
+  } catch (error) {
+    const publicError = error instanceof Error ? error.message : String(error);
+    try {
+      return { ...readAfiEnvironment(source), fetchWarning: `Public-page parse note: ${publicError}` };
+    } catch (envError) {
+      throw new Error(`${publicError}; ${envError instanceof Error ? envError.message : String(envError)}`);
+    }
+  }
+}
+
+async function retrieveVoteHub(source) {
+  let publishedError;
+  try {
+    const published = parseVoteHub(await fetchText({
+      adapter: "html",
+      url: source.fetchUrl ?? source.url,
+      headers: source.headers,
+    }));
+    return {
+      ...published,
+      providerMode: "published",
+      providerDetail: "VoteHub's publicly displayed live generic-ballot average.",
+    };
+  } catch (error) {
+    publishedError = error instanceof Error ? error.message : String(error);
+  }
+
+  if (!source.apiUrl) throw new Error(publishedError ?? "VoteHub published average unavailable");
+  const json = JSON.parse(await fetchText({ adapter: "json", url: source.apiUrl }));
+  return {
+    ...deriveVoteHubFromApi(json),
+    fetchWarning: `Published-average scrape failed: ${publishedError}`,
+  };
+}
+
+function readEnvironmentReading(source) {
+  const env = source.env ?? {};
+  const dem = process.env[env.dem];
+  const rep = process.env[env.rep];
+  if (dem === undefined || dem === "" || rep === undefined || rep === "") {
+    throw new Error(`Set GitHub repository variables ${env.dem} and ${env.rep} to use this source automatically`);
+  }
+  return {
+    ...validateReading({ dem, rep, asOf: env.asOf ? process.env[env.asOf] : undefined }),
+    providerMode: "repository-variable",
+    providerDetail: "Official topline entered through GitHub repository variables; useful for providers whose free dashboard is login-gated but whose API is separately licensed.",
+  };
 }
 
 function parseDdHq(html) {
@@ -396,13 +613,19 @@ function parseCsv(text, source) {
 async function readFallback(source) {
   if (!source.fallbackFile) return null;
   const raw = JSON.parse(await fs.readFile(path.join(ROOT, source.fallbackFile), "utf8"));
-  return validateReading(raw);
+  if (raw.dem !== undefined && raw.rep !== undefined) return validateReading(raw);
+  if (raw.margin !== undefined) return validateMarginReading(raw);
+  throw new Error("Fallback file contained neither party shares nor a margin");
 }
 
 async function retrieve(source) {
   if (source.adapter === "rcp_html") return parseRcp(await fetchText(source));
   if (source.adapter === "votehub_html") return parseVoteHub(await fetchText(source));
+  if (source.adapter === "votehub_public_or_api") return retrieveVoteHub(source);
+  if (source.adapter === "hillcast_margin_html") return parseHillCast(await fetchText(source));
+  if (source.adapter === "afi_public_or_env") return retrieveAfi(source);
   if (source.adapter === "ddhq_html") return parseDdHq(await fetchText(source));
+  if (source.adapter === "manual_env") return readEnvironmentReading(source);
 
   if (source.adapter === "json") {
     const json = JSON.parse(await fetchText(source));
@@ -444,7 +667,11 @@ async function main() {
         note: source.note,
         fetchedAt: new Date().toISOString(),
       });
-      console.log(`✓ ${source.name}: D ${reading.dem.toFixed(1)} / R ${reading.rep.toFixed(1)}`);
+      if (Number.isFinite(reading.dem) && Number.isFinite(reading.rep)) {
+        console.log(`✓ ${source.name}: D ${reading.dem.toFixed(1)} / R ${reading.rep.toFixed(1)}`);
+      } else {
+        console.log(`✓ ${source.name}: margin ${reading.margin >= 0 ? "D+" : "R+"}${Math.abs(reading.margin).toFixed(2)}`);
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       try {
@@ -476,14 +703,22 @@ async function main() {
     }
   }
 
-  const usable = results.filter(
+  const shareUsable = results.filter(
     (item) => (item.status === "ok" || item.status === "fallback") && Number.isFinite(item.dem) && Number.isFinite(item.rep),
   );
-  if (!usable.length) throw new Error("All enabled aggregate sources failed and no fallback was available");
+  const marginUsable = results.filter(
+    (item) => (item.status === "ok" || item.status === "fallback") && Number.isFinite(item.margin),
+  );
+  if (!shareUsable.length) throw new Error("No enabled source supplied Democratic and Republican shares");
+  if (!marginUsable.length) throw new Error("No enabled source supplied a usable generic-ballot margin");
 
-  const dem = weightedAverage(usable, "dem");
-  const rep = weightedAverage(usable, "rep");
-  const asOf = usable
+  const shareDem = weightedAverage(shareUsable, "dem");
+  const shareRep = weightedAverage(shareUsable, "rep");
+  const majorPartyTotal = shareDem + shareRep;
+  const margin = weightedAverage(marginUsable, "margin");
+  const dem = (majorPartyTotal + margin) / 2;
+  const rep = (majorPartyTotal - margin) / 2;
+  const asOf = marginUsable
     .map((item) => item.asOf)
     .filter(Boolean)
     .sort()
@@ -503,8 +738,9 @@ async function main() {
       rep,
       margin: dem - rep,
       asOf,
-      sourceCount: usable.length,
-      method: config.composite?.method ?? "weighted_mean",
+      sourceCount: marginUsable.length,
+      shareSourceCount: shareUsable.length,
+      method: config.composite?.method ?? "weighted_margin_with_share_anchor",
       label: config.composite?.label ?? "Configured aggregate composite",
     },
     sources: results,
@@ -513,7 +749,7 @@ async function main() {
 
   await fs.mkdir(path.dirname(OUTPUT_PATH), { recursive: true });
   await fs.writeFile(OUTPUT_PATH, `${JSON.stringify(output, null, 2)}\n`, "utf8");
-  console.log(`Wrote ${path.relative(ROOT, OUTPUT_PATH)} with ${usable.length} usable source(s).`);
+  console.log(`Wrote ${path.relative(ROOT, OUTPUT_PATH)} with ${marginUsable.length} margin source(s), ${shareUsable.length} share source(s).`);
 }
 
 main().catch((error) => {

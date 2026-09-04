@@ -143,6 +143,42 @@ function CorrectionChart({ selectedDays, group }: { selectedDays: number; group:
   );
 }
 
+
+function AggregateMirrorCard({ source, active, onUse }: { source?: LiveSource; active: boolean; onUse: () => void }) {
+  if (!source) {
+    return (
+      <article className="mirrorCard unavailable">
+        <div className="mirrorTop"><strong>Source unavailable</strong><span className="sourceStatus error">error</span></div>
+        <div className="mirrorMargin">—</div>
+        <p className="small">No deployed snapshot is available for this source yet.</p>
+      </article>
+    );
+  }
+  const statusLabel = source.status === "ok" ? "live" : source.status === "fallback" ? "cached" : "unavailable";
+  return (
+    <article className={`mirrorCard ${active ? "active" : ""}`}>
+      <div className="mirrorTop">
+        <strong>{source.name}</strong>
+        <span className={`sourceStatus ${source.status}`}>{statusLabel}</span>
+      </div>
+      <div className="mirrorMargin">{source.margin !== undefined ? formatMargin(source.margin) : "—"}</div>
+      {source.dem !== undefined && source.rep !== undefined ? (
+        <div className="mirrorShares"><span>D {source.dem.toFixed(1)}</span><span>R {source.rep.toFixed(1)}</span></div>
+      ) : source.margin !== undefined ? (
+        <div className="mirrorShares"><span>Published margin only</span></div>
+      ) : (
+        <div className="mirrorShares"><span>Awaiting a usable topline</span></div>
+      )}
+      <div className="mirrorMeta">As of {source.asOf ?? "latest deployed snapshot"}</div>
+      {source.providerMode && <div className="mirrorMeta">Mode: {source.providerMode}</div>}
+      <div className="mirrorActions">
+        <button className="mirrorUse" onClick={onUse} disabled={source.margin === undefined}>Use in model</button>
+        <a href={source.sourceUrl} target="_blank" rel="noreferrer">Open source</a>
+      </div>
+    </article>
+  );
+}
+
 function ApprovalCard({ source }: { source?: ApprovalSource }) {
   if (!source) {
     return <article className="miniCard"><div className="eyebrow">APPROVAL</div><p className="small">No approval source was loaded.</p></article>;
@@ -207,6 +243,9 @@ export default function Home() {
     (source) => source.status !== "error" && source.margin !== undefined,
   ) ?? [];
 
+  const mirrorIds = ["rcp", "votehub", "hillcast", "afi"];
+  const mirrorSources = mirrorIds.map((id) => liveData?.sources.find((source) => source.id === id));
+
   function applySource(id: string) {
     setSelectedSource(id);
     if (!liveData) return;
@@ -270,6 +309,27 @@ export default function Home() {
           <div className="range">Analog range: {formatMargin(result.rangeLow)} to {formatMargin(result.rangeHigh)}</div>
           <p className="small">{result.days} days until Nov. 3, 2026 · {result.point.cycles} usable historical cycles at this date</p>
         </article>
+      </section>
+
+      <section className="shell card aggregateMirrorSection">
+        <div className="cardTop">
+          <div>
+            <div className="eyebrow">AGGREGATE MIRRORS</div>
+            <h3>Compare the four national generic-ballot feeds side by side</h3>
+          </div>
+          <div className="compositeBadge">Composite: <strong>{liveData ? formatMargin(liveData.composite.margin) : "Loading…"}</strong></div>
+        </div>
+        <p className="small">These cards mirror only each provider’s deployed topline or published net margin; they do not copy the provider’s page or methodology. “Cached” means the last known snapshot is being shown because the automatic fetch did not complete.</p>
+        <div className="mirrorGrid">
+          {mirrorSources.map((source, index) => (
+            <AggregateMirrorCard
+              key={mirrorIds[index]}
+              source={source}
+              active={selectedSource === mirrorIds[index]}
+              onUse={() => applySource(mirrorIds[index])}
+            />
+          ))}
+        </div>
       </section>
 
       <section className="shell card controls">
@@ -354,8 +414,8 @@ export default function Home() {
       </section>
 
       <section className="shell card sourceCard">
-        <div className="eyebrow">LIVE GENERIC-BALLOT SOURCES</div>
-        <h3>RCP, VoteHub, HillCast, America First Insight, and optional API slots</h3>
+        <div className="eyebrow">SOURCE DETAILS</div>
+        <h3>Fetch status, provider mode, and methodology notes for each aggregate</h3>
         <div className="sourceGrid">
           {liveData?.sources.map((source) => (
             <article className="sourceTile" key={source.id}>
@@ -421,7 +481,7 @@ export default function Home() {
       </section>
 
       <footer className="shell">
-        Historical generic-ballot cycles: 2004–2024. Live generic filters: RealClearPolling, VoteHub, HillCast, America First Insight, composite, and manual what-if. Margin-only sources affect the composite margin while D/R support levels remain anchored to sources that publish both party shares. Approval and enthusiasm are displayed as independent context rather than silently folded into the House-vote correction. This project is not affiliated with any polling provider.
+        Historical generic-ballot cycles: 2004–2024. Live generic filters and topline mirrors: RealClearPolling, VoteHub, HillCast, America First Insight, composite, and manual what-if. Margin-only sources affect the composite margin while D/R support levels remain anchored to sources that publish both party shares. Approval and enthusiasm are displayed as independent context rather than silently folded into the House-vote correction. This project is not affiliated with any polling provider.
       </footer>
     </main>
   );

@@ -179,3 +179,25 @@ select:disabled { opacity: .65; }
   .districtTopControls, .demographicSliders { grid-template-columns: 1fr; }
   .mapPane { padding: 4px; }
 }
+
+/* Aggregate topline mirrors */
+.aggregateMirrorSection { border-color: #414d6d; }
+.compositeBadge { border: 1px solid var(--line); background: rgba(255,255,255,.035); border-radius: 999px; padding: 9px 12px; color: var(--muted); font-size: .82rem; white-space: nowrap; }
+.compositeBadge strong { color: var(--text); }
+.mirrorGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+.mirrorCard { background: #0d1426; border: 1px solid var(--line); border-radius: 16px; padding: 16px; min-width: 0; transition: border-color .15s ease, transform .15s ease; }
+.mirrorCard:hover { border-color: #536183; transform: translateY(-1px); }
+.mirrorCard.active { border-color: var(--gold); box-shadow: inset 0 0 0 1px rgba(244,199,97,.18); }
+.mirrorTop { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.mirrorTop strong { font-size: .9rem; }
+.mirrorMargin { font-size: 2rem; font-weight: 900; letter-spacing: -.045em; margin: 15px 0 5px; }
+.mirrorShares { display: flex; gap: 10px; flex-wrap: wrap; color: #dce4f7; font-size: .8rem; }
+.mirrorMeta { color: var(--muted); font-size: .7rem; margin-top: 8px; overflow-wrap: anywhere; }
+.mirrorActions { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 14px; }
+.mirrorActions a { color: var(--accent); font-size: .74rem; text-decoration: none; }
+.mirrorActions a:hover { text-decoration: underline; }
+.mirrorUse { background: rgba(255,255,255,.045); color: var(--text); border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px; font-size: .74rem; }
+.mirrorUse:hover:not(:disabled) { border-color: #7281aa; }
+.mirrorUse:disabled { opacity: .45; cursor: default; }
+@media (max-width: 980px) { .mirrorGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .mirrorGrid { grid-template-columns: 1fr; } .compositeBadge { white-space: normal; } }

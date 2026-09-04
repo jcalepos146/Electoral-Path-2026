@@ -48,9 +48,10 @@ type FeatureCollection = { type: "FeatureCollection"; features: Feature[] };
 type ScenarioSetting = { margin: number; turnout: number };
 
 const CENSUS_GEOMETRY_URLS = [
-  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/Legislative/MapServer/6/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson",
-  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/Legislative/MapServer/7/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson",
-  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2025/Legislative/MapServer/6/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson",
+  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/Legislative/MapServer/7/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&returnZ=false&returnM=false&resultRecordCount=1000&geometryPrecision=4&outSR=4326&f=geojson",
+  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/Legislative/MapServer/6/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&returnZ=false&returnM=false&resultRecordCount=1000&geometryPrecision=4&outSR=4326&f=geojson",
+  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/Legislative/MapServer/5/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&returnZ=false&returnM=false&resultRecordCount=1000&geometryPrecision=4&outSR=4326&f=geojson",
+  "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/8/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&returnZ=false&returnM=false&resultRecordCount=1000&geometryPrecision=4&outSR=4326&f=geojson",
 ];
 
 async function fetchGeometryFallback(): Promise<FeatureCollection | null> {
@@ -206,7 +207,7 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
       if (!d && !g) {
         setLoadNote("Census demographic data and district geometry are unavailable. The map can be retried without redeploying.");
       } else if (!g) {
-        setLoadNote("District geometry could not be loaded from the deployed file or the official Census fallback endpoints.");
+        setLoadNote("The committed district geometry file is not available yet and the browser fallback could not reach Census. Run the dedicated “Refresh congressional district geometry” GitHub Action once.");
       } else if (!d) {
         setLoadNote("Map geometry loaded, but Census demographic data were unavailable; demographic effects will remain neutral until the next successful refresh.");
       } else if (usedRuntimeGeometry) {
@@ -312,7 +313,7 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
                 return <path key={`${id}-${i}`} d={pathFor(feature, bounds)} fill={colorForMargin(item?.margin ?? 0)} fillRule="evenodd" className={`districtShape ${selectedId === id ? "selected" : ""}`} onClick={() => setSelectedId(id)}><title>{id}: {item ? formatMargin(item.margin) : "No model row"}</title></path>;
               })}
             </svg>
-          ) : <div className="mapPlaceholder"><div>District geometry is not available in this deployment.</div><button className="secondary" onClick={() => void loadDistrictData()}>Retry Census map</button><div className="small">The page will first check the deployed GeoJSON, then try official Census 119th-district endpoints directly.</div></div>}
+          ) : <div className="mapPlaceholder"><div>District geometry is not available in this deployment.</div><button className="secondary" onClick={() => void loadDistrictData()}>Retry Census map</button><div className="small">The page checks the committed GeoJSON first, then tries official Census endpoints. The dedicated GitHub Action is the reliable long-term source.</div></div>}
           <div className="mapLegend"><span><i className="legendDStrong" />D+15</span><span><i className="legendD" />D+5</span><span><i className="legendT" />±0.5</span><span><i className="legendR" />R+5</span><span><i className="legendRStrong" />R+15</span></div>
         </div>
 

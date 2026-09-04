@@ -103,3 +103,9 @@ See [`LIVE_SOURCES.md`](LIVE_SOURCES.md) for the current RCP, VoteHub, HillCast,
 The site now includes an interactive 435-seat district scenario map. The latest CSV in `data/hillcast_uploads/` supplies the HillCast district prior; the selected national Election Path projection is applied only as a residual relative to HillCast's national baseline, and demographic vote-margin/turnout sliders can redistribute the national environment geographically.
 
 For weekly updates, rename Preston Hill's file `hillcast-YYYY-MM-DD.csv`, upload it to `data/hillcast_uploads/`, and commit to `main`. The Pages Action regenerates the map automatically. See `DISTRICT_MAP.md` for the model order and demographic methodology.
+
+## Map geometry and aggregate mirror patch
+
+The congressional map geometry is now managed by a dedicated GitHub Action instead of being fetched during every Pages build. See `MAP_GEOMETRY_ACTION.md`.
+
+The live-source section now presents RCP, VoteHub, HillCast, and America First Insight as side-by-side topline mirrors with explicit live/cached/unavailable status. See `AGGREGATE_MIRRORS.md`.

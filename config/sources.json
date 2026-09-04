@@ -1,7 +1,7 @@
 {
   "composite": {
-    "method": "weighted_mean",
-    "label": "Configured aggregate composite"
+    "method": "weighted_margin_with_share_anchor",
+    "label": "RCP + VoteHub + HillCast + AFI composite"
   },
   "sources": [
     {
@@ -11,7 +11,45 @@
       "adapter": "rcp_html",
       "url": "https://www.realclearpolling.com/polls/state-of-the-union/generic-congressional-vote",
       "weight": 1,
-      "fallbackFile": "data/last-known-rcp.json"
+      "fallbackFile": "data/last-known-rcp.json",
+      "note": "Published RealClearPolitics generic-ballot average."
+    },
+    {
+      "id": "votehub",
+      "name": "VoteHub",
+      "enabled": true,
+      "adapter": "votehub_public_or_api",
+      "url": "https://votehub.com/polls/?poll=generic_ballot_2026",
+      "fetchUrl": "https://votehub.com/polls/?poll=generic_ballot_2026",
+      "weight": 1,
+      "fallbackFile": "data/last-known-votehub.json",
+      "note": "Mirrors VoteHub's published generic-ballot average when readable; if the client-rendered page is unavailable to GitHub Actions, a clearly labeled API-derived blend uses VoteHub's free raw-poll API rather than pretending it is the official published average.",
+      "apiUrl": "https://api.votehub.com/polls?poll_type=generic-ballot&subject=2026"
+    },
+    {
+      "id": "hillcast",
+      "name": "HillCast",
+      "enabled": true,
+      "adapter": "hillcast_margin_html",
+      "url": "https://realprestonhill.substack.com/p/hillcast-generic-congressional-ballot",
+      "weight": 1,
+      "note": "Automatically reads HillCast's published generic-ballot net margin. It is treated as margin-only when the article does not expose Democratic and Republican support shares.",
+      "fallbackFile": "data/last-known-hillcast.json"
+    },
+    {
+      "id": "afi",
+      "name": "America First Insight",
+      "enabled": true,
+      "adapter": "afi_public_or_env",
+      "url": "https://americafirstinsight.com/america-first-insight-election-polling-averages-charts/?race=NATIONAL_GENERIC_GENERAL_2026",
+      "weight": 1,
+      "note": "Attempts to read AFI's public generic-ballot dashboard. Because the current chart is client-rendered, repository variables can provide the displayed topline when static fetching cannot see it.",
+      "env": {
+        "dem": "AFI_GENERIC_DEM",
+        "rep": "AFI_GENERIC_REP",
+        "margin": "AFI_GENERIC_MARGIN",
+        "asOf": "AFI_GENERIC_ASOF"
+      }
     },
     {
       "id": "json_slot_1",
