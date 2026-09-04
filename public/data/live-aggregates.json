@@ -1,13 +1,18 @@
 {
-  "generatedAt": "2026-09-04T16:04:26.620Z",
+  "generatedAt": "2026-09-04T16:54:30.252Z",
+  "calibration": {
+    "id": "rcp-generic-2004-2024",
+    "label": "RCP historical generic-ballot archive, 2004–2024",
+    "note": "The live-source filter changes the current input. Historical filters use the supplied RCP generic-ballot archives for presidential, midterm, overall, low-turnout midterm, and high-turnout midterm comparisons."
+  },
   "composite": {
-    "dem": 48,
-    "rep": 42.3,
-    "margin": 5.700000000000003,
+    "dem": 47,
+    "rep": 41.1,
+    "margin": 5.899999999999999,
     "asOf": "2026-09-04",
-    "sourceCount": 1,
+    "sourceCount": 3,
     "method": "weighted_mean",
-    "label": "Configured aggregate composite"
+    "label": "RCP + VoteHub + DDHQ composite"
   },
   "sources": [
     {
@@ -20,7 +25,59 @@
       "asOf": "2026-09-04",
       "weight": 1,
       "sourceUrl": "https://www.realclearpolling.com/polls/state-of-the-union/generic-congressional-vote",
+      "note": "Published RealClearPolitics generic-ballot average.",
+      "message": "fetch failed"
+    },
+    {
+      "id": "votehub",
+      "name": "VoteHub",
+      "status": "fallback",
+      "dem": 48,
+      "rep": 42,
+      "margin": 6,
+      "asOf": "2026-09-04",
+      "weight": 1,
+      "sourceUrl": "https://votehub.com/polls/?poll=generic_ballot_2026",
+      "note": "Reads VoteHub's publicly displayed live generic-ballot average. VoteHub currently displays whole-number party shares on its public pages.",
+      "message": "fetch failed"
+    },
+    {
+      "id": "ddhq",
+      "name": "Decision Desk HQ",
+      "status": "fallback",
+      "dem": 45,
+      "rep": 39,
+      "margin": 6,
+      "asOf": "2026-09-02",
+      "weight": 1,
+      "sourceUrl": "https://votes.decisiondeskhq.com/polls/generic-ballot/national/lv-rv-adults",
+      "note": "Reads DDHQ's public national LV/RV/Adults generic-ballot topline.",
       "message": "fetch failed"
     }
-  ]
+  ],
+  "environment": {
+    "rcpApproval": {
+      "id": "rcp_approval",
+      "name": "RealClearPolling Trump approval",
+      "status": "fallback",
+      "approve": 39.7,
+      "disapprove": 56.8,
+      "net": -17.099999999999994,
+      "asOf": "2026-09-04",
+      "sourceUrl": "https://www.realclearpolling.com/polls/approval/donald-trump/approval-rating",
+      "message": "fetch failed"
+    },
+    "echelon": {
+      "id": "echelon",
+      "name": "Echelon Verified Voter Omnibus",
+      "status": "fallback",
+      "approve": 40,
+      "disapprove": 59,
+      "net": -19,
+      "asOf": "2026-08-18",
+      "label": "August 2026 Verified Voter Omnibus",
+      "sourceUrl": "https://echeloninsights.com/insights/august-2026-verified-voter-omnibus",
+      "message": "fetch failed"
+    }
+  }
 }

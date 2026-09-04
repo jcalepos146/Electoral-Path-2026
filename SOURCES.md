@@ -1,165 +1,62 @@
-# Adding live aggregate sources
+# Sources
 
-Election Path is a **static GitHub Pages site**. Secret API keys cannot safely live in browser JavaScript, so keyed or non-CORS data sources are fetched by the scheduled GitHub Actions workflow. The workflow writes `public/data/live-aggregates.json`, builds the static site, and deploys it.
+## Historical generic ballot
 
-The default workflow refreshes once per hour. Public visitors never receive your API keys.
+RealClearPolling PDF exports for:
 
-## 1. Enable a source
+- 2004
+- 2006
+- 2008
+- 2010
+- 2012
+- 2014
+- 2016
+- 2018
+- 2020
+- 2022
+- 2024
 
-Edit `config/sources.json`. Each source has:
+The supplied PDFs provide the poll rows and final nationwide House popular-vote toplines used by `scripts/build_historical_data.py`.
 
-- `id`: stable machine-readable name.
-- `name`: display name in the website.
-- `enabled`: whether the scheduled updater should use it.
-- `adapter`: `rcp_html`, `json`, or `csv`.
-- `url`: source endpoint/page.
-- `weight`: weight used by the site's composite.
-- `auth`: optional GitHub-secret-backed authentication.
+## Live generic-ballot sources
 
-The bundled RCP source is enabled and has a last-known fallback snapshot. The other three entries are disabled templates.
+Configured in `config/sources.json`:
 
-## 2. API keys / GitHub Secrets
+- RealClearPolling generic congressional vote
+- VoteHub 2026 generic ballot
+- Decision Desk HQ national generic ballot
+- Optional JSON/CSV API slots
 
-The workflow exposes three optional secret slots to the updater:
+## Presidential approval
 
-- `DATA_SOURCE_1_KEY`
-- `DATA_SOURCE_2_KEY`
-- `DATA_SOURCE_3_KEY`
+The updater attempts to read:
 
-In the GitHub repository, open **Settings -> Secrets and variables -> Actions -> New repository secret** and create the slot(s) you use.
+- RealClearPolling President Trump Job Approval
+- The latest Echelon Insights Verified Voter Omnibus page
 
-Never paste an API key into `config/sources.json`, the React app, or any file under `public/`.
+Bundled last-known readings are used if a scheduled fetch fails.
 
-### Header authentication
+## Turnout enthusiasm
 
-```json
-{
-  "auth": {
-    "env": "DATA_SOURCE_1_KEY",
-    "mode": "header",
-    "name": "Authorization",
-    "prefix": "Bearer "
-  }
-}
-```
+`data/echelon-enthusiasm.json` contains endpoint values transcribed from the Echelon enthusiasm chart supplied with the project. The metric is **Extremely motivated**.
 
-This creates a request header such as `Authorization: Bearer <secret>`.
+## 2025 actual-electorate calibration
 
-### Query-parameter authentication
+`data/exit-poll-calibration-2025.json` contains approval readings from CNN Voter Poll / SSRS exit-poll PDFs supplied for:
 
-```json
-{
-  "auth": {
-    "env": "DATA_SOURCE_2_KEY",
-    "mode": "query",
-    "name": "api_key"
-  }
-}
-```
+- New Jersey governor
+- Virginia governor
+- New York City mayor
+- California Proposition 50
 
-The secret is appended only to the outgoing Actions request. The public output retains the clean source URL and does not publish the key.
+## Midterm turnout classification
 
-## JSON adapter
+The low/high midterm split uses U.S. Census Bureau CPS Voting and Registration turnout among the citizen voting-age population:
 
-Use dot paths to map the provider's response to Democratic share, Republican share, and optionally the data date.
+- 2006 — 47.8%
+- 2010 — 45.5%
+- 2014 — 41.9%
+- 2018 — 53.4%
+- 2022 — 52.2%
 
-Given:
-
-```json
-{
-  "data": {
-    "generic_ballot": {
-      "dem": 47.8,
-      "rep": 43.1,
-      "updated_at": "2026-09-04T15:30:00Z"
-    }
-  }
-}
-```
-
-configure:
-
-```json
-{
-  "id": "my_json_feed",
-  "name": "My JSON aggregate",
-  "enabled": true,
-  "adapter": "json",
-  "url": "https://example.com/api/generic",
-  "weight": 1,
-  "mapping": {
-    "rootPath": "data.generic_ballot",
-    "dem": "dem",
-    "rep": "rep",
-    "asOf": "updated_at"
-  }
-}
-```
-
-Array indexes work in paths, e.g. `results.0.dem`.
-
-## CSV adapter
-
-The first row must contain headers. By default the updater uses the final data row.
-
-```json
-{
-  "id": "my_csv_feed",
-  "name": "My CSV aggregate",
-  "enabled": true,
-  "adapter": "csv",
-  "url": "https://example.com/generic.csv",
-  "weight": 1,
-  "csv": {
-    "delimiter": ",",
-    "selectLastRow": true,
-    "columns": {
-      "dem": "dem_avg",
-      "rep": "rep_avg",
-      "asOf": "date"
-    }
-  }
-}
-```
-
-You can select a subset of rows before taking the first/last match:
-
-```json
-"match": { "column": "race", "equals": "generic_ballot" }
-```
-
-## RCP HTML adapter
-
-`rcp_html` is a purpose-built parser for the RealClearPolling generic-ballot page. It is intentionally isolated in `scripts/update_live_data.mjs` because page markup can change. If parsing fails, the bundled RCP configuration uses `data/last-known-rcp.json` and clearly labels the result as `fallback`.
-
-## Composite weighting
-
-Every usable source contributes according to `weight`:
-
-```json
-{
-  "weight": 1
-}
-```
-
-A source with weight `2` counts twice as much as one with weight `1`. The UI also lets visitors switch from the composite to any individual successfully fetched source.
-
-## Local test
-
-```bash
-npm install
-npm run update-data
-npm run dev
-```
-
-If a source uses a key:
-
-```bash
-DATA_SOURCE_1_KEY="your-key" npm run update-data
-```
-
-Inspect `public/data/live-aggregates.json` to confirm the parsed values before deploying.
-
-## Provider terms
-
-Only connect endpoints you are permitted to access and automate. Some sites prohibit scraping or impose rate limits. Prefer a documented API, downloadable JSON/CSV feed, or another provider-approved endpoint when one exists.
+The project defines **High Turnout Midterm** as at least 50% and **Low Turnout Midterm** as below 50%.

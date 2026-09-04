@@ -1,0 +1,58 @@
+{
+  "source": "CNN Voter Poll / SSRS exit polls supplied by the project owner",
+  "note": "These are approval readings among actual 2025 electorates. CNN states the exit polls are weighted to match election results. Election margins are included only where a straightforward Democratic-vs-Republican statewide contest exists.",
+  "rows": [
+    {
+      "place": "New Jersey",
+      "contest": "Governor",
+      "respondents": 4412,
+      "approve": 42,
+      "disapprove": 56,
+      "stronglyApprove": 27,
+      "somewhatApprove": 14,
+      "somewhatDisapprove": 8,
+      "stronglyDisapprove": 48,
+      "electionMargin": 13.8,
+      "electionMarginLabel": "D+13.8"
+    },
+    {
+      "place": "Virginia",
+      "contest": "Governor",
+      "respondents": 4604,
+      "approve": 39,
+      "disapprove": 59,
+      "stronglyApprove": 25,
+      "somewhatApprove": 14,
+      "somewhatDisapprove": 7,
+      "stronglyDisapprove": 52,
+      "electionMargin": 15.2,
+      "electionMarginLabel": "D+15.2"
+    },
+    {
+      "place": "New York City",
+      "contest": "Mayor",
+      "respondents": 4744,
+      "approve": 26,
+      "disapprove": 71,
+      "stronglyApprove": 15,
+      "somewhatApprove": 11,
+      "somewhatDisapprove": 8,
+      "stronglyDisapprove": 62,
+      "electionMargin": null,
+      "electionMarginLabel": "Multi-candidate"
+    },
+    {
+      "place": "California",
+      "contest": "Proposition 50",
+      "respondents": 4326,
+      "approve": 34,
+      "disapprove": 65,
+      "stronglyApprove": 23,
+      "somewhatApprove": 12,
+      "somewhatDisapprove": 6,
+      "stronglyDisapprove": 59,
+      "electionMargin": null,
+      "electionMarginLabel": "Ballot measure"
+    }
+  ]
+}

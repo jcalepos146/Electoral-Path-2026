@@ -1,98 +1,53 @@
 # Election Path 2026
 
-> **GitHub Pages quick deploy:** Upload this repository to `main`, make sure `.github/workflows/pages.yml` is present, then set **Settings → Pages → Source** to **GitHub Actions**. No source-branch `index.html` is required.
+Election Path 2026 is a static GitHub Pages model that compares the live U.S. House generic ballot with historical RCP generic-ballot paths and adds presidential-approval, turnout-enthusiasm, and actual-electorate context.
 
+## Historical filters
 
-> **One-folder release:** This directory is the complete repository. Upload everything inside this folder to the root of a new GitHub repository; no other download is required. See [START_HERE.md](START_HERE.md) for the shortest deployment path.
+The model now supports five comparison sets:
 
-A GitHub-Pages-ready Next.js static site that takes a 2026 House generic-ballot aggregate and estimates the Election Day national House popular-vote margin from the historical path of the last five midterms: **2006, 2010, 2014, 2018, and 2022**.
+- **Presidential** — 2004, 2008, 2012, 2016, 2020, 2024
+- **Midterm** — 2006, 2010, 2014, 2018, 2022
+- **Overall** — all 11 cycles from 2004 through 2024
+- **Low Turnout Midterm** — 2006, 2010, 2014
+- **High Turnout Midterm** — 2018, 2022
 
-## What changed in the GitHub Pages edition
+The turnout split uses the U.S. Census Bureau citizen voting-age turnout series. The project uses a transparent 50% cutoff: 2006 (47.8%), 2010 (45.5%), and 2014 (41.9%) are below it; 2018 (53.4%) and 2022 (52.2%) are above it.
 
-GitHub Pages serves static files, so Election Path no longer depends on a Next.js API route at runtime. Instead:
+## Generic-ballot model
 
-1. A scheduled GitHub Actions workflow fetches the configured polling aggregates.
-2. Optional API keys come from GitHub repository secrets, never from browser code.
-3. The updater writes `public/data/live-aggregates.json`.
-4. Next.js performs a static export into `out/`.
-5. GitHub Pages deploys that export.
-6. The workflow repeats hourly, giving the static site near-real-time aggregate updates without a separate server.
+For every historical cycle and every days-to-election point:
 
-The site automatically handles GitHub project-page subpaths such as `https://USERNAME.github.io/election-path/`.
+1. Average individual generic-ballot polls whose fieldwork ended in the trailing 14 days.
+2. Compute the historical polling margin.
+3. Compare that snapshot with the final nationwide House popular-vote margin.
+4. Use the mean or median remaining movement from the selected historical filter.
 
-## Deploy in about five minutes
+A positive margin is Democratic; a negative margin is Republican.
 
-### 1. Create the repository
+The site is an extrapolation tool, not a probabilistic election forecast. Movement between a polling snapshot and Election Day can represent both real opinion change and polling error.
 
-Create a GitHub repository, preferably named `election-path`, and copy this project's contents into it. Commit and push to the `main` branch.
+## Live generic-ballot inputs
 
-### 2. Enable GitHub Pages Actions
+The scheduled GitHub Action attempts to refresh:
 
-In the repository open:
+- RealClearPolling
+- VoteHub
+- Decision Desk HQ
+- Any optional JSON/CSV sources configured in `config/sources.json`
 
-**Settings -> Pages -> Build and deployment -> Source -> GitHub Actions**
+If a public page changes markup or rejects the request, the updater can fall back to the bundled last-known reading rather than breaking the Pages build.
 
-The included `.github/workflows/pages.yml` handles refresh, build, and deployment.
+## Electoral-environment panel
 
-### 3. Optional: add aggregate API keys
+The site also displays, separately from the House-vote correction:
 
-If you enable one of the keyed source slots in `config/sources.json`, add the matching repository secret under:
+- RCP presidential approval average
+- Latest Echelon Verified Voter Omnibus presidential approval
+- Echelon "extremely motivated" turnout context from the supplied chart
+- 2025 CNN/SSRS exit-poll approval readings for New Jersey, Virginia, New York City, and California
 
-**Settings -> Secrets and variables -> Actions**
-
-Supported ready-made secret names:
-
-- `DATA_SOURCE_1_KEY`
-- `DATA_SOURCE_2_KEY`
-- `DATA_SOURCE_3_KEY`
-
-No key is needed for the bundled RCP HTML adapter.
-
-See **[SOURCES.md](SOURCES.md)** for JSON, CSV, header-key, query-key, fallback, and weighting examples.
-
-### 4. Deploy
-
-Push to `main`, or open **Actions -> Refresh data and deploy GitHub Pages -> Run workflow**.
-
-The same workflow also runs at minute 17 of every hour. GitHub's scheduler may occasionally start later than the exact cron minute.
-
-## Live-data architecture
-
-Source configuration lives in:
-
-```text
-config/sources.json
-```
-
-The scheduled updater is:
-
-```text
-scripts/update_live_data.mjs
-```
-
-Its public output is:
-
-```text
-public/data/live-aggregates.json
-```
-
-The site currently supports three adapter types:
-
-- `rcp_html` — purpose-built RCP generic-ballot parser.
-- `json` — map arbitrary dot-path fields from a JSON API/feed.
-- `csv` — map named columns from a downloadable CSV.
-
-Visitors can use the weighted composite, choose one individual configured source, or enter a manual what-if value.
-
-## The historical model
-
-1. Democratic margin is positive; Republican margin is negative.
-2. For each historical cycle and each `daysToElection` snapshot, the data builder averages polls whose fieldwork **ended during the trailing 14 days**.
-3. It calculates `final House popular-vote margin - historical snapshot margin` for each cycle.
-4. The default forecast adds the **equal-weight mean historical correction** to the selected 2026 aggregate margin. The UI can switch to the median correction.
-5. The site shows every cycle-level analog and the historical min/max range.
-
-This is a **historical-path extrapolator**, not a statistical probability forecast. The difference between a September poll and November results can reflect both polling error and genuine opinion movement.
+These indicators are deliberately **not silently merged** into the generic-ballot correction. They are displayed as separate evidence until enough historical observations exist to validate an approval/enthusiasm weighting rule.
 
 ## Run locally
 
@@ -102,45 +57,37 @@ npm run update-data
 npm run dev
 ```
 
-If the live RCP request fails locally, the updater uses `data/last-known-rcp.json`.
-
-To test the exact static output GitHub Pages will receive:
+Build the static site:
 
 ```bash
 npm run build
 ```
 
-Then serve the generated `out/` folder with any simple static HTTP server.
+Next.js writes the GitHub Pages artifact to `out/`.
+
+## Deploy to GitHub Pages
+
+1. Upload the project contents to the root of your repository.
+2. Go to **Settings → Pages**.
+3. Set **Source** to **GitHub Actions**.
+4. Commit to `main`.
+
+The included `.github/workflows/pages.yml` refreshes public data, builds the static export, and deploys it.
 
 ## Rebuild the historical dataset
 
-The generated historical dataset is already included at `data/historical-generic.json`.
-
-To regenerate it from the five RealClearPolling PDF exports, place the PDFs in `source_pdfs/` with these exact names:
-
-- `2006 Generic Congressional Vote _ RealClearPolling.pdf`
-- `2010 Generic Congressional Vote _ RealClearPolling.pdf`
-- `2014 Generic Congressional Vote _ RealClearPolling.pdf`
-- `2018 Generic Congressional Vote _ RealClearPolling.pdf`
-- `2022 Generic Congressional Vote _ RealClearPolling.pdf`
-
-Install Poppler so `pdftotext` is available, then run:
+The repository contains `scripts/build_historical_data.py`. To regenerate the historical JSON, place the 11 RCP PDF exports in one directory using their original names and run:
 
 ```bash
-npm run rebuild-history
+python scripts/build_historical_data.py --pdf-dir /path/to/pdfs --out data/historical-generic.json
 ```
 
-## Important model-development ideas
+The script requires Poppler's `pdftotext` command.
 
-The 14-day trailing average is transparent and reproducible, but it does not attempt to reconstruct any provider's proprietary historical average exactly. Useful next steps include:
+## Data provenance
 
-- archive each live aggregate on every scheduled refresh;
-- use one observation per pollster within a moving window;
-- weight historical polls by recency or pollster quality;
-- backtest 7-, 10-, 14-, and 21-day windows using leave-one-cycle-out validation;
-- estimate uncertainty bands rather than only the historical analog range;
-- add 1998 and 2002 if comparable historical data are obtained.
+See `SOURCES.md` and `MODEL_NOTES.md` for methodology and source notes.
 
-## Source / affiliation
+## License
 
-Historical source data are the RealClearPolling PDF exports supplied for this project. Live aggregate feeds are configured by the repository owner. The project is not affiliated with RealClearPolitics or any other configured provider.
+MIT. See `LICENSE`.

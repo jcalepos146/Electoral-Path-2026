@@ -1,0 +1,23 @@
+{
+  "source": "Echelon Insights Verified Voter Omnibus",
+  "metric": "Extremely motivated to vote in the upcoming 2026 midterm elections",
+  "note": "Endpoint values transcribed from the Echelon chart supplied by the project owner. They are displayed as context, not converted directly into turnout probabilities.",
+  "series": [
+    {
+      "month": "2025-08",
+      "label": "Aug. 2025",
+      "total": 52,
+      "republicans": 48,
+      "independents": 41,
+      "democrats": 64
+    },
+    {
+      "month": "2026-08",
+      "label": "Aug. 2026",
+      "total": 64,
+      "republicans": 63,
+      "independents": 62,
+      "democrats": 67
+    }
+  ]
+}
