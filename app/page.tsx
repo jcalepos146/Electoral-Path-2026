@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import enthusiasmData from "@/data/echelon-enthusiasm.json";
 import exitPollData from "@/data/exit-poll-calibration-2025.json";
 import DistrictScenarioMap from "@/app/DistrictScenarioMap";
+import StatewideMapFoundation from "@/app/StatewideMapFoundation";
 import {
   ELECTION_DATE_2026,
   HISTORICAL_GROUP_ORDER,
@@ -437,6 +438,8 @@ export default function Home() {
 
 
       <DistrictScenarioMap rawNationalMargin={dem - rep} projectedNationalMargin={result.projectedMargin} />
+
+      <StatewideMapFoundation />
 
       <section className="shell card chartCard">
         <div className="chartHeader">

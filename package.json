@@ -1,6 +1,6 @@
 {
   "name": "election-path",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,6 +8,7 @@
     "update-data": "node scripts/update_live_data.mjs",
     "rebuild-history": "python scripts/build_historical_data.py --pdf-dir ./source_pdfs --out ./data/historical-generic.json",
     "update-districts": "node scripts/update_district_data.mjs",
+    "update-statewide": "node scripts/update_statewide_data.mjs",
     "refresh-geometry": "node scripts/refresh_geometry.mjs"
   },
   "dependencies": {

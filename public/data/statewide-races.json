@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-09-04T17:55:17.561Z",
+  "convention": "positive = Democratic; negative = Republican",
+  "senateSourceFile": null,
+  "governorSourceFile": null,
+  "senate": [],
+  "governors": [],
+  "note": "Only states present in an uploaded statewide CSV are treated as tracked races. Gray means no projection loaded, not tossup."
+}

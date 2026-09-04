@@ -8,7 +8,7 @@ on:
     # Refresh once per hour. GitHub cron uses UTC.
     - cron: "17 * * * *"
   workflow_run:
-    workflows: ["Refresh congressional district geometry"]
+    workflows: ["Refresh election map geometry"]
     types: [completed]
 
 permissions:
@@ -53,6 +53,9 @@ jobs:
 
       - name: Build weekly HillCast district map data
         run: npm run update-districts
+
+      - name: Build optional Senate and governor map data
+        run: npm run update-statewide
 
       - name: Build static Next.js site
         run: npm run build

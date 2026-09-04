@@ -201,3 +201,167 @@ select:disabled { opacity: .65; }
 .mirrorUse:disabled { opacity: .45; cursor: default; }
 @media (max-width: 980px) { .mirrorGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 620px) { .mirrorGrid { grid-template-columns: 1fr; } .compositeBadge { white-space: normal; } }
+
+/* Explicit 2026 demographic projection baseline */
+.demographicProjectionHeader { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(260px, .7fr); gap: 14px; align-items: stretch; margin: 18px 0 12px; }
+.demographicProjectionHeader h4 { margin: 4px 0 6px; font-size: 1.02rem; }
+.overallTurnoutControl { background: rgba(255,255,255,.035); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 5px; }
+.overallTurnoutControl span, .overallTurnoutControl small { color: var(--muted); }
+.overallTurnoutControl strong { font-size: 1.65rem; letter-spacing: -.04em; }
+.overallTurnoutControl input[type="range"] { width: 100%; padding: 0; border: 0; background: transparent; accent-color: var(--gold); }
+.baselineMarginStrip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 10px 0 2px; }
+.baselineMarginStrip div { border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; background: rgba(255,255,255,.018); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.baselineMarginStrip span { color: var(--muted); font-size: .7rem; }
+.baselineMarginStrip b { font-size: .86rem; white-space: nowrap; }
+.demoBaselineLine, .impliedTurnout { display: flex; justify-content: space-between; gap: 7px; font-size: .72rem; margin-top: 4px; }
+.demoBaselineLine span, .impliedTurnout span { color: var(--muted); }
+.demoBaselineLine b, .impliedTurnout b { color: var(--text); font-variant-numeric: tabular-nums; }
+.demoBaselineLine { padding: 6px 0 7px; border-bottom: 1px solid var(--line); }
+.impliedTurnout { margin-top: 8px; padding-top: 7px; border-top: 1px dashed var(--line); }
+.demographicSourceNote { margin: 8px 0 10px; padding: 10px 12px; border-left: 3px solid var(--gold); background: rgba(255,255,255,.018); color: var(--muted); font-size: .75rem; line-height: 1.45; }
+.demographicSourceNote strong { color: var(--text); }
+.demographicSourceNote a { color: #a9c7ff; }
+@media (max-width: 1000px) {
+  .demographicProjectionHeader { grid-template-columns: 1fr; }
+  .baselineMarginStrip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .baselineMarginStrip { grid-template-columns: 1fr; }
+}
+
+/* Enlarged zoomable election maps */
+.districtScenarioCard.shell,
+.statewideMapCard.shell {
+  width: min(1480px, calc(100vw - 28px));
+}
+.districtMapGrid,
+.statewideMapGrid {
+  grid-template-columns: minmax(0, 1fr) 290px;
+}
+.mapPane {
+  position: relative;
+  min-width: 0;
+}
+.mapToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 8px 8px 5px;
+}
+.mapToolbarTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+.mapToolbarTitle strong { font-size: .86rem; }
+.mapToolbarTitle span { color: var(--muted); font-size: .7rem; white-space: nowrap; }
+.mapToolbarButtons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.mapToolbarButtons button {
+  background: rgba(255,255,255,.035);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  min-width: 36px;
+  padding: 7px 9px;
+}
+.mapToolbarButtons button:hover { border-color: #7180ab; background: rgba(255,255,255,.065); }
+.mapInteractionHint {
+  color: var(--muted);
+  font-size: .68rem;
+  text-align: center;
+  padding: 0 8px 5px;
+}
+.districtMap,
+.statewideMap {
+  width: 100%;
+  height: clamp(600px, 70vh, 840px);
+  display: block;
+  background: #09101f;
+  border-radius: 12px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.districtMap.dragging,
+.statewideMap.dragging { cursor: grabbing; }
+.mapPane:fullscreen {
+  background: #0d1426;
+  padding: 14px;
+  overflow: hidden;
+}
+.mapPane:fullscreen .districtMap,
+.mapPane:fullscreen .statewideMap {
+  height: calc(100vh - 112px);
+  border-radius: 10px;
+}
+.mapPane:fullscreen .mapToolbar { padding-top: 0; }
+.stateShape {
+  stroke: #101728;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+  transition: filter .12s ease, stroke-width .12s ease;
+}
+.stateShape:hover { filter: brightness(1.16); stroke: #fff; stroke-width: 1.7; }
+.stateShape.selected { stroke: #fff; stroke-width: 2.4; }
+.statewideMapCard { border-color: #465274; }
+.statewideMapGrid { display: grid; gap: 16px; align-items: stretch; margin-top: 14px; }
+.statewideModeTabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 17px;
+}
+.statewideModeTabs button {
+  background: #0d1426;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-weight: 800;
+}
+.statewideModeTabs button.active {
+  color: var(--text);
+  border-color: var(--gold);
+  box-shadow: inset 0 0 0 1px rgba(244,199,97,.14);
+}
+.statewideStateName {
+  font-size: 1.35rem;
+  font-weight: 850;
+  margin-top: 7px;
+}
+.statewideEmpty {
+  margin: 18px 0 8px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.statewideEmpty + .small code,
+.statewideMapCard code {
+  color: var(--accent);
+  background: rgba(255,255,255,.045);
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+@media (max-width: 1000px) {
+  .districtScenarioCard.shell,
+  .statewideMapCard.shell { width: min(1080px, calc(100vw - 20px)); }
+  .districtMapGrid,
+  .statewideMapGrid { grid-template-columns: 1fr; }
+  .districtMap,
+  .statewideMap { height: clamp(500px, 67vh, 720px); }
+}
+@media (max-width: 700px) {
+  .districtScenarioCard.shell,
+  .statewideMapCard.shell { width: calc(100vw - 10px); }
+  .mapToolbar { align-items: flex-start; flex-direction: column; }
+  .mapToolbarButtons { justify-content: flex-start; }
+  .districtMap,
+  .statewideMap { height: 520px; }
+}
