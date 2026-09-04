@@ -47,6 +47,28 @@ type FeatureCollection = { type: "FeatureCollection"; features: Feature[] };
 
 type ScenarioSetting = { margin: number; turnout: number };
 
+const CENSUS_GEOMETRY_URLS = [
+  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/Legislative/MapServer/6/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson",
+  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/Legislative/MapServer/7/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson",
+  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2025/Legislative/MapServer/6/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson",
+];
+
+async function fetchGeometryFallback(): Promise<FeatureCollection | null> {
+  for (const url of CENSUS_GEOMETRY_URLS) {
+    try {
+      const response = await fetch(url, { cache: "no-store", mode: "cors" });
+      if (!response.ok) continue;
+      const data = await response.json();
+      if (data?.type === "FeatureCollection" && Array.isArray(data.features) && data.features.length >= 430) {
+        return data as FeatureCollection;
+      }
+    } catch {
+      // Try the next official Census endpoint.
+    }
+  }
+  return null;
+}
+
 const GROUPS: { key: DemographicKey; label: string }[] = [
   { key: "whiteNH", label: "White non-Hispanic" },
   { key: "black", label: "Black" },
@@ -157,18 +179,48 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
   const [anchorMode, setAnchorMode] = useState<"projected" | "raw">("projected");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  useEffect(() => {
-    Promise.all([
-      fetch(`${BASE_PATH}/data/hillcast-districts.json?v=${Date.now()}`, { cache: "no-store" }).then((r) => r.ok ? r.json() : Promise.reject(new Error(`HillCast district HTTP ${r.status}`))),
-      fetch(`${BASE_PATH}/data/district-demographics.json?v=${Date.now()}`, { cache: "no-store" }).then((r) => r.ok ? r.json() : null),
-      fetch(`${BASE_PATH}/data/cd119.geojson?v=${Date.now()}`, { cache: "no-store" }).then((r) => r.ok ? r.json() : null),
-    ]).then(([h, d, g]) => {
+  async function loadDistrictData() {
+    try {
+      const [hResponse, dResponse, gResponse] = await Promise.all([
+        fetch(`${BASE_PATH}/data/hillcast-districts.json?v=${Date.now()}`, { cache: "no-store" }),
+        fetch(`${BASE_PATH}/data/district-demographics.json?v=${Date.now()}`, { cache: "no-store" }),
+        fetch(`${BASE_PATH}/data/cd119.geojson?v=${Date.now()}`, { cache: "no-store" }),
+      ]);
+
+      if (!hResponse.ok) throw new Error(`HillCast district HTTP ${hResponse.status}`);
+      const h = await hResponse.json();
+      const d = dResponse.ok ? await dResponse.json() : null;
+      let g = gResponse.ok ? await gResponse.json() : null;
+      let usedRuntimeGeometry = false;
+
+      if (!g?.features || g.features.length < 430) {
+        g = await fetchGeometryFallback();
+        usedRuntimeGeometry = Boolean(g);
+      }
+
       setHillcast(h);
       setDemographics(d);
       setGeo(g);
-      if (!d || !g) setLoadNote("Census demographic or map geometry data were unavailable in this deployment; the GitHub Action will retry on the next build.");
       setSelectedId(h.districts?.[0]?.id ?? null);
-    }).catch((e) => setLoadNote(e instanceof Error ? e.message : "Could not load district data"));
+
+      if (!d && !g) {
+        setLoadNote("Census demographic data and district geometry are unavailable. The map can be retried without redeploying.");
+      } else if (!g) {
+        setLoadNote("District geometry could not be loaded from the deployed file or the official Census fallback endpoints.");
+      } else if (!d) {
+        setLoadNote("Map geometry loaded, but Census demographic data were unavailable; demographic effects will remain neutral until the next successful refresh.");
+      } else if (usedRuntimeGeometry) {
+        setLoadNote("Map geometry loaded directly from the U.S. Census Bureau because the bundled geometry file was missing.");
+      } else {
+        setLoadNote(null);
+      }
+    } catch (e) {
+      setLoadNote(e instanceof Error ? e.message : "Could not load district data");
+    }
+  }
+
+  useEffect(() => {
+    void loadDistrictData();
   }, []);
 
   const districtMap = useMemo(() => new Map(hillcast?.districts.map((d) => [d.id, d]) ?? []), [hillcast]);
@@ -225,6 +277,11 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
         <label>Demographic mode
           <button className="toggle" onClick={() => setPreserveNational((v) => !v)}>{preserveNational ? "Preserve national anchor" : "Demographics set national margin"}</button>
         </label>
+        <label>District inspector
+          <select value={selectedId ?? ""} onChange={(e) => setSelectedId(e.target.value || null)}>
+            {(hillcast?.districts ?? []).map((district) => <option key={district.id} value={district.id}>{district.id} · {district.marginLabel}</option>)}
+          </select>
+        </label>
         <div className="scenarioStat"><span>HillCast national baseline</span><b>{hillcast ? formatMargin(hillcast.hillcastNationalMargin) : "…"}</b></div>
         <div className="scenarioStat"><span>National residual applied</span><b>{hillcast ? formatMargin(nationalResidual) : "…"}</b></div>
       </div>
@@ -255,7 +312,7 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
                 return <path key={`${id}-${i}`} d={pathFor(feature, bounds)} fill={colorForMargin(item?.margin ?? 0)} fillRule="evenodd" className={`districtShape ${selectedId === id ? "selected" : ""}`} onClick={() => setSelectedId(id)}><title>{id}: {item ? formatMargin(item.margin) : "No model row"}</title></path>;
               })}
             </svg>
-          ) : <div className="mapPlaceholder">Map geometry will appear after the Census geometry refresh succeeds in GitHub Actions.</div>}
+          ) : <div className="mapPlaceholder"><div>District geometry is not available in this deployment.</div><button className="secondary" onClick={() => void loadDistrictData()}>Retry Census map</button><div className="small">The page will first check the deployed GeoJSON, then try official Census 119th-district endpoints directly.</div></div>}
           <div className="mapLegend"><span><i className="legendDStrong" />D+15</span><span><i className="legendD" />D+5</span><span><i className="legendT" />±0.5</span><span><i className="legendR" />R+5</span><span><i className="legendRStrong" />R+15</span></div>
         </div>
 

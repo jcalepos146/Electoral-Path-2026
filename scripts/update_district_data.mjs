@@ -9,7 +9,11 @@ const PUBLIC_DIR = path.join(ROOT, "public", "data");
 const LIVE_PATH = path.join(PUBLIC_DIR, "live-aggregates.json");
 const LAST_HILLCAST = path.join(ROOT, "data", "last-known-hillcast.json");
 
-const CENSUS_GEOJSON_URL = "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/Legislative/MapServer/6/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson";
+const CENSUS_GEOJSON_URLS = [
+  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/Legislative/MapServer/6/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson",
+  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2024/Legislative/MapServer/7/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson",
+  "https://tigerweb.geo.census.gov/arcgis/rest/services/Generalized_ACS2025/Legislative/MapServer/6/query?where=1%3D1&outFields=GEOID%2CSTATE%2CCD119%2CBASENAME%2CNAME&returnGeometry=true&outSR=4326&f=geojson",
+];
 const CENSUS_ACS_BASE = "https://api.census.gov/data/2024/acs/acs5";
 
 const STATE_ABBR = {
@@ -117,14 +121,29 @@ function citizen18Vars(suffix = "") {
   return [`${prefix}_009E`, `${prefix}_011E`, `${prefix}_020E`, `${prefix}_022E`];
 }
 
-async function fetchJson(url) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 45_000);
-  try {
-    const r = await fetch(url, { headers: { "User-Agent": process.env.ELECTION_PATH_USER_AGENT || "ElectionPath2026/1.0" }, signal: controller.signal });
-    if (!r.ok) throw new Error(`HTTP ${r.status} from ${url}`);
-    return await r.json();
-  } finally { clearTimeout(timer); }
+async function fetchJson(url, attempts = 3) {
+  let lastError = null;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 60_000);
+    try {
+      const r = await fetch(url, {
+        headers: {
+          "User-Agent": process.env.ELECTION_PATH_USER_AGENT || "ElectionPath2026/1.0",
+          "Accept": "application/geo+json, application/json;q=0.9, */*;q=0.1",
+        },
+        signal: controller.signal,
+      });
+      if (!r.ok) throw new Error(`HTTP ${r.status} from ${url}`);
+      return await r.json();
+    } catch (e) {
+      lastError = e;
+      if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 1500 * attempt));
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error(`Could not fetch ${url}`);
 }
 
 function sumVars(record, headers, variables) {
@@ -203,12 +222,33 @@ async function buildDemographics() {
 }
 
 async function buildGeometry() {
-  const geo = await fetchJson(CENSUS_GEOJSON_URL);
-  if (!Array.isArray(geo.features) || geo.features.length < 430) throw new Error(`Census GeoJSON returned only ${geo.features?.length ?? 0} features`);
-  // Keep the 50 states only; DC/territories are not part of the 435-seat HillCast wrapper.
-  geo.features = geo.features.filter((f) => STATE_ABBR[String(f.properties?.STATE ?? "").padStart(2, "0")]);
-  await fs.writeFile(path.join(PUBLIC_DIR, "cd119.geojson"), JSON.stringify(geo));
-  return geo.features.length;
+  const errors = [];
+  for (const url of CENSUS_GEOJSON_URLS) {
+    try {
+      const geo = await fetchJson(url, 3);
+      if (!Array.isArray(geo.features) || geo.features.length < 430) {
+        throw new Error(`Census GeoJSON returned only ${geo.features?.length ?? 0} features`);
+      }
+      // Keep the 50 states only; DC/territories are not part of the 435-seat HillCast wrapper.
+      geo.features = geo.features.filter((f) => STATE_ABBR[String(f.properties?.STATE ?? "").padStart(2, "0")]);
+      if (geo.features.length < 430) throw new Error(`Only ${geo.features.length} state district features remained after filtering`);
+      await fs.writeFile(path.join(PUBLIC_DIR, "cd119.geojson"), JSON.stringify(geo));
+      return geo.features.length;
+    } catch (e) {
+      errors.push(e instanceof Error ? e.message : String(e));
+    }
+  }
+
+  // Do not delete a previously committed/generated geometry file if Census is temporarily unavailable.
+  try {
+    const existing = JSON.parse(await fs.readFile(path.join(PUBLIC_DIR, "cd119.geojson"), "utf8"));
+    if (Array.isArray(existing.features) && existing.features.length >= 430) {
+      console.warn(`Census geometry refresh failed; preserving existing cd119.geojson (${existing.features.length} features).`);
+      return existing.features.length;
+    }
+  } catch {}
+
+  throw new Error(`All Census geometry endpoints failed: ${errors.join(" | ")}`);
 }
 
 await fs.mkdir(PUBLIC_DIR, { recursive: true });
