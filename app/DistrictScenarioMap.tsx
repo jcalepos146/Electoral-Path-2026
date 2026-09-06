@@ -40,6 +40,15 @@ type DemographicBundle = {
   districts: DemoRow[];
 };
 
+type CandidateFinance = {
+  candidateId: string; name: string; party: string; receipts: number; disbursements: number; cashOnHand: number; debts: number; coverageEnd?: string | null;
+};
+type RaceFinance = { dem: CandidateFinance | null; rep: CandidateFinance | null; fecIndex?: number | null; adIndex?: number | null; adImpact?: { demAdSpend: number; repAdSpend: number; demFutureReservations?: number; repFutureReservations?: number; asOf?: string | null; sourceFile?: string | null } | null; index: number | null; direction: string; methodology: string };
+type FinanceBundle = { generatedAt: string; source: string; coverageLatest?: string | null; note: string; house: Record<string, RaceFinance>; senate: Record<string, RaceFinance> };
+type PollMirror = { id: string; name: string; margin: number; label?: string; url: string; mode: string; pollCount?: number; pollsterCount?: number };
+type RacePolling = { sources: PollMirror[]; blend: number | null; sourceCount: number };
+type RacePollingBundle = { generatedAt: string; note: string; house: Record<string, RacePolling>; senate: Record<string, RacePolling> };
+
 type Feature = {
   type: "Feature";
   properties: { STATE?: string; CD119?: string; GEOID?: string; NAME?: string };
@@ -215,15 +224,30 @@ function seatDelta(value: number) {
   return String(value);
 }
 
+function campaignFinanceEffect(index: number | null | undefined, baselineMargin: number, maxEffect: number) {
+  if (index == null || !Number.isFinite(index)) return 0;
+  const competitiveness = Math.exp(-Math.abs(baselineMargin) / 12);
+  return index * maxEffect * competitiveness;
+}
+function money(value?: number | null) {
+  if (value == null || !Number.isFinite(value)) return "—";
+  if (Math.abs(value) >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
+  if (Math.abs(value) >= 1_000) return `$${(value / 1_000).toFixed(0)}K`;
+  return `$${value.toFixed(0)}`;
+}
+
 export default function DistrictScenarioMap({ rawNationalMargin, projectedNationalMargin }: { rawNationalMargin: number; projectedNationalMargin: number }) {
   const [hillcast, setHillcast] = useState<HillcastBundle | null>(null);
   const [demographics, setDemographics] = useState<DemographicBundle | null>(null);
+  const [finance, setFinance] = useState<FinanceBundle | null>(null);
+  const [racePolling, setRacePolling] = useState<RacePollingBundle | null>(null);
   const [geo, setGeo] = useState<FeatureCollection | null>(null);
   const [loadNote, setLoadNote] = useState<string | null>(null);
   const [settings, setSettings] = useState<Record<DemographicKey, ScenarioSetting>>(projectedSettings());
   const [overallTurnout, setOverallTurnout] = useState(BASELINE.overallTurnout);
   const [preserveNational, setPreserveNational] = useState(true);
   const [anchorMode, setAnchorMode] = useState<"projected" | "raw">("projected");
+  const [financeMaxEffect, setFinanceMaxEffect] = useState(0.75);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const mapPaneRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -231,15 +255,19 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
 
   async function loadDistrictData() {
     try {
-      const [hResponse, dResponse, gResponse] = await Promise.all([
+      const [hResponse, dResponse, gResponse, fResponse, pResponse] = await Promise.all([
         fetch(`${BASE_PATH}/data/hillcast-districts.json?v=${Date.now()}`, { cache: "no-store" }),
         fetch(`${BASE_PATH}/data/district-demographics.json?v=${Date.now()}`, { cache: "no-store" }),
         fetch(`${BASE_PATH}/data/cd119.geojson?v=${Date.now()}`, { cache: "no-store" }),
+        fetch(`${BASE_PATH}/data/campaign-finance.json?v=${Date.now()}`, { cache: "no-store" }),
+        fetch(`${BASE_PATH}/data/race-polling.json?v=${Date.now()}`, { cache: "no-store" }),
       ]);
 
       if (!hResponse.ok) throw new Error(`HillCast district HTTP ${hResponse.status}`);
       const h = await hResponse.json();
       const d = dResponse.ok ? await dResponse.json() : null;
+      const f = fResponse.ok ? await fResponse.json() : null;
+      const p = pResponse.ok ? await pResponse.json() : null;
       let g = gResponse.ok ? await gResponse.json() : null;
       let usedRuntimeGeometry = false;
 
@@ -250,6 +278,8 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
 
       setHillcast(h);
       setDemographics(d);
+      setFinance(f);
+      setRacePolling(p);
       setGeo(g);
       setSelectedId((current) => current && h.districts?.some((row: DistrictRow) => row.id === current) ? current : h.districts?.[0]?.id ?? null);
 
@@ -323,6 +353,7 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
       turnoutRate: number;
       baselineTurnoutRate: number;
       projectedVotes: number | null;
+      financeEffect: number;
     };
     const out = new Map<string, Adjusted>();
     if (!hillcast) return out;
@@ -335,8 +366,10 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
       // The national component of the demographic swing is already handled by the national
       // anchor/residual. Subtracting it here leaves only the district-specific geographic effect.
       const demoEffect = demographics ? localDemoSwing - demographicNationalSwing : 0;
-      const baselineMargin = row.margin + baselineNationalResidual;
-      const margin = row.margin + nationalResidual + demoEffect;
+      const beforeFinanceBaseline = row.margin + baselineNationalResidual;
+      const financeEffect = campaignFinanceEffect(finance?.house?.[row.id]?.index, beforeFinanceBaseline, financeMaxEffect);
+      const baselineMargin = beforeFinanceBaseline + financeEffect;
+      const margin = row.margin + nationalResidual + demoEffect + financeEffect;
       const turnoutRate = districtTurnoutRate(demoRow?.shares, impliedTurnout);
       const baselineTurnoutRate = districtTurnoutRate(demoRow?.shares, baselineImpliedTurnout);
       const projectedVotes = demoRow?.totalCvapApprox && turnoutRate
@@ -354,19 +387,25 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
         turnoutRate,
         baselineTurnoutRate,
         projectedVotes,
+        financeEffect,
       });
     }
     return out;
-  }, [hillcast, demoMap, demographics, baselineSettings, settings, demographicNationalSwing, baselineNationalResidual, nationalResidual, impliedTurnout, baselineImpliedTurnout]);
+  }, [hillcast, demoMap, demographics, finance, financeMaxEffect, baselineSettings, settings, demographicNationalSwing, baselineNationalResidual, nationalResidual, impliedTurnout, baselineImpliedTurnout]);
 
   const baselineAdjusted = useMemo(() => {
     if (!hillcast) return new Map<string, { margin: number }>();
-    return new Map(hillcast.districts.map((row) => [row.id, { margin: row.margin + baselineNationalResidual }]));
-  }, [hillcast, baselineNationalResidual]);
+    return new Map(hillcast.districts.map((row) => {
+      const beforeFinance = row.margin + baselineNationalResidual;
+      return [row.id, { margin: beforeFinance + campaignFinanceEffect(finance?.house?.[row.id]?.index, beforeFinance, financeMaxEffect) }];
+    }));
+  }, [hillcast, baselineNationalResidual, finance, financeMaxEffect]);
 
   const bounds = useMemo(() => geo ? { main: boundsFor(geo.features, "main"), AK: boundsFor(geo.features, "AK"), HI: boundsFor(geo.features, "HI") } : null, [geo]);
   const selected = selectedId ? adjusted.get(selectedId) : undefined;
   const selectedDemo = selectedId ? demoMap.get(selectedId) : undefined;
+  const selectedFinance = selectedId ? finance?.house?.[selectedId] : undefined;
+  const selectedPolling = selectedId ? racePolling?.house?.[selectedId] : undefined;
   const counts = useMemo(() => leadCounts(adjusted.values()), [adjusted]);
   const baselineCounts = useMemo(() => leadCounts(baselineAdjusted.values()), [baselineAdjusted]);
   const districtShiftSummary = useMemo(() => {
@@ -483,7 +522,10 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
       <div className="scenarioActions">
         <button className="secondary" type="button" onClick={() => { setSettings(projectedSettings()); setOverallTurnout(BASELINE.overallTurnout); }}>Reset to 2026 projection</button>
         <button className="secondary" type="button" onClick={() => setSettings(neutralSettings())}>Set every group to tie</button>
-        <span className="small">The published 2026 projection is the model&apos;s zero-change state. Sliders apply changes from that baseline in real time. Uniform changes to overall turnout alone do not create a partisan swing; differential group turnout does.</span>
+        <label className="financeWeightControl">Campaign-finance max effect <strong>±{financeMaxEffect.toFixed(2)} pt</strong>
+          <input type="range" min="0" max="2" step="0.05" value={financeMaxEffect} onChange={(e) => setFinanceMaxEffect(Number(e.target.value))} />
+        </label>
+        <span className="small">The published 2026 projection is the model&apos;s zero-change state. The finance overlay is deliberately capped and shrinks rapidly in noncompetitive districts. It uses FEC campaign resources, not AdImpact ad-spend data.</span>
       </div>
 
       <div className="districtMapGrid">
@@ -559,6 +601,7 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
               <div><span>Local demographic swing</span><b>{formatMargin(selected.localDemoSwing)}</b></div>
               <div><span>National demographic swing</span><b>{formatMargin(demographicNationalSwing)}</b></div>
               <div><span>Geographic demo effect</span><b>{formatMargin(selected.demoEffect)}</b></div>
+              <div><span>Finance overlay</span><b>{formatMargin(selected.financeEffect)}</b></div>
               <div><span>Baseline scenario margin</span><b>{formatMargin(selected.baselineMargin)}</b></div>
               <div className="finalProjectionRow"><span>Final scenario margin</span><b>{formatMargin(selected.margin)}</b></div>
             </div>
@@ -569,6 +612,23 @@ export default function DistrictScenarioMap({ rawNationalMargin, projectedNation
             </div>
             <p className="small"><strong>HillCast rating:</strong> {selected.row.rating ?? "—"}</p>
             <p className="small"><strong>Republican:</strong> {selected.row.republican ?? "Not listed"}<br/><strong>Democrat:</strong> {selected.row.democrat ?? "Not listed"}</p>
+            {selectedFinance && <div className="financeInspector">
+              <strong>FEC campaign resources</strong>
+              <div><span>Dem cash / spent</span><b>{money(selectedFinance.dem?.cashOnHand)} / {money(selectedFinance.dem?.disbursements)}</b></div>
+              <div><span>Rep cash / spent</span><b>{money(selectedFinance.rep?.cashOnHand)} / {money(selectedFinance.rep?.disbursements)}</b></div>
+              <div><span>Resource index</span><b>{selectedFinance.index == null ? "—" : `${selectedFinance.index > 0 ? "D" : "R"} ${Math.abs(selectedFinance.index).toFixed(2)}`}</b></div>
+              {selectedFinance.adImpact && <>
+                <div><span>AdImpact Dem / Rep spend</span><b>{money(selectedFinance.adImpact.demAdSpend)} / {money(selectedFinance.adImpact.repAdSpend)}</b></div>
+                <div><span>Future reservations</span><b>{money(selectedFinance.adImpact.demFutureReservations)} / {money(selectedFinance.adImpact.repFutureReservations)}</b></div>
+              </>}
+              <small>Latest filing coverage varies by candidate. This signal is intentionally low-weight because fundraising and spending are partly responses to competitiveness.</small>
+            </div>}
+            {selectedPolling && selectedPolling.sources.length > 0 && <div className="pollMirrorInspector">
+              <strong>Race polling mirrors</strong>
+              {selectedPolling.sources.map((source) => <div key={source.id}><span>{source.name}</span><b>{formatMargin(source.margin)}</b></div>)}
+              {selectedPolling.blend != null && <div><span>Mirror blend</span><b>{formatMargin(selectedPolling.blend)}</b></div>}
+              <small>Displayed separately from the HillCast prior for now to avoid counting the same polls twice.</small>
+            </div>}
             {selectedDemo && <div className="demoShares">{GROUPS.map(({ key, label }) => <span key={key}>{label} <b>{selectedDemo.shares[key]?.toFixed(1) ?? "0.0"}%</b></span>)}</div>}
           </> : <p className="small">Click a district on the map or choose one from the district inspector menu.</p>}
         </aside>

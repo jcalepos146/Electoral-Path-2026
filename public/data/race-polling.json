@@ -1,0 +1,6 @@
+{
+  "generatedAt": null,
+  "note": "Placeholder bundle. GitHub Actions refreshes race polling mirrors before deployment. RCP entries are official published averages when found; VoteHub entries are explicitly labeled Election Path derived averages from VoteHub raw poll data.",
+  "house": {},
+  "senate": {}
+}

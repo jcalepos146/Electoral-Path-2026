@@ -478,3 +478,14 @@ select:disabled { opacity: .65; }
 @media (max-width: 700px) {
   .senateScenarioCard .liveScenarioRibbon { grid-template-columns: 1fr 1fr; }
 }
+
+/* v0.9 campaign finance + race-polling mirrors */
+.financeWeightControl { display: grid; gap: 5px; min-width: 235px; padding: 9px 11px; border: 1px solid var(--border); border-radius: 9px; background: rgba(255,255,255,.025); font-size: .74rem; color: var(--muted); }
+.financeWeightControl strong { color: var(--text); font-size: .82rem; }
+.financeWeightControl input[type="range"] { width: 100%; }
+.financeInspector, .pollMirrorInspector { margin: 10px 0; padding: 10px 11px; border: 1px solid var(--border); border-radius: 9px; background: rgba(255,255,255,.025); display: grid; gap: 6px; }
+.financeInspector > strong, .pollMirrorInspector > strong { font-size: .78rem; letter-spacing: .02em; }
+.financeInspector > div, .pollMirrorInspector > div { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; font-size: .72rem; color: var(--muted); }
+.financeInspector > div b, .pollMirrorInspector > div b { color: var(--text); text-align: right; }
+.financeInspector small, .pollMirrorInspector small { color: var(--muted); line-height: 1.4; }
+@media (max-width: 720px) { .financeWeightControl { width: 100%; min-width: 0; } }

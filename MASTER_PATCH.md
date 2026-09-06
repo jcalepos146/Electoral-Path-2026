@@ -1,6 +1,6 @@
-# Election Path 2026 master patch v0.8
+# Election Path 2026 master patch v0.9
 
-This master version consolidates the working House model and adds the HillCast Senate demographic scenario engine.
+This cumulative master consolidates the working v0.8 House + Senate model and adds campaign-finance signals and race-level polling mirrors.
 
 Included:
 - House aggregate mirrors and historical path model
@@ -10,10 +10,13 @@ Included:
 - real-time House demographic scenario adjustments
 - dedicated Census geometry workflow
 - HillCast/Datawrapper Senate wrapper ingestion
-- Senate-only zoomable state map (governor UI removed)
+- Senate-only zoomable state map
 - real-time Senate racial-margin and turnout scenario adjustments
-- state demographic aggregation from the House Census dataset
+- FEC House/Senate campaign-resource refresh before every deployment
+- small, capped campaign-finance margin overlay with user-adjustable maximum effect
+- optional weekly AdImpact spending/reservation wrapper
+- RCP official race-average mirrors where discoverable
+- VoteHub-data-derived race mirrors from its free raw polling API
+- race inspector panels showing finance and polling evidence separately from the HillCast prior
 
-Upload this version over the repository root and replace matching files. Existing committed map geometry files can remain in `public/data/`.
-
-Cumulative v0.8 hotfix: includes the complete v0.7 master baseline plus the Senate v0.8 overlay, including app/mapViewport.ts required by the Senate and House click-suppression code.
+The polling mirrors remain display-only in v0.9 so the same poll information is not automatically counted both inside HillCast and again inside Election Path. The next statistically cleaner step is to archive mirror snapshots and apply only the post-HillCast change.

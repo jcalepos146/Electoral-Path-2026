@@ -1,9 +1,9 @@
-# Upload MASTER v0.8 cumulative hotfix
+# Upload MASTER v0.9 cumulative patch
 
-This ZIP is cumulative. It includes the full working MASTER v0.7 baseline plus the v0.8 Senate changes.
+1. Unzip `Election-Path-2026-MASTER-v0.9-FINANCE-POLLING-PATCH.zip` locally.
+2. In GitHub, open the repository root on `main` and choose **Add file → Upload files**.
+3. Drag the **contents** of the unzipped folder, preserving the existing folder structure, and commit to `main`.
+4. Matching paths should be replaced. Do not delete existing `public/data/cd119.geojson` or `public/data/states.geojson` if GitHub does not show them in the patch; the geometry workflow owns those files.
+5. Wait for **Build, refresh data, and deploy Pages** to finish. The new build runs the FEC finance refresh and race-polling mirror refresh before `next build`.
 
-Upload the **contents** of this folder to the repository root on `main`, replacing matching files.
-
-The key compile fix is `app/mapViewport.ts`, which exports `shouldSuppressClick()` used by both the House and Senate interactive maps.
-
-After committing, let the Pages workflow run. You do not need to re-apply earlier patches.
+This is cumulative over the v0.8 hotfix for the app/scripts/workflows it touches. You do not need to reapply earlier patches afterward.

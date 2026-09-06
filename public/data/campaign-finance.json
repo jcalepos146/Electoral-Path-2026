@@ -1,0 +1,10 @@
+{
+  "generatedAt": null,
+  "source": "Federal Election Commission 2025-2026 House/Senate current campaigns bulk file",
+  "sourceUrl": "https://www.fec.gov/data/browse-data/?tab=spending",
+  "coverageLatest": null,
+  "note": "Placeholder bundle. GitHub Actions refreshes this from FEC candidate campaign summaries before each deployment. This is campaign finance, not AdImpact ad-spend tracking.",
+  "convention": "Finance index ranges from -1 to +1; positive values indicate a Democratic resource advantage.",
+  "house": {},
+  "senate": {}
+}

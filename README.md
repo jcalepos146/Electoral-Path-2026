@@ -122,3 +122,11 @@ See `DISTRICT_MAP.md` for the exact arithmetic.
 ## Senate demographic scenario
 
 The master build now ingests the HillCast/Datawrapper 2026 Senate wrapper from `data/senate_uploads/` and applies the same racial/ethnic margin and turnout scenario engine used by the House map. The governor map is hidden for now. See `SENATE_SCENARIO.md`.
+
+## Campaign finance + race polling mirrors (v0.9)
+
+The House and Senate inspectors now include an experimental campaign-resource layer built from FEC current-campaign summaries. The resource signal uses cash on hand, adjusted receipts, and adjusted disbursements, is strongly shrunk, and receives a smaller effect in noncompetitive races. The maximum margin effect can be adjusted from the map UI.
+
+The site also builds race-level polling mirrors. RealClearPolling is shown as an official average when a current matchup average is discoverable. VoteHub's free raw polling API is used to construct a separately labeled Election Path/VoteHub-data-derived average when current candidates can be matched. These mirrors are displayed beside the model but are not yet added to the HillCast prior, avoiding immediate double counting of polling information.
+
+AdImpact publicly offers API/custom-feed products, but the project does not assume an undocumented endpoint or scrape an authenticated dashboard. A manual weekly AdImpact wrapper can be placed in `data/adimpact_uploads/` and is automatically blended into the small finance overlay. See `FINANCE_POLLING.md`.

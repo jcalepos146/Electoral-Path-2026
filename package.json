@@ -1,6 +1,6 @@
 {
   "name": "election-path",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,9 @@
     "rebuild-history": "python scripts/build_historical_data.py --pdf-dir ./source_pdfs --out ./data/historical-generic.json",
     "update-districts": "node scripts/update_district_data.mjs",
     "update-statewide": "node scripts/update_statewide_data.mjs",
-    "refresh-geometry": "node scripts/refresh_geometry.mjs"
+    "refresh-geometry": "node scripts/refresh_geometry.mjs",
+    "update-finance": "node scripts/update_finance_data.mjs",
+    "update-race-polling": "node scripts/update_race_polling.mjs"
   },
   "dependencies": {
     "next": "^15.5.2",
