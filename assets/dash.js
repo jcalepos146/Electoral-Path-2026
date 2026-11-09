@@ -51,7 +51,9 @@ window.dash = (() => {
   const schedule = () => {
     if (pending) return;
     pending = true;
-    requestAnimationFrame(() => { pending = false; drawAll(); });
+    // Background tabs don't fire animation frames, so fall back to a timer there.
+    const tick = document.hidden ? (f) => setTimeout(f, 0) : requestAnimationFrame;
+    tick(() => { pending = false; drawAll(); });
   };
 
   // A section that stops being hidden gets its drawings run.
