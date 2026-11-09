@@ -1,132 +1,84 @@
-# Election Path 2026
+# 2026 Midterm Election Results
 
-Election Path 2026 is a static GitHub Pages model that compares the live U.S. House generic ballot with historical RCP generic-ballot paths and adds presidential-approval, turnout-enthusiasm, and actual-electorate context.
+An interactive results site for the Nov. 3, 2026 U.S. midterm elections: Senate, House and governor results, county maps of margin, swing, trend and turnout, statewide ballot measures, voter-poll breakdowns, and a what-if simulator.
 
-## Historical filters
+**Live site:** https://jcalepos146.github.io/Electoral-Path-2026/
 
-The model now supports five comparison sets:
+It's a static site with no build step: plain HTML, CSS and JavaScript, [d3](https://d3js.org) from a CDN, and JSON data files.
 
-- **Presidential** — 2004, 2008, 2012, 2016, 2020, 2024
-- **Midterm** — 2006, 2010, 2014, 2018, 2022
-- **Overall** — all 11 cycles from 2004 through 2024
-- **Low Turnout Midterm** — 2006, 2010, 2014
-- **High Turnout Midterm** — 2018, 2022
+## What's on the site
 
-The turnout split uses the U.S. Census Bureau citizen voting-age turnout series. The project uses a transparent 50% cutoff: 2006 (47.8%), 2010 (45.5%), and 2014 (41.9%) are below it; 2018 (53.4%) and 2022 (52.2%) are above it.
+| Tab | What it shows |
+|---|---|
+| Overview | Seat counts for the Senate (with senators not up this year), House and governors; seats that changed party |
+| Senate / House / Governors | State tile maps and a table of every race; uncalled races marked |
+| Voter trends | National House vote by group from the 2026 Voter Poll |
+| County map | Every county: 2026 margin, swing from 2024 or 2020, trend vs. the nation, and turnout vs. 2024 or 2020, for each state's top race, Senate, governor or all House districts combined; plus a state map of each race vs. the national environment |
+| Ballot measures | Statewide measures with yes/no counts and descriptions |
+| Turnout | Who turned out by 2024 vote, estimated turnout rates by past vote, and 2026 votes cast vs. 2024 and 2020 by state |
+| Simulator | Sliders for the national environment, Trump approval, and turnout among 2024 (or 2020) Trump voters, Harris (or Biden) voters and people who skipped 2024; re-runs every Senate, House and governor race |
 
-## Generic-ballot model
+## Data sources
 
-For every historical cycle and every days-to-election point:
+| Data | Source | Notes |
+|---|---|---|
+| Race calls, candidates, statewide vote shares in the race tables | Associated Press results as compiled on Wikipedia's 2026 House, Senate and governor election pages | Snapshot Nov. 8, 2026; calls rechecked Nov. 9. Wikipedia text and data are CC BY-SA 4.0 |
+| 2026 county results (Senate, governor, House), House district margins, statewide turnout, ballot measure counts | [civicAPI](https://civicapi.org) | Unofficial counts as of Nov. 9, 2026. civicAPI is free to use with attribution and doesn't say where its data comes from; its statewide totals agree with AP-reported results within 1.5 points everywhere |
+| Ballot measure descriptions | Wikipedia, "2026 United States ballot measures" | CC BY-SA 4.0 |
+| 2024 and 2020 presidential results by county | [tonmcg/US_County_Level_Election_Results_08-24](https://github.com/tonmcg/US_County_Level_Election_Results_08-24) | |
+| County and state outlines | [us-atlas](https://github.com/topojson/us-atlas) (Census cartographic boundaries) | Albers USA projection |
+| Voter poll | 2026 Voter Poll by SSRS for the AP and partner networks, national House results as published by CNN and transcribed on Wikipedia | Survey estimates, not counts |
+| 2024 eligible population and ballots cast | UF Election Lab | Used for turnout rates of people who skipped 2024 |
+| Uncalled-race notes | AP reporting on the Mississippi count, the Kansas Secretary of State, and Alaska's ranked-choice timetable | |
 
-1. Average individual generic-ballot polls whose fieldwork ended in the trailing 14 days.
-2. Compute the historical polling margin.
-3. Compare that snapshot with the final nationwide House popular-vote margin.
-4. Use the mean or median remaining movement from the selected historical filter.
+Data from civicAPI (civicapi.org).
 
-A positive margin is Democratic; a negative margin is Republican.
+## Method notes and caveats
 
-The site is an extrapolation tool, not a probabilistic election forecast. Movement between a polling snapshot and Election Day can represent both real opinion change and polling error.
+- **Swing** is a county's 2026 margin minus its presidential margin. **Trend** is that swing minus the national shift over the same period. The national 2026 environment is the House vote summed across all districts (D+13.2 on 115.0 million votes as of Nov. 9); 2024 and 2020 national margins come from summed county results.
+- **"Top race"** on the county map is each state's Senate race, else its governor race, else its House races combined, skipping races where an independent finished in the top two.
+- **House layers** leave out counties in a district that one party didn't contest.
+- **Alaska** reports 2020 and 2024 results by state house district, so the map shows 2026 margins only. **Connecticut's** 2024 results are by planning region, so its comparisons with 2024 are blank.
+- **The simulator** starts each race at its actual margin and adds the national shift, an approval effect (each point moves voters between "somewhat approve" and "somewhat disapprove") and a turnout effect. Turnout rates come from the voter poll's mix of 2026 voters, the 2026 House vote count and each group's earlier vote total. Alaska's ranked-choice races assume votes for eliminated Republicans transfer to the leading Republican. It's a what-if tool, not a forecast.
+- Some measures need a supermajority to pass (for example Florida amendments and most Colorado constitutional amendments), so a yes lead doesn't always mean a measure passed.
+- This is a snapshot. Counts keep changing until states certify.
 
-## Live generic-ballot inputs
+## Running it locally
 
-The scheduled GitHub Action attempts to refresh:
+The page loads its data with `fetch`, so serve the folder instead of opening the file directly:
 
-- RealClearPolling
-- VoteHub
-- HillCast
-- America First Insight
-- Any optional JSON/CSV sources configured in `config/sources.json`
-
-If a public page changes markup or rejects the request, the updater can fall back to the bundled last-known reading rather than breaking the Pages build.
-
-## Electoral-environment panel
-
-The site also displays, separately from the House-vote correction:
-
-- RCP presidential approval average
-- Latest Echelon Verified Voter Omnibus presidential approval
-- Echelon "extremely motivated" turnout context from the supplied chart
-- 2025 CNN/SSRS exit-poll approval readings for New Jersey, Virginia, New York City, and California
-
-These indicators are deliberately **not silently merged** into the generic-ballot correction. They are displayed as separate evidence until enough historical observations exist to validate an approval/enthusiasm weighting rule.
-
-## Run locally
-
-```bash
-npm install
-npm run update-data
-npm run dev
+```sh
+python3 -m http.server 8000
+# then open http://localhost:8000
 ```
 
-Build the static site:
+## Updating the data
 
-```bash
-npm run build
+```sh
+python3 scripts/refresh_civicapi.py
 ```
 
-Next.js writes the GitHub Pages artifact to `out/`.
+This re-downloads every Senate, governor, House and statewide measure race from civicAPI and rebuilds `data/counties.json`, `data/sim_house.json`, `data/sim_races.json`, `data/state_turnout.json` and the counts in `data/measures.json`. It prints new national House totals; copy them into `HOUSE_2026` and `VOTES_2026` in `assets/app.js`. Race calls (`data/senate_races.json`, `data/governor_races.json`, `data/house.json`) are not changed by the script; update them by hand as AP calls races.
 
-## Deploy to GitHub Pages
+`scripts/archive/` holds the one-time scripts used to build the original datasets from Wikipedia and other sources. They're kept for reference and use paths from the environment they were run in.
 
-1. Upload the project contents to the root of your repository.
-2. Go to **Settings → Pages**.
-3. Set **Source** to **GitHub Actions**.
-4. Commit to `main`.
+## Repository layout
 
-The included `.github/workflows/pages.yml` refreshes public data, builds the static export, and deploys it.
-
-## Rebuild the historical dataset
-
-The repository contains `scripts/build_historical_data.py`. To regenerate the historical JSON, place the 11 RCP PDF exports in one directory using their original names and run:
-
-```bash
-python scripts/build_historical_data.py --pdf-dir /path/to/pdfs --out data/historical-generic.json
+```
+index.html            page markup
+assets/app.js         charts, maps, calculations and the simulator model
+assets/dash.js        small runtime that loads data/*.json and redraws charts
+assets/page.css       page styles
+assets/theme.css      colors, type and spacing (light and dark)
+data/                 JSON datasets
+scripts/              data refresh script and archived build scripts
+.github/workflows/    deploys the site to GitHub Pages on every push to main
 ```
 
-The script requires Poppler's `pdftotext` command.
+## Earlier version
 
-## Data provenance
-
-See `SOURCES.md` and `MODEL_NOTES.md` for methodology and source notes.
+Before the election this repo held the Election Path 2026 forecast model (a Next.js site comparing the generic ballot with historical polling paths). It was replaced by this results site on Nov. 9, 2026; the full forecast code is still in the git history.
 
 ## License
 
-MIT. See `LICENSE`.
-
-
-## Live-source connectivity
-
-See [`LIVE_SOURCES.md`](LIVE_SOURCES.md) for the current RCP, VoteHub, HillCast, and America First Insight setup. VoteHub requires no key; HillCast is ingested as a public margin source; AFI uses public-page parsing with repository-variable fallback when its client-rendered dashboard does not expose the topline to a static request.
-
-## District map and weekly HillCast CSVs
-
-The site now includes an interactive 435-seat district scenario map. The latest CSV in `data/hillcast_uploads/` supplies the HillCast district prior; the selected national Election Path projection is applied only as a residual relative to HillCast's national baseline, and demographic vote-margin/turnout sliders can redistribute the national environment geographically.
-
-For weekly updates, rename Preston Hill's file `hillcast-YYYY-MM-DD.csv`, upload it to `data/hillcast_uploads/`, and commit to `main`. The Pages Action regenerates the map automatically. See `DISTRICT_MAP.md` for the model order and demographic methodology.
-
-## Map geometry and aggregate mirror patch
-
-The congressional map geometry is now managed by a dedicated GitHub Action instead of being fetched during every Pages build. See `MAP_GEOMETRY_ACTION.md`.
-
-The live-source section now presents RCP, VoteHub, HillCast, and America First Insight as side-by-side topline mirrors with explicit live/cached/unavailable status. See `AGGREGATE_MIRRORS.md`.
-
-## Real-time House scenario engine (v0.7)
-
-The House map now treats the published 2026 demographic projections as the zero-change baseline. Slider movements are converted into a **local demographic swing** and a **national demographic swing** in real time. In Preserve national anchor mode, the national component is subtracted so only geographic redistribution is applied to districts. This prevents the demographic layer from double-counting the HillCast prior.
-
-Districts are directly clickable while zoom/pan remains enabled. The map delays pointer capture until the user has actually dragged, so a normal click selects the district instead of being swallowed by the panning system. The inspector shows the HillCast prior, national residual, local demographic swing, national demographic swing, normalized geographic effect, final margin, estimated turnout, and approximate votes cast.
-
-See `DISTRICT_MAP.md` for the exact arithmetic.
-
-
-## Senate demographic scenario
-
-The master build now ingests the HillCast/Datawrapper 2026 Senate wrapper from `data/senate_uploads/` and applies the same racial/ethnic margin and turnout scenario engine used by the House map. The governor map is hidden for now. See `SENATE_SCENARIO.md`.
-
-## Campaign finance + race polling mirrors (v0.9)
-
-The House and Senate inspectors now include an experimental campaign-resource layer built from FEC current-campaign summaries. The resource signal uses cash on hand, adjusted receipts, and adjusted disbursements, is strongly shrunk, and receives a smaller effect in noncompetitive races. The maximum margin effect can be adjusted from the map UI.
-
-The site also builds race-level polling mirrors. RealClearPolling is shown as an official average when a current matchup average is discoverable. VoteHub's free raw polling API is used to construct a separately labeled Election Path/VoteHub-data-derived average when current candidates can be matched. These mirrors are displayed beside the model but are not yet added to the HillCast prior, avoiding immediate double counting of polling information.
-
-AdImpact publicly offers API/custom-feed products, but the project does not assume an undocumented endpoint or scrape an authenticated dashboard. A manual weekly AdImpact wrapper can be placed in `data/adimpact_uploads/` and is automatically blended into the small finance overlay. See `FINANCE_POLLING.md`.
+The code is released under the [MIT License](LICENSE). The data in `data/` comes from the sources above and keeps their terms: Wikipedia text is CC BY-SA 4.0, and civicAPI asks for attribution.

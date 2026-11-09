@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 Midterm Election Results</title>
+<meta name="description" content="House, Senate, governor, county, ballot measure and turnout results from the Nov. 3, 2026 U.S. midterm elections, with a what-if simulator.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect width=%228%22 height=%2216%22 fill=%22%233a6fd6%22/%3E%3Crect x=%228%22 width=%228%22 height=%2216%22 fill=%22%23d4473d%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/page.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="assets/dash.js"></script>
+</head>
+<body>
+<div id="dash-root">
+<div class="ev">
+  <h1 id="top">2026 midterm election results</h1>
+  <p class="lede">House, Senate and governor results from the Nov. 3, 2026 general election, plus how groups of voters cast their House ballots. Race calls as of Nov. 9, 2026; uncalled races are shaded and listed with their latest status.</p>
+  <p class="take">Democrats hold <b data-draw="n" data-source="senate_balance" data-field="seats" data-where="key=DC">—</b> Senate seats (counting independents who caucus with them) to Republicans' <b data-draw="n" data-source="senate_balance" data-field="seats" data-where="key=R">—</b>, and have won <b data-draw="n" data-source="house_balance" data-field="seats" data-where="key=D">—</b> House seats to Republicans' <b data-draw="n" data-source="house_balance" data-field="seats" data-where="key=R">—</b>. Still uncalled: <b data-draw="n" data-source="senate_balance" data-field="seats" data-where="key=U">—</b> Senate, <b data-draw="n" data-source="house_balance" data-field="seats" data-where="key=U">—</b> House and <b data-draw="n" data-source="governor_balance" data-field="races" data-where="key=U">—</b> governor races.</p>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-overview" data-tab="overview" aria-selected="true">Overview</button>
+    <button role="tab" id="tab-senate" data-tab="senate" aria-selected="false">Senate</button>
+    <button role="tab" id="tab-house" data-tab="house" aria-selected="false">House</button>
+    <button role="tab" id="tab-governor" data-tab="governor" aria-selected="false">Governors</button>
+    <button role="tab" id="tab-voters" data-tab="voters" aria-selected="false">Voter trends</button>
+    <button role="tab" id="tab-counties" data-tab="counties" aria-selected="false">County map</button>
+    <button role="tab" id="tab-measures" data-tab="measures" aria-selected="false">Ballot measures</button>
+    <button role="tab" id="tab-turnout" data-tab="turnout" aria-selected="false">Turnout</button>
+    <button role="tab" id="tab-sim" data-tab="sim" aria-selected="false">Simulator</button>
+  </nav>
+  <p class="note simlink">What if the national mood or turnout had been different? The <a href="#sim" data-go="sim">Simulator</a> tab re-runs every race with sliders.</p>
+
+  <section id="overview" class="page">
+    <div class="grid">
+      <div class="card" id="ov-senate">
+        <h2>Senate</h2>
+        <p class="note">All 100 seats: the races on the ballot plus senators not up this year.</p>
+        <div class="big">
+          <div class="d"><b data-draw="n" data-source="senate_balance" data-field="seats" data-where="key=DC">—</b><span>Democrats and independents</span></div>
+          <div class="r"><b data-draw="n" data-source="senate_balance" data-field="seats" data-where="key=R">—</b><span>Republicans</span></div>
+          <div><b data-draw="n" data-source="senate_balance" data-field="seats" data-where="key=U">—</b><span>Uncalled</span></div>
+        </div>
+        <div class="chart" id="bar-senate" data-draw="seatbar" data-bar="senate" data-source="senate_balance"></div>
+      </div>
+      <div class="card" id="ov-house">
+        <h2>House</h2>
+        <p class="note">All House seats.</p>
+        <div class="big">
+          <div class="d"><b data-draw="n" data-source="house_balance" data-field="seats" data-where="key=D">—</b><span>Democrats</span></div>
+          <div class="r"><b data-draw="n" data-source="house_balance" data-field="seats" data-where="key=R">—</b><span>Republicans</span></div>
+          <div><b data-draw="n" data-source="house_balance" data-field="seats" data-where="key=U">—</b><span>Uncalled</span></div>
+        </div>
+        <div class="chart" id="bar-house" data-draw="seatbar" data-bar="house" data-source="house_balance"></div>
+      </div>
+      <div class="card" id="ov-gov">
+        <h2>Governors</h2>
+        <p class="note">The governor races on the ballot this year.</p>
+        <div class="big">
+          <div class="d"><b data-draw="n" data-source="governor_balance" data-field="races" data-where="key=D">—</b><span>Won by Democrats</span></div>
+          <div class="r"><b data-draw="n" data-source="governor_balance" data-field="races" data-where="key=R">—</b><span>Won by Republicans</span></div>
+          <div><b data-draw="n" data-source="governor_balance" data-field="races" data-where="key=U">—</b><span>Uncalled</span></div>
+        </div>
+        <div class="chart" id="bar-gov" data-draw="seatbar" data-bar="governor" data-source="governor_balance"></div>
+      </div>
+    </div>
+    <div class="card wide" id="ov-flips">
+      <h2>Seats that changed party</h2>
+      <p class="note">Called races won by a different party than held the seat before the election.</p>
+      <table>
+        <thead><tr><th>Office</th><th class="num">Flipped to Democrats</th><th class="num">Flipped to Republicans</th></tr></thead>
+        <tbody data-draw="flips-table"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="senate" class="page" hidden>
+    <div class="card wide" id="senate-map-card">
+      <h2>Senate races by state</h2>
+      <p class="note">Hover a state for the candidates and vote shares.</p>
+      <div class="map" id="senate-map" data-draw="tilemap" data-races="senate_races" data-cands="senate_candidates"></div>
+      <div class="legend"><span><i class="sw d"></i>Democrat</span><span><i class="sw r"></i>Republican</span><span><i class="sw u"></i>Uncalled</span><span><i class="sw f"></i>Changed party</span><span><i class="sw n"></i>No race</span></div>
+    </div>
+    <div class="card wide" id="senate-table-card">
+      <h2>Every Senate race</h2>
+      <p class="note">Leader is the winner where the race is called. Margin is the gap between the top two, in points.</p>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>Race</th><th>Winner or leader</th><th class="num">Share</th><th class="hide-narrow">Runner-up</th><th class="num hide-narrow">Share</th><th class="num">Margin</th><th>Status</th><th>Flip</th><th class="hide-narrow">Note</th></tr></thead>
+          <tbody data-draw="race-table" data-races="senate_races"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="house" class="page" hidden>
+    <div class="card wide" id="house-map-card">
+      <h2>House seats by state</h2>
+      <p class="note">Each square is one district, grouped by state. Hover a state for its tally.</p>
+      <div class="map" id="house-map" data-draw="housemap"></div>
+      <div class="legend"><span><i class="sw d"></i>Democrat</span><span><i class="sw r"></i>Republican</span><span><i class="sw u"></i>Uncalled</span><span><i class="sw f"></i>Changed party</span></div>
+    </div>
+    <div class="card wide" id="house-table-card">
+      <h2>Every House district</h2>
+      <div class="controls">
+        <button data-hf="all" aria-pressed="true">All districts</button>
+        <button data-hf="flip" aria-pressed="false">Changed party</button>
+        <button data-hf="uncalled" aria-pressed="false">Uncalled</button>
+        <input type="search" class="hsearch" id="hsearch" placeholder="Search state, district or name" aria-label="Search districts">
+      </div>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>District</th><th>Party</th><th>Winner</th><th>Status</th><th>Flip</th><th class="hide-narrow">Candidates</th><th class="hide-narrow">Note</th></tr></thead>
+          <tbody data-draw="house-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="governor" class="page" hidden>
+    <div class="card wide" id="gov-map-card">
+      <h2>Governor races by state</h2>
+      <p class="note">Hover a state for the candidates and vote shares.</p>
+      <div class="map" id="gov-map" data-draw="tilemap" data-races="governor_races" data-cands="governor_candidates"></div>
+      <div class="legend"><span><i class="sw d"></i>Democrat</span><span><i class="sw r"></i>Republican</span><span><i class="sw u"></i>Uncalled</span><span><i class="sw f"></i>Changed party</span><span><i class="sw n"></i>No race</span></div>
+    </div>
+    <div class="card wide" id="gov-table-card">
+      <h2>Every governor race</h2>
+      <p class="note">Leader is the winner where the race is called. Margin is the gap between the top two, in points.</p>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>Race</th><th>Winner or leader</th><th class="num">Share</th><th class="hide-narrow">Runner-up</th><th class="num hide-narrow">Share</th><th class="num">Margin</th><th>Status</th><th>Flip</th><th class="hide-narrow">Note</th></tr></thead>
+          <tbody data-draw="race-table" data-races="governor_races"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="voters" class="page" hidden>
+    <div class="card wide" id="vp-card">
+      <h2>How groups voted for the House</h2>
+      <p class="note">National House vote by group, from the 2026 Voter Poll (a survey of verified voters). Overall: Democrats <b data-draw="n" data-fmt="pct" data-source="voter_poll" data-field="dem" data-where="id=Overall | Total vote">—</b>, Republicans <b data-draw="n" data-fmt="pct" data-source="voter_poll" data-field="rep" data-where="id=Overall | Total vote">—</b>. Right column: the group's share of all voters.</p>
+      <div class="controls"><select class="dash-select" id="vp-q" data-draw="vp-q" aria-label="Question"></select></div>
+      <div class="chart" id="vp-chart" data-draw="vp-chart"></div>
+      <div class="legend"><span><i class="sw d"></i>Democratic candidate</span><span><i class="sw r"></i>Republican candidate</span></div>
+    </div>
+  </section>
+
+  <section id="counties" class="page" hidden>
+    <div class="card wide" id="county-card">
+      <h2>Results by county</h2>
+      <p class="note">Every county with a 2026 count, unofficial as of Nov. 9. "Top race" uses each state's Senate race, else its governor race, else its House races, skipping races where an independent was a top-two finisher. Alaska has no 2024 or 2020 results by borough, so it shows 2026 margins only; Connecticut's 2024 results are by planning region, so its 2024 comparisons are blank.</p>
+      <div class="controls">
+        <select class="dash-select cm-race" id="cm-race" aria-label="2026 race">
+          <option value="top">2026 top race in each state</option>
+          <option value="sen">2026 Senate</option>
+          <option value="gov">2026 governor</option>
+          <option value="house">2026 House, all districts combined</option>
+        </select>
+        <select class="dash-select cm-measure" id="cm-measure" aria-label="What to show">
+          <option value="margin">2026 margin</option>
+          <option value="swing24">Swing from 2024 president</option>
+          <option value="swing20">Swing from 2020 president</option>
+          <option value="trend24">Trend vs. nation since 2024</option>
+          <option value="trend20">Trend vs. nation since 2020</option>
+          <option value="turn24">Turnout: 2026 votes as a share of 2024</option>
+          <option value="turn20">Turnout: 2026 votes as a share of 2020</option>
+          <option value="p24">2024 president margin</option>
+          <option value="p20">2020 president margin</option>
+        </select>
+      </div>
+      <div class="map cmap" id="county-map" data-draw="countymap2"></div>
+      <p class="note">Swing: the county's 2026 margin minus its presidential margin. Trend: that swing minus the national shift over the same period (<b data-draw="n" data-fmt="pts" data-source="national_env" data-field="value" data-where="key=swing">—</b> toward Democrats since 2024, <b data-draw="n" data-fmt="pts" data-source="national_env" data-field="value" data-where="key=swing20">—</b> since 2020). Blue counties moved toward Democrats more than the nation did; red counties moved less, or toward Republicans. Candidates matter: a strong or weak nominee shows up as swing and trend. House layers leave out counties in a district one party didn't contest.</p>
+    </div>
+    <div class="card wide" id="trend-card">
+      <h2>States vs. the national environment</h2>
+      <p class="note">National environment: the 2026 House vote, <b data-draw="n" data-fmt="margin" data-source="national_env" data-field="value" data-where="key=nat26">—</b>, against <b data-draw="n" data-fmt="margin" data-source="national_env" data-field="value" data-where="key=nat24">—</b> for president in 2024.</p>
+      <div class="controls">
+        <select class="dash-select tr-office" id="tr-office" aria-label="Office">
+          <option value="Senate">Senate races</option>
+          <option value="Governor">Governor races</option>
+        </select>
+        <select class="dash-select tr-measure" id="tr-measure" aria-label="Measure">
+          <option value="trend">Trend since 2024 vs. the nation</option>
+          <option value="rel_nat">2026 margin vs. the national environment</option>
+        </select>
+      </div>
+      <div class="map" id="trend-map" data-draw="trendmap"></div>
+      <p class="note">Only races where a Democrat and a Republican finished first and second, with a reported count, are shaded. Races led by an independent challenger (such as Nebraska's Senate race) and uncalled races without a full count are left blank.</p>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>Race</th><th class="num">2026 margin</th><th class="num">2024 president</th><th class="num">Vs. national environment</th><th class="num">Trend vs. nation</th></tr></thead>
+          <tbody data-draw="trend-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="measures" class="page" hidden>
+    <div class="card wide" id="measures-card">
+      <h2>Statewide ballot measures</h2>
+      <p class="note">Yes and no shares from civicAPI (unofficial counts as of Nov. 9). Some measures need a supermajority to pass, such as Florida amendments and most Colorado constitutional amendments, so a yes lead does not always mean a measure passes. Measures without a count in the source are listed with their description only.</p>
+      <div class="controls">
+        <button data-mf="all" aria-pressed="true">All measures</button>
+        <button data-mf="counted" aria-pressed="false">With counts</button>
+        <input type="search" class="msearch" id="msearch" placeholder="Search state or topic" aria-label="Search measures">
+      </div>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>State</th><th>On the ballot as</th><th class="hide-narrow">Measure</th><th class="num">Yes</th><th class="num">No</th><th>Count</th><th class="hide-narrow">What a yes vote does</th></tr></thead>
+          <tbody data-draw="measures-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="turnout" class="page" hidden>
+    <div class="card wide" id="turnout-poll-card">
+      <h2>Who turned out, by 2024 vote</h2>
+      <p class="note">2026 voters grouped by how they voted in 2024, from the 2026 Voter Poll. Right column: each group's share of 2026 voters.</p>
+      <div class="chart" id="turnout-poll" data-draw="vp-fixed" data-q="2024 presidential vote"></div>
+      <div class="legend"><span><i class="sw d"></i>Democratic candidate</span><span><i class="sw r"></i>Republican candidate</span></div>
+    </div>
+    <div class="card wide" id="turnout-rates-card">
+      <h2>Estimated turnout by past vote</h2>
+      <p class="note">Share of each group that voted in 2026, estimated from the poll's mix of 2026 voters, the votes counted so far, and each group's size in the earlier election. These are the starting points for the Simulator's turnout sliders.</p>
+      <table>
+        <thead><tr><th>Group</th><th class="num">Voters then</th><th class="num">Voted in 2026 (est.)</th><th class="num">Turnout</th></tr></thead>
+        <tbody data-draw="rates-table"></tbody>
+      </table>
+    </div>
+    <div class="card wide" id="turnout-chart-card">
+      <h2>Votes cast in 2026 compared with 2024 and 2020</h2>
+      <p class="note">Votes in each state's largest 2026 statewide count (Senate, governor, or all House districts combined; as of Nov. 9) as a share of its presidential vote. Bars compare with 2024; dots with 2020. Several states, such as California, count mail ballots for weeks, so their shares will rise.</p>
+      <div class="chart" id="turnout-chart" data-draw="turnout-chart"></div>
+    </div>
+    <div class="card wide" id="turnout-table-card">
+      <h2>Votes cast by state</h2>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>State</th><th class="num">2026 votes</th><th class="num">2024 votes</th><th class="num">2020 votes</th><th class="num">Share of 2024</th><th class="num">Share of 2020</th><th class="hide-narrow">2026 race counted</th></tr></thead>
+          <tbody data-draw="turnout-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="sim" class="page" hidden>
+    <div class="simgrid">
+      <aside class="card simrail" id="sim-rail" aria-label="Scenario settings">
+        <h2>Scenario settings</h2>
+        <div class="ctl">
+          <label for="sim-env">National environment <output data-draw="sim-val" data-k="env">—</output></label>
+          <input type="range" id="sim-env" class="sim-in" data-k="env" min="-20" max="20" step="0.5" value="0">
+          <p>Adds the same swing to every race's margin. Left is toward Republicans, right toward Democrats.</p>
+        </div>
+        <div class="ctl">
+          <label for="sim-appr">Trump approval <output data-draw="sim-val" data-k="appr">—</output></label>
+          <input type="range" id="sim-appr" class="sim-in" data-k="appr" min="20" max="60" step="1">
+          <p>Actual 2026 voter poll: <b data-draw="n" data-fmt="pct" data-source="sim_base" data-field="value" data-where="key=approval">—</b> approve. Each point moves voters between "somewhat approve" and "somewhat disapprove".</p>
+        </div>
+        <div class="seg" role="group" aria-label="Electorate baseline">
+          <button class="sim-year" data-year="24" aria-pressed="true">Based on 2024 vote</button>
+          <button class="sim-year" data-year="20" aria-pressed="false">Based on 2020 vote</button>
+        </div>
+        <div class="ctl">
+          <label for="sim-tr"><span><span class="y24">2024 Trump voters who vote</span><span class="y20" hidden>2020 Trump voters who vote</span></span> <output data-draw="sim-val" data-k="tr">—</output></label>
+          <input type="range" id="sim-tr" class="sim-in" data-k="tr" min="0" max="100" step="1">
+          <p>Estimated actual: <span class="y24"><b data-draw="n" data-fmt="pct" data-source="sim_base" data-field="value" data-where="key=trump24">—</b></span><span class="y20" hidden><b data-draw="n" data-fmt="pct" data-source="sim_base" data-field="value" data-where="key=trump20">—</b></span> of them voted in 2026.</p>
+        </div>
+        <div class="ctl">
+          <label for="sim-hd"><span><span class="y24">2024 Harris voters who vote</span><span class="y20" hidden>2020 Biden voters who vote</span></span> <output data-draw="sim-val" data-k="hd">—</output></label>
+          <input type="range" id="sim-hd" class="sim-in" data-k="hd" min="0" max="100" step="1">
+          <p>Estimated actual: <span class="y24"><b data-draw="n" data-fmt="pct" data-source="sim_base" data-field="value" data-where="key=harris24">—</b></span><span class="y20" hidden><b data-draw="n" data-fmt="pct" data-source="sim_base" data-field="value" data-where="key=biden20">—</b></span> of them voted in 2026.</p>
+        </div>
+        <div class="ctl">
+          <label for="sim-nv">People who skipped 2024 who vote <output data-draw="sim-val" data-k="nv">—</output></label>
+          <input type="range" id="sim-nv" class="sim-in" data-k="nv" min="0" max="100" step="1">
+          <p>Eligible people who didn't vote in 2024. Estimated actual: <b data-draw="n" data-fmt="pct" data-source="sim_base" data-field="value" data-where="key=new24">—</b> of them voted in 2026.</p>
+        </div>
+        <button class="btn sim-reset">Reset to actual results</button>
+        <p class="note">Implied national House vote: <b data-draw="sim-nat">—</b></p>
+      </aside>
+
+      <div class="simmain">
+        <div class="grid">
+          <div class="card" id="sim-senate">
+            <h2>Senate</h2>
+            <div class="big">
+              <div class="d"><b data-draw="sim-n" data-k="sD">—</b><span>Democrats and independents</span></div>
+              <div class="r"><b data-draw="sim-n" data-k="sR">—</b><span>Republicans</span></div>
+            </div>
+            <span data-draw="sim-verdict" data-office="senate"></span>
+            <span class="verdict D" data-v="senate-D" hidden>Democrats control</span><span class="verdict R" data-v="senate-T" hidden>Republicans control on the vice president's tiebreak</span><span class="verdict R" data-v="senate-R" hidden>Republicans control</span>
+            <div class="chart" data-draw="sim-bar" data-office="senate"></div>
+            <p class="note">Democratic side <b data-draw="sim-n" data-k="sDelta">—</b> compared with today's results and current leaders.</p>
+          </div>
+          <div class="card" id="sim-house">
+            <h2>House</h2>
+            <div class="big">
+              <div class="d"><b data-draw="sim-n" data-k="hD">—</b><span>Democrats</span></div>
+              <div class="r"><b data-draw="sim-n" data-k="hR">—</b><span>Republicans</span></div>
+            </div>
+            <span data-draw="sim-verdict" data-office="house"></span>
+            <span class="verdict D" data-v="house-D" hidden>Democrats control</span><span class="verdict R" data-v="house-R" hidden>Republicans control</span>
+            <div class="chart" data-draw="sim-bar" data-office="house"></div>
+            <p class="note">Democrats <b data-draw="sim-n" data-k="hDelta">—</b> compared with today's results and current leaders.</p>
+          </div>
+          <div class="card" id="sim-gov">
+            <h2>Governor races</h2>
+            <div class="big">
+              <div class="d"><b data-draw="sim-n" data-k="gD">—</b><span>Democrats</span></div>
+              <div class="r"><b data-draw="sim-n" data-k="gR">—</b><span>Republicans</span></div>
+            </div>
+            <div class="chart" data-draw="sim-bar" data-office="governor"></div>
+            <p class="note">Democrats <b data-draw="sim-n" data-k="gDelta">—</b> compared with today's results and current leaders.</p>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="card" id="sim-senate-map-card">
+            <h2>Senate races under this scenario</h2>
+            <p class="note">Shade shows the projected margin. Outlined states change hands from the actual result.</p>
+            <div class="map" data-draw="sim-map" data-office="senate"></div>
+            <div class="legend"><span><i class="sw d"></i>Democrat</span><span><i class="sw r"></i>Republican</span><span><i class="sw i"></i>Independent</span><span><i class="sw f"></i>Changes hands</span><span><i class="sw n"></i>No race</span></div>
+          </div>
+          <div class="card" id="sim-gov-map-card">
+            <h2>Governor races under this scenario</h2>
+            <p class="note">Shade shows the projected margin. Outlined states change hands from the actual result.</p>
+            <div class="map" data-draw="sim-map" data-office="governor"></div>
+            <div class="legend"><span><i class="sw d"></i>Democrat</span><span><i class="sw r"></i>Republican</span><span><i class="sw i"></i>Independent</span><span><i class="sw f"></i>Changes hands</span><span><i class="sw n"></i>No race</span></div>
+          </div>
+        </div>
+        <div class="card wide" id="sim-house-map-card">
+          <h2>House seats under this scenario</h2>
+          <p class="note">One square per district, from most Democratic to most Republican. Outlined squares change hands.</p>
+          <div class="map" data-draw="sim-housemap"></div>
+        </div>
+        <div class="card wide" id="sim-flips-card">
+          <h2>Races that change hands</h2>
+          <p class="note">Compared with the actual result. Uncalled races are compared with who currently leads (marked *).</p>
+          <div class="tablebox">
+            <table><thead><tr><th>Race</th><th>Actual</th><th>Scenario</th><th class="num">Actual margin</th><th class="num">Scenario margin</th></tr></thead>
+              <tbody data-draw="sim-flips"></tbody></table>
+          </div>
+          <p class="note" data-v="flips-none" hidden>No races change hands at these settings.</p>
+        </div>
+        <details>
+          <summary>How the simulator works</summary>
+          <p>Each race starts at its actual 2026 margin, then gets three adjustments: the national environment shift, the approval change, and the turnout changes for its state.</p>
+          <p>Turnout: the 2026 Voter Poll split voters by their 2024 vote. Each group's turnout rate is estimated by dividing its share of the roughly 115 million 2026 House votes counted by Nov. 9 by its 2024 vote total; for people who skipped 2024, the denominator is the eligible population (UF Election Lab) minus 2024 ballots. Each state's electorate is estimated from its own 2024 or 2020 result, scaled so the nation matches the poll. A slider sets the turnout rate nationally, and every state's group moves by the same proportion. Each group then votes the way it did nationally in the poll. With the 2020 baseline, 2020 Biden and Trump voters are assumed to turn out in the same mix and vote like 2024 Harris and Trump voters.</p>
+          <p>Approval: each point moves 1% of voters between "somewhat disapprove" and "somewhat approve", using those groups' House vote in the poll. This assumes only soft opinions change.</p>
+          <p>House districts use each district's count as of Nov. 9; uncontested districts count as 100-point margins. Turnout effects use the state's electorate. Where an independent was the main challenger to a Republican, the independent is treated as the challenger. With a 50–50 Senate the vice president, a Republican, breaks ties. This is a what-if tool, not a forecast.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <details>
+    <summary>Sources and method</summary>
+    <p>Race results and calls: Associated Press tallies as compiled on Wikipedia's 2026 House, Senate and governor election pages (snapshot Nov. 8, 2026; calls rechecked Nov. 9). Vote shares in the race tables come from those pages and may lag the latest count.</p>
+    <p>Notes on uncalled races come from AP reporting on the Mississippi count and on Alaska's ranked-choice timetable. "Changed party" compares the winner with the party that held the seat or office before the election; for House seats redrawn mid-decade, it follows the source's gain and hold labels.</p>
+    <p>Voter trends: the 2026 Voter Poll conducted by SSRS for the AP and partner networks, national House results as published by CNN and transcribed on Wikipedia. These are survey estimates with a margin of error, not counts.</p>
+    <p>County map: 2020 and 2024 presidential results by county from the tonmcg/US_County_Level_Election_Results_08-24 dataset; 2026 county results for Senate, governor and House races from <a href="https://civicapi.org" target="_blank" rel="noopener">civicAPI</a>, unofficial as of Nov. 9. civicAPI doesn't publish where its data comes from; its statewide totals agree with AP-reported results within 1.5 points everywhere, and closer where counting has finished. County outlines from the us-atlas package.</p>
+    <p>Ballot measures: counts from civicAPI; descriptions from Wikipedia's 2026 ballot measures page where the measure could be matched. Turnout: votes in each state's largest 2026 statewide count compared with presidential votes summed from county results.</p>
+    <p>Simulator: starting margins from civicAPI counts as of Nov. 9 (race calls stay with AP); turnout rates estimated from the 2026 Voter Poll, the roughly 115 million House votes counted by Nov. 9, 2024 and 2020 presidential totals, and the UF Election Lab's 2024 eligible-population and ballots estimates.</p>
+    <p>Not included: precinct results, state-by-state demographic estimates, and live updates. This is a fixed snapshot and does not refresh on its own.</p>
+  </details>
+</div>
+<footer class="site-footer">Election data from civicAPI (<a href="https://civicapi.org">civicapi.org</a>), Wikipedia (CC BY-SA), tonmcg/US_County_Level_Election_Results_08-24 and us-atlas. See the README for full sources.</footer>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>
