@@ -17,6 +17,7 @@ It's a static site with no build step: plain HTML, CSS and JavaScript, [d3](http
 | Ballot measures | Statewide measures with yes/no counts and descriptions |
 | Turnout | New Jersey 2021–2025 vote growth and polling comparison; a fixed-participation turnout-gap scenario; who turned out by 2024 vote; estimated turnout rates and state vote comparisons |
 | National environment | AP-NORC approval in 2021–2022 and 2025–2026, prewar approval extrapolation with sensitivity controls, and an R+4–R+5 no-Dobbs hypothesis |
+| 2028 scenarios | Presidential cohort-return benchmarks, editable turnout and switching, new/returning voters, a midterm-comeback sensitivity, session comparisons and JSON export |
 | Simulator | Sliders for the national environment, Trump approval, and turnout among 2024 (or 2020) Trump voters, Harris (or Biden) voters and people who skipped 2024; re-runs every Senate, House and governor race |
 
 ## Data sources
@@ -35,6 +36,8 @@ It's a static site with no build step: plain HTML, CSS and JavaScript, [d3](http
 | NJ turnout case study | [NJ Division of Elections 2021](https://nj.gov/state/elections/election-information-2021.shtml), [2025](https://nj.gov/state/elections/election-information-2025.shtml) and [2024](https://www.nj.gov/state/elections/election-information-2024.shtml) | Official listed-candidate governor totals, presidential votes, and separate statewide ballots/registration; linked PDFs in `data/turnout_context.json` |
 | NJ polling benchmark | [RealClearPolling final 2025 average](https://www.realclearpolling.com/polls/governor/general/2025/new-jersey/sherrill-vs-ciattarelli) | D+3.3, Oct. 14–30; a benchmark, not every poll or an identified turnout effect |
 | Historical turnout-gap benchmark | [Pew Research Center’s 2022 validated-voter study](https://www.pewresearch.org/politics/2023/07/12/republican-gains-in-2022-midterms-driven-mostly-by-turnout-advantage/) | Trump 2020 voters 71%, Biden voters 67%; the scenario reverses the four-point difference |
+| Presidential cohort transitions | [Pew’s 2016–2020 study](https://www.pewresearch.org/politics/2021/06/30/behind-bidens-2020-victory/), [2020–2024 turnout](https://www.pewresearch.org/politics/2025/06/26/voter-turnout-2020-2024/) and [vote-choice flows](https://www.pewresearch.org/feature/how-changes-in-turnout-and-vote-choice-powered-trumps-victory-in-2024/) | Validated turnout and self-reported choice; about 90% of both 2016 major-party cohorts returned in 2020, versus 85% of Biden and 89% of Trump 2020 voters in 2024 |
+| 2028 model’s prior-voter totals | [FEC 2024 presidential results](https://www.fec.gov/resources/cms-content/documents/2024presgeresults.pdf), pp. 3, 5–6 | Separate FEC snapshot, not the county-summed totals used by the 2026 simulator; sources and historical margins in `data/presidential_2028.json` |
 | Uncalled-race notes | AP reporting on the Mississippi count, the Kansas Secretary of State, and Alaska's ranked-choice timetable | |
 
 Data from civicAPI (civicapi.org).
@@ -60,6 +63,18 @@ Data from civicAPI (civicapi.org).
 - **Compare the D+6 and D+9.8 calculations:** the proportional benchmark reproduces `−2 + 10 × (4/13) + 5 = D+6.1` using J.L. Partners’ rounded R+2 baseline, ten-point turnout swing and five-point switching swing. Scaling turnout swing linearly with the turnout-rate gap is an additional analyst assumption, not the pollster’s counterfactual. The existing cohort model starts at a 9.8-point inferred gap; an optional J.L. Partners calibration instead starts at 78% Harris / 65% Trump. Reweighting that larger gap down to four points yields about D+7.9 (235 modeled Democratic House seats) with combined participation and within-group House choices fixed. Its reference reproduces each counted margin; within-group choices still use the voter-only poll, making this a hybrid sensitivity model. The comparison table shows all three methods at the selected gap; these are model alternatives, not a confidence interval. The proportional result can be applied as one uniform national shift, while the cohort results apply their turnout rates. The simulator displays its active calibration; switching presidential baseline or resetting restores the inferred calibration. These are hypothetical House vote margins, not newly measured generic-ballot polling.
 - **Freshness:** the Nov. 17 civicAPI refresh attempt returned HTTP 403. County, national and most district counts remain Nov. 9. Selected calls were updated separately; the update log states exactly which ones. NC-3’s newer DDHQ lead is still labeled uncalled.
 
+## 2028 presidential scenarios
+
+The new tab treats Harris and Trump as labels for **2024 voter cohorts**, with the 2028 nominees unspecified. For each cohort, multiply its FEC vote total by assumed return turnout, then allocate only returning voters among the Democratic, Republican and other candidates. Add a separate number of 2028 voters who cast no 2024 presidential vote, including newly eligible voters. Divide the Democratic–Republican vote difference by all modeled votes. This is national popular-vote accounting; it supplies no state allocation, Electoral College conversion or win probabilities.
+
+- **Historical presets change one factor:** the approximate 90% / 90% 2020 return pattern, the 85% / 89% 2024 pattern, and its 89% / 85% reversal change turnout only. Other assumptions remain fixed. Pew’s “about nine-in-ten” is not treated as an exact measurement. The optional switching button separately converts rounded 2024 flows to choices conditional on returning: Biden→Trump `5/85`, Trump→Harris `3/89`, with other-candidate residuals. Same-party retention and returning turnout are distinct.
+- **New/returning voters:** their assumed volume is independent of their vote mix. Optional Pew preferences are D52/R44/other4 in 2020 and D45/R52/other3 in 2024, including people previously too young to vote. These voters are disjoint from all three 2024 voting cohorts; remaining 2024 nonreturners are never added back as entrants.
+- **Midterm comeback:** optionally partition each 2024 major-party cohort using J.L. Partners’ 2026 participation estimates (78% Harris, 65% Trump). Apply explicit assumed 2028 return rates to its midterm voters and nonvoters, then recombine into one 2028 return rate. This does not track validated individuals or copy 2026 House choices into 2028. With the illustrative 95% repeat-voter and 80% drop-off return assumptions, the resulting return rates are 91.7% Harris and 89.75% Trump.
+- **Compare and export:** save up to six named scenarios for the current page session; export assumptions, source links, input cohorts and calculated votes as JSON. The entrant break-even share solves a national popular-vote tie with other settings fixed, where feasible. Invalid inputs clear outputs rather than preserving stale results.
+- **Historical context:** the 2008 House D+10.6 to 2010 House R+6.8 change was a 17.4-point Republican swing; Obama then won the 2012 presidential vote by about 3.9 points. McCain’s 2008 presidential defeat was about 7.3 points. Comparing House with House avoids mixing that swing with a presidential-to-midterm shift. Pre-Trump examples are context, not interchangeable coalition estimates.
+
+Defaults are editable illustrations, not 2028 polling or a forecast. There is no automatic carryover from the 2026 margin. The national model does not explicitly estimate eligibility changes, deaths, migration or candidate effects. Historical Pew panel transitions are benchmarks for assumptions about a changed 2024 electorate, not a census of every original voter.
+
 ## Running it locally
 
 The page loads its data with `fetch`, so serve the folder instead of opening the file directly:
@@ -77,9 +92,11 @@ python3 -m unittest discover -s tests -p "test_*.py"
 node --check assets/app.js
 node --check assets/environment.js
 node --check assets/turnout.js
+node --check assets/presidential-model.js
+node --check assets/presidential.js
 ```
 
-The model tests cover prewar-only fitting, slope choices, margin direction and bounds, no-Dobbs endpoints, New Jersey arithmetic and denominators, fixed combined participation with reversed/equal/original turnout gaps, simulator integration, proportional swing scaling, J.L. Partners calibration and call consistency. Refresh tests cover blocked and incomplete responses without making network calls.
+The model tests cover prewar-only fitting, slope choices, margin direction and bounds, no-Dobbs endpoints, New Jersey arithmetic and denominators, fixed combined participation with reversed/equal/original turnout gaps, simulator integration, proportional swing scaling, J.L. Partners calibration and call consistency. Presidential tests check vote conservation, returner denominators, disjoint entrants, break-even calculations, invalid inputs, the midterm-comeback partition and historical references. Refresh tests cover blocked and incomplete responses without making network calls.
 
 ## Updating the data
 
@@ -99,6 +116,8 @@ assets/app.js         charts, maps, calculations and the simulator model
 assets/environment-model.js  pure counterfactual calculations (also loaded by Node tests)
 assets/environment.js        comparison charts, evidence panels and scenario controls
 assets/turnout.js            NJ case study and turnout-gap controls
+assets/presidential-model.js pure national presidential cohort calculations
+assets/presidential.js       2028 scenario controls, comparisons and export
 assets/dash.js        small runtime that loads data/*.json and redraws charts
 assets/page.css       page styles
 assets/theme.css      colors, type and spacing (light and dark)

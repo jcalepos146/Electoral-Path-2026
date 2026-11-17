@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-11-17",
+  "sources": {
+    "pew2020": {
+      "label": "Pew: Behind Biden’s 2020 Victory (2021 release)",
+      "url": "https://www.pewresearch.org/politics/2021/06/30/behind-bidens-2020-victory/"
+    },
+    "pew2024": {
+      "label": "Pew: Voter turnout, 2020–2024 (2025 release)",
+      "url": "https://www.pewresearch.org/politics/2025/06/26/voter-turnout-2020-2024/"
+    },
+    "pewFlows": {
+      "label": "Pew: 2020–2024 switching and drop-off flows",
+      "url": "https://www.pewresearch.org/feature/how-changes-in-turnout-and-vote-choice-powered-trumps-victory-in-2024/"
+    },
+    "pewMethods": {
+      "label": "Pew: 2024 validated-voter methodology",
+      "url": "https://www.pewresearch.org/politics/2025/06/26/validated-voters-2024-methodology/"
+    },
+    "fec2024": {
+      "label": "FEC: Official 2024 presidential results, pp. 3, 5–6",
+      "url": "https://www.fec.gov/resources/cms-content/documents/2024presgeresults.pdf"
+    },
+    "fec2008": {
+      "label": "FEC: Federal Elections 2008",
+      "url": "https://www.fec.gov/resources/cms-content/documents/federalelections2008.pdf"
+    },
+    "fec2012": {
+      "label": "FEC: Federal Elections 2012",
+      "url": "https://www.fec.gov/resources/cms-content/documents/federalelections2012.pdf"
+    },
+    "house2006": {
+      "label": "2006 House results and underlying official sources",
+      "url": "https://en.wikipedia.org/wiki/2006_United_States_House_of_Representatives_elections"
+    },
+    "house2008": {
+      "label": "2008 House results and underlying official sources",
+      "url": "https://en.wikipedia.org/wiki/2008_United_States_House_of_Representatives_elections"
+    },
+    "house2010": {
+      "label": "2010 House results and underlying official sources",
+      "url": "https://en.wikipedia.org/wiki/2010_United_States_House_of_Representatives_elections"
+    }
+  },
+  "base_2024": {
+    "dem": 75017613,
+    "rep": 77302580,
+    "other": 2918109,
+    "total": 155238302,
+    "source": "fec2024",
+    "note": "These values follow the cited FEC PDF snapshot, including 75,017,613 Harris votes; other votes are total minus Harris minus Trump. They are independent of the county-summed presidential totals used elsewhere in the app."
+  },
+  "transitions": [
+    {
+      "from": 2016,
+      "to": 2020,
+      "dem_name": "Hillary Clinton",
+      "rep_name": "Donald Trump",
+      "dem_turnout": 90,
+      "rep_turnout": 90,
+      "precision": "About nine-in-ten for both, not exact 90.0% measurements",
+      "dem_same_party": null,
+      "rep_same_party": null,
+      "source": "pew2020"
+    },
+    {
+      "from": 2020,
+      "to": 2024,
+      "dem_name": "Joe Biden",
+      "rep_name": "Donald Trump",
+      "dem_turnout": 85,
+      "rep_turnout": 89,
+      "precision": "Rounded survey estimates",
+      "dem_same_party": 79,
+      "rep_same_party": 85,
+      "dem_cross_party": 5,
+      "rep_cross_party": 3,
+      "source": "pewFlows"
+    }
+  ],
+  "entrants": [
+    {
+      "year": 2020,
+      "dem": 52,
+      "rep": 44,
+      "other": 4,
+      "source": "pew2024",
+      "note": "All new/returning voters, including those too young for 2016. Other is residual from rounded shares."
+    },
+    {
+      "year": 2024,
+      "dem": 45,
+      "rep": 52,
+      "other": 3,
+      "source": "pew2024",
+      "note": "All new/returning voters, including those too young for 2020. Other is residual from rounded shares."
+    }
+  ],
+  "historical_results": [
+    {
+      "year": 2006,
+      "office": "House",
+      "margin": 8.0,
+      "source": "house2006"
+    },
+    {
+      "year": 2008,
+      "office": "House",
+      "margin": 10.6,
+      "source": "house2008"
+    },
+    {
+      "year": 2008,
+      "office": "President",
+      "margin": 7.28,
+      "source": "fec2008"
+    },
+    {
+      "year": 2010,
+      "office": "House",
+      "margin": -6.8,
+      "source": "house2010"
+    },
+    {
+      "year": 2012,
+      "office": "President",
+      "margin": 3.86,
+      "source": "fec2012"
+    }
+  ],
+  "defaults": {
+    "demReturn": 90,
+    "repReturn": 90,
+    "otherReturn": 80,
+    "demCross": 2,
+    "repCross": 2,
+    "demOther": 2,
+    "repOther": 2,
+    "otherDem": 45,
+    "otherOther": 10,
+    "entrantMillions": 25,
+    "entrantDem": 48.5,
+    "entrantOther": 3,
+    "midtermVoterReturn": 95,
+    "midtermDropoffReturn": 80
+  },
+  "notes": [
+    "The 2028 nominees are unspecified. Harris and Trump label 2024 voter cohorts, not the 2028 candidates.",
+    "Historical turnout records are validated; candidate choice is self-reported. These are panel estimates, not candidate vote-total ratios.",
+    "The 2020 report notes revised 2020 survey weighting in later releases. Its about-nine-in-ten statement is used as an approximate benchmark only.",
+    "Historical cohort transitions refer to citizens with reliable panel data and should not be interpreted as tracking all original voters through death, migration or eligibility changes.",
+    "2028 defaults, entrant volume, and midterm-return assumptions are analyst illustrations, not polling or a forecast. No 2026 House margin is carried into the presidential calculation.",
+    "Historical House margins are rounded to one decimal; presidential margins here subtract published FEC vote shares. The House-to-House 2008–2010 swing is 17.4 points toward Republicans.",
+    "Pre-Trump results provide historical context; their coalitions are not assumed interchangeable with the 2024 coalitions."
+  ]
+}
