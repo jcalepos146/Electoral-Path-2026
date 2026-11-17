@@ -62,5 +62,11 @@
     if (nextDem < 0 || nextDem > 100 || nextRep < 0 || nextRep > 100) throw new Error('Requested gap requires turnout outside 0–100%');
     return {demRate: nextDem, repRate: nextRep, combinedVoters, gap};
   }
-  return {projectApproval, approvalScenario, noDobbs, njComparison, turnoutAtGap};
+  function scaledTurnoutSwing({presidentialMargin, turnoutSwing, switchingSwing, observedGap, targetGap}) {
+    if (![presidentialMargin, turnoutSwing, switchingSwing, observedGap, targetGap].every(Number.isFinite) || observedGap <= 0) throw new Error('Invalid swing-scaling assumptions');
+    const scaledTurnout = turnoutSwing * targetGap / observedGap;
+    return {scaledTurnout, margin: presidentialMargin + scaledTurnout + switchingSwing,
+      baselineMargin: presidentialMargin + turnoutSwing + switchingSwing};
+  }
+  return {projectApproval, approvalScenario, noDobbs, njComparison, turnoutAtGap, scaledTurnoutSwing};
 });

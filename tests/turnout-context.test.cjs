@@ -37,3 +37,14 @@ test('equal and negative gaps remain feasible while impossible rates fail explic
   assert.throws(() => M.turnoutAtGap({...inputs, gap: 100}));
   assert.throws(() => M.turnoutAtGap({...inputs, demSize: 0, gap: 4}));
 });
+
+test('proportional swing benchmark reproduces the quoted D+6 arithmetic without equating units', () => {
+  const inputs = {presidentialMargin: -2, turnoutSwing: 10, switchingSwing: 5, observedGap: 13};
+  const s = M.scaledTurnoutSwing({...inputs, targetGap: 4});
+  assert.ok(Math.abs(s.scaledTurnout - 40 / 13) < 1e-12);
+  assert.equal(s.margin.toFixed(1), '6.1');
+  assert.equal(s.baselineMargin, 13);
+  assert.equal(M.scaledTurnoutSwing({...inputs, targetGap: 13}).margin, 13);
+  assert.equal(M.scaledTurnoutSwing({...inputs, targetGap: 0}).margin, 3);
+  assert.throws(() => M.scaledTurnoutSwing({...inputs, observedGap: 0, targetGap: 4}));
+});

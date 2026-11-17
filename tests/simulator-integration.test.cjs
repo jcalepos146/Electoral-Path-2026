@@ -67,3 +67,29 @@ test('applying just the counterfactual margin shift matches the environment calc
   const base = app.EV.simRun(app.EV.simDefaults());
   assert.ok(result.hD <= base.hD);
 });
+
+test('JL calibration reproduces counted margins at 78/65 and preserves its own voter pool', () => {
+  const app = loadApp(), ref = app.EV.turnoutReference('jl');
+  assert.equal(ref.hd, 78); assert.equal(ref.tr, 65);
+  const base = app.EV.simRun(ref), defaults = app.EV.simRun(app.EV.simDefaults());
+  assert.equal(base.nat, defaults.nat);
+  for (let i = 0; i < base.house.length; i++) assert.equal(base.house[i].m, defaults.house[i].m);
+  for (let i = 0; i < base.races.length; i++) assert.equal(base.races[i].m, defaults.races[i].m);
+  const s = app.EV.turnoutGapScenario(4, 'jl');
+  const year = app.dash.data('pres_totals').data.find((r) => r.year === 2024);
+  assert.ok(Math.abs(year.dem * (s.S.hd - 78) + year.rep * (s.S.tr - 65)) < 1e-5);
+  assert.ok(Math.abs(s.S.hd - s.S.tr - 4) < 1e-10);
+  assert.equal(s.result.nat.toFixed(1), '7.9');
+  assert.ok(s.result.nat < app.EV.turnoutGapScenario(4, 'inferred').result.nat);
+  assert.equal(app.EV.simRun(s.S).nat, s.result.nat);
+  assert.throws(() => app.EV.simRun({...ref, year: 20}));
+});
+
+test('proportional benchmark applies once as a national shift with baseline turnout', () => {
+  const app = loadApp(), d = app.dash.data('jl_partners').data.swing_decomposition;
+  const s = M.scaledTurnoutSwing({presidentialMargin: d.presidential_margin, turnoutSwing: d.turnout, switchingSwing: d.switching, observedGap: 13, targetGap: 4});
+  const S = app.EV.simDefaults(), actual = app.EV.simRun(S).nat;
+  const result = app.EV.simRun({...S, env: s.margin - actual});
+  assert.ok(Math.abs(result.nat - s.margin) < 1e-10);
+  assert.equal(result.hD + result.hR, 435);
+});

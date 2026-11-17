@@ -1,6 +1,6 @@
 /* New Jersey vote growth and a fixed-participation national turnout exercise. */
 (() => {
-  let gap = 4;
+  let gap = 4, reference = 'inferred';
   const number = (v) => d3.format(',')(v);
   const one = (v) => d3.format('.1f')(v);
   const two = (v) => d3.format('.2f')(v);
@@ -44,11 +44,11 @@
     const status = el.querySelector('.turnout-gap-status');
     const write = (key, text) => el.querySelectorAll(`[data-gap-value="${key}"]`).forEach((e) => { e.textContent = text; });
     const ready = EV.ok('turnout_context', 'jl_partners', ...EV.SIMDATA);
-    el.querySelectorAll('.apply-turnout-gap, [data-gap-preset], #turnout-gap').forEach((b) => { b.disabled = !ready; });
+    el.querySelectorAll('.apply-turnout-gap, .apply-scaled-turnout, [data-gap-preset], #turnout-gap, #turnout-reference').forEach((b) => { b.disabled = !ready; });
     if (!ready) { if (status) status.textContent = EV.failed('turnout_context', 'jl_partners', ...EV.SIMDATA) ? 'Turnout comparison failed to load. Reload to try again.' : 'Loading turnout comparison…'; return; }
     if (status) status.textContent = '';
     const data = dash.data('turnout_context').data, jl = dash.data('jl_partners').data;
-    const s = EV.turnoutGapScenario(gap), defaults = EV.simDefaults();
+    const s = EV.turnoutGapScenario(gap, reference), defaults = EV.turnoutReference(reference);
     const jlTrump = 100 - jl.trump_outcomes.find((r) => r.label === 'Stayed home').value;
     const jlHarris = 100 - jl.harris_stayed_home;
     Object.entries({gap: gapLabel(gap), actual: EV.fmtM(s.base.nat), margin: EV.fmtM(s.result.nat),
@@ -57,6 +57,20 @@
       seats: s.result.hD + ' D / ' + s.result.hR + ' R', shift: EV.fmtM(s.result.nat - s.base.nat) + ' shift',
       jlDem: jlHarris + '%', jlRep: jlTrump + '%', jlGap: (jlHarris - jlTrump) + ' points',
       pewDem: data.pew_2022.biden2020_turnout + '%', pewRep: data.pew_2022.trump2020_turnout + '%'}).forEach(([key, value]) => write(key, value));
+    write('reference', reference === 'jl' ? 'J.L. Partners calibration' : 'Voter-poll inferred calibration');
+    const decomposition = jl.swing_decomposition, observedGap = jlHarris - jlTrump;
+    const scaled = EnvironmentModel.scaledTurnoutSwing({presidentialMargin: decomposition.presidential_margin,
+      turnoutSwing: decomposition.turnout, switchingSwing: decomposition.switching, observedGap, targetGap: gap});
+    write('scaledFormula', `${decomposition.presidential_margin} + ${decomposition.turnout} × (${one(gap)} ÷ ${observedGap}) + ${decomposition.switching} = ${EV.fmtM(scaled.margin)}`);
+    write('scaledMargin', EV.fmtM(scaled.margin));
+    const scaledButton = el.querySelector('.apply-scaled-turnout'); if (scaledButton) scaledButton.disabled = Math.abs(scaled.margin - s.base.nat) > 20;
+    const methods = el.querySelector('.turnout-methods'); methods.replaceChildren();
+    [['Cohort reweighting · voter-poll inferred', 'inferred'], ['Cohort reweighting · J.L. Partners calibrated', 'jl']].forEach(([label, ref]) => {
+      const r = EV.turnoutGapScenario(gap, ref), start = EV.turnoutReference(ref), tr = methods.insertRow();
+      [label, gapLabel(start.hd - start.tr), EV.fmtM(r.result.nat), 'Within-group vote choices held fixed; combined participation held fixed.'].forEach((text) => { tr.insertCell().textContent = text; });
+    });
+    const scaledRow = methods.insertRow();
+    ['Proportional decomposition · Grok arithmetic', 'Harris +' + observedGap + ' points', EV.fmtM(scaled.margin), 'Scale the 10-point turnout swing by the turnout-gap ratio; hold the rounded 5-point switching component fixed.'].forEach((text) => { scaledRow.insertCell().textContent = text; });
     el.querySelectorAll('[data-gap-preset]').forEach((b) => {
       const value = b.dataset.gapPreset === 'baseline' ? defaults.hd - defaults.tr : +b.dataset.gapPreset;
       b.setAttribute('aria-pressed', String(Math.abs(gap - value) < 0.00001));
@@ -64,8 +78,8 @@
     const input = el.querySelector('#turnout-gap'); if (input && document.activeElement !== input) input.value = gap;
     const source = el.querySelector('.pew-turnout-source'); if (source) source.href = data.sources.pew2022.url;
     const tb = el.querySelector('.turnout-gap-alternatives'); tb.replaceChildren();
-    [['Simulator baseline', defaults.hd - defaults.tr], ['2022 gap reversed', data.pew_2022.trump2020_turnout - data.pew_2022.biden2020_turnout], ['Equal participation', 0], ['2022 gap in original direction', data.pew_2022.biden2020_turnout - data.pew_2022.trump2020_turnout]].forEach(([label, g]) => {
-      const row = EV.turnoutGapScenario(g), tr = tb.insertRow();
+    [['Selected calibration baseline', defaults.hd - defaults.tr], ['2022 gap reversed', data.pew_2022.trump2020_turnout - data.pew_2022.biden2020_turnout], ['Equal participation', 0], ['2022 gap in original direction', data.pew_2022.biden2020_turnout - data.pew_2022.trump2020_turnout]].forEach(([label, g]) => {
+      const row = EV.turnoutGapScenario(g, reference), tr = tb.insertRow();
       [label, gapLabel(g), one(row.rates.demRate) + '%', one(row.rates.repRate) + '%', EV.fmtM(row.result.nat), row.result.hD + ' D / ' + row.result.hR + ' R'].forEach((text) => { tr.insertCell().textContent = text; });
     });
   });
@@ -78,12 +92,22 @@
   }
   document.querySelectorAll('[data-gap-preset]').forEach((b) => b.addEventListener('click', () => {
     if (!EV.ok(...EV.SIMDATA)) return;
-    const S = EV.simDefaults(); gap = b.dataset.gapPreset === 'baseline' ? S.hd - S.tr : +b.dataset.gapPreset;
+    const S = EV.turnoutReference(reference); gap = b.dataset.gapPreset === 'baseline' ? S.hd - S.tr : +b.dataset.gapPreset;
     dash.draw('turnout-gap-values');
   }));
   document.querySelectorAll('#turnout-gap').forEach((input) => input.addEventListener('input', () => { gap = +input.value; dash.draw('turnout-gap-values'); }));
+  document.querySelectorAll('#turnout-reference').forEach((input) => input.addEventListener('change', () => { reference = input.value; dash.draw('turnout-gap-values'); }));
   document.querySelectorAll('.apply-turnout-gap').forEach((b) => b.addEventListener('click', () => {
-    const s = EV.turnoutGapScenario(gap); if (!s) return;
-    applySimulator(s.S, `Turnout-gap scenario: ${gapLabel(gap)}. Combined Trump/Harris participation held fixed; national environment, approval, new-voter turnout and within-group vote choices reset to baseline.`);
+    const s = EV.turnoutGapScenario(gap, reference); if (!s) return;
+    applySimulator(s.S, `Turnout-gap scenario: ${gapLabel(gap)}; ${reference === 'jl' ? 'J.L. Partners calibrated' : 'voter-poll inferred'} reference. Combined Trump/Harris participation held fixed; national environment, approval, new-voter turnout and within-group vote choices reset to baseline.`);
+  }));
+  document.querySelectorAll('.apply-scaled-turnout').forEach((b) => b.addEventListener('click', () => {
+    if (!EV.ok('jl_partners', ...EV.SIMDATA)) return;
+    const jl = dash.data('jl_partners').data, d = jl.swing_decomposition;
+    const observedGap = (100 - jl.harris_stayed_home) - (100 - jl.trump_outcomes.find((r) => r.label === 'Stayed home').value);
+    const scaled = EnvironmentModel.scaledTurnoutSwing({presidentialMargin: d.presidential_margin, turnoutSwing: d.turnout, switchingSwing: d.switching, observedGap, targetGap: gap});
+    const actual = dash.data('national_env').data.find((r) => r.key === 'nat26').value, delta = scaled.margin - actual;
+    if (Math.abs(delta) > 20) return;
+    applySimulator({...EV.simDefaults(), env: delta}, `Proportional-decomposition scenario: ${EV.fmtM(scaled.margin)} at ${gapLabel(gap)}. Applied once as a uniform national shift; turnout and approval sliders reset. This is an analyst scaling assumption, not a J.L. Partners counterfactual.`);
   }));
 })();

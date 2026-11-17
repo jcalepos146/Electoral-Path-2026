@@ -524,11 +524,19 @@ dash.draw('turnout-table', (tb) => {
 });
 
 /* ---------- simulator ---------- */
-EV.SIMDATA = ['sim_races', 'sim_house', 'sim_states', 'senate_holdovers', 'voter_poll', 'pres_totals', 'sim_base', 'national_env'];
+EV.SIMDATA = ['sim_races', 'sim_house', 'sim_states', 'senate_holdovers', 'voter_poll', 'pres_totals', 'sim_base', 'national_env', 'jl_partners'];
 EV.simS = null;
 EV.simDefaults = () => {
   const B = Object.fromEntries(dash.data('sim_base').data.map((r) => [r.key, r.value]));
-  return {env: 0, appr: B.approval, year: 24, tr: B.trump24, hd: B.harris24, nv: B.new24, B};
+  return {env: 0, appr: B.approval, year: 24, tr: B.trump24, hd: B.harris24, nv: B.new24, turnoutRef: 'inferred', B};
+};
+EV.turnoutReference = (reference = 'inferred') => {
+  const S = EV.simDefaults();
+  if (reference === 'inferred') return S;
+  if (reference !== 'jl') throw new Error('Unknown turnout reference');
+  const jl = dash.data('jl_partners').data;
+  return {...S, turnoutRef: 'jl', hd: 100 - jl.harris_stayed_home,
+    tr: 100 - jl.trump_outcomes.find((r) => r.label === 'Stayed home').value};
 };
 EV.simRun = (S) => {
   const poll = dash.data('voter_poll').data, B = S.B;
@@ -546,8 +554,14 @@ EV.simRun = (S) => {
   };
   const marg = (c, m) => { let n = 0, d = 0; for (const k of ['T', 'H', 'O', 'N']) { const w = c[k] * m[k]; n += w * (G[k].dem - G[k].rep); d += w; } return d ? n / d : 0; };
   const baseT = S.year === 24 ? B.trump24 : B.trump20, baseH = S.year === 24 ? B.harris24 : B.biden20;
-  const mult = {T: S.tr / baseT, H: S.hd / baseH, O: 1, N: S.nv / B.new24}, one = {T: 1, H: 1, O: 1, N: 1};
-  const shift = new Map(states.map((s) => { const c = comp(s.st); return [s.st, marg(c, mult) - marg(c, one)]; }));
+  const mult = {T: S.tr / baseT, H: S.hd / baseH, O: 1, N: S.nv / B.new24};
+  let reference = {T: 1, H: 1, O: 1, N: 1};
+  if (S.turnoutRef === 'jl') {
+    if (S.year !== 24) throw new Error('J.L. Partners calibration requires the 2024 baseline');
+    const ref = EV.turnoutReference('jl');
+    reference = {T: ref.tr / baseT, H: ref.hd / baseH, O: 1, N: 1};
+  }
+  const shift = new Map(states.map((s) => { const c = comp(s.st); return [s.st, marg(c, mult) - marg(c, reference)]; }));
   const common = S.env + (S.appr - B.approval) * per;
   const run = (rows, sideOf, isCalled) => rows.map((r) => {
     const m = r.margin + common + (shift.get(r.st) ?? 0), called = isCalled(r);
@@ -558,7 +572,7 @@ EV.simRun = (S) => {
   const house = run(dash.data('sim_house').data.map((h) => ({...h, race: h.seat, office: 'house'})), () => 'D', (h) => h.actual !== 'U');
   const natC = {T: G.T.share, H: G.H.share, O: G.O.share, N: G.N.share};
   const actualNat = dash.data('national_env').data.find((r) => r.key === 'nat26').value;
-  const nat = actualNat + common + (marg(natC, mult) - marg(natC, one));
+  const nat = actualNat + common + (marg(natC, mult) - marg(natC, reference));
   const hold = Object.fromEntries(dash.data('senate_holdovers').data.map((r) => [r.party, r.seats]));
   const sen = races.filter((r) => r.office === 'senate'), gov = races.filter((r) => r.office === 'governor');
   const cnt = (rows, p) => rows.filter((r) => r.side === p).length;
@@ -566,9 +580,9 @@ EV.simRun = (S) => {
     sD: (hold.D || 0) + (hold.I || 0) + cnt(sen, 'D') + cnt(sen, 'I'), sR: (hold.R || 0) + cnt(sen, 'R'),
     hD: cnt(house, 'D'), hR: house.length - cnt(house, 'D'), gD: cnt(gov, 'D'), gI: cnt(gov, 'I'), gR: cnt(gov, 'R')};
 };
-EV.turnoutGapScenario = (gap) => {
+EV.turnoutGapScenario = (gap, reference = 'inferred') => {
   if (!EV.ok(...EV.SIMDATA)) return null;
-  const S = EV.simDefaults(), year = dash.data('pres_totals').data.find((r) => r.year === 2024);
+  const S = EV.turnoutReference(reference), year = dash.data('pres_totals').data.find((r) => r.year === 2024);
   const rates = EnvironmentModel.turnoutAtGap({demSize: year.dem, repSize: year.rep,
     demRate: S.hd, repRate: S.tr, gap});
   return {S: {...S, hd: rates.demRate, tr: rates.repRate}, rates,
@@ -582,8 +596,13 @@ EV.sim = () => {
   if (!EV._simBase) EV._simBase = EV.simRun(EV.simDefaults());
   return {R: EV._simRes, base: EV._simBase};
 };
-EV.simRedraw = () => ['sim-val', 'sim-n', 'sim-verdict', 'sim-bar', 'sim-map', 'sim-housemap', 'sim-flips', 'sim-nat'].forEach((n) => dash.draw(n));
+EV.simRedraw = () => ['sim-val', 'sim-n', 'sim-verdict', 'sim-bar', 'sim-map', 'sim-housemap', 'sim-flips', 'sim-nat', 'sim-ref'].forEach((n) => dash.draw(n));
 EV.signed = (v) => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v);
+
+dash.draw('sim-ref', (el) => {
+  if (!EV.sim()) return;
+  el.textContent = EV.simS.turnoutRef === 'jl' ? 'Turnout calibration: J.L. Partners’ rounded 78% Harris / 65% Trump rates are the reference that reproduces the counted margins. Within-group House vote choices still come from the existing voter-only poll; this is a hybrid sensitivity model.' : 'Turnout calibration: rates inferred from the voter-only poll and counted House votes.';
+});
 
 dash.draw('sim-val', (el) => {
   const res = EV.sim(), k = el.dataset.k;
@@ -753,7 +772,7 @@ dash.draw('sim-nat', (el) => {
   all('.ev .sim-year', (b) => b.addEventListener('click', () => {
     if (!EV.simS) return;
     const y = +b.dataset.year, B = EV.simS.B;
-    Object.assign(EV.simS, {year: y, tr: y === 24 ? B.trump24 : B.trump20, hd: y === 24 ? B.harris24 : B.biden20});
+    Object.assign(EV.simS, {year: y, tr: y === 24 ? B.trump24 : B.trump20, hd: y === 24 ? B.harris24 : B.biden20, turnoutRef: 'inferred'});
     showYear(y);
     EV.simRedraw();
   }));

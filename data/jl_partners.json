@@ -36,13 +36,16 @@
   "swing_decomposition": {
     "turnout": 10,
     "switching": 5,
-    "total": 15
+    "total": 15,
+    "presidential_margin": -2,
+    "house_margin": 13
   },
   "notes": [
     "Outcome percentages are of all Trump 2024 voters in this registered-voter survey, including nonvoters. Rounded values sum to 101%; no renormalization is applied.",
     "The 6% category includes other choices and people who voted but did not cast a House ballot.",
     "The 2026 voter subsample is weighted to a D+13 House vote. This is not an independent estimate of the national House margin.",
     "The pollster attributes 10 of a rounded 15-point swing to turnout and 5 to switching. This descriptive decomposition does not identify a war effect.",
-    "Reported margins of error: \u00b13.1 points for registered voters, \u00b13.3 for 2026 voters and \u00b110.5 for Trump defectors (n=87). The Trump-voter subgroup has additional sampling uncertainty."
+    "Reported margins of error: \u00b13.1 points for registered voters, \u00b13.3 for 2026 voters and \u00b110.5 for Trump defectors (n=87). The Trump-voter subgroup has additional sampling uncertainty.",
+    "The rounded report decomposition uses R+2 in 2024 and D+13 in 2026. Scaling its 10-point turnout contribution in proportion to the 13-point turnout-rate gap is an extra analyst assumption, not a counterfactual estimated by J.L. Partners."
   ]
 }

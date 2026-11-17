@@ -47,7 +47,7 @@
     const links = document.createElement('p'); links.className = 'note';
     sourceLink(links, 'J.L. Partners release', data.source_url); links.append(' · '); sourceLink(links, 'Full report', data.report_url); links.append(' · '); sourceLink(links, 'Data tables', data.tables_url); el.append(links);
     const details = document.createElement('details'), summary = document.createElement('summary'); summary.textContent = 'Survey methods and uncertainty'; details.append(summary);
-    const method = document.createElement('p'); method.textContent = data.notes.at(-1) + ' The report checks its findings against 30,000+ campaign interviews. These rates use a different sample and denominator from the voter-only poll below, so they do not replace that dataset.'; details.append(method); el.append(details);
+    const method = document.createElement('p'); method.textContent = data.notes.find((n) => n.startsWith('Reported margins of error:')) + ' The report checks its findings against 30,000+ campaign interviews. These rates use a different sample and denominator from the voter-only poll below, so they do not replace that dataset.'; details.append(method); el.append(details);
   });
   dash.draw('environment-summary', (el) => {
     if (!EV.reset(el, ['environment', 'national_env'])) return;
