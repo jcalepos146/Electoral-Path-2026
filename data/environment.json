@@ -1,0 +1,431 @@
+{
+  "checked_on": "2026-11-17",
+  "sources": {
+    "biden": {
+      "label": "AP-NORC Biden approval trend, February 2024 topline, pp. 5\u20136",
+      "url": "https://apnorc.org/wp-content/uploads/2024/03/February-2024-topline-Biden.pdf"
+    },
+    "trump": {
+      "label": "AP-NORC Trump approval trend, October 2026 topline, pp. 2\u20133",
+      "url": "https://apnorc.org/wp-content/uploads/2026/10/October-2026-Topline-Issues-1.pdf"
+    },
+    "house2022": {
+      "label": "Cook Political Report, 2022 House popular vote tracker",
+      "url": "https://www.cookpolitical.com/vote-tracker/2022/house"
+    },
+    "house2010": {
+      "label": "U.S. House Clerk, 2010 election statistics",
+      "url": "https://history.house.gov/Institution/Election-Statistics/2010election/"
+    },
+    "dobbs": {
+      "label": "Supreme Court, Dobbs opinion (June 24, 2022)",
+      "url": "https://www.supremecourt.gov/opinions/21pdf/19-1392_6j37.pdf"
+    },
+    "war": {
+      "label": "Pew Research Center, military action began in February 2026",
+      "url": "https://www.pewresearch.org/politics/2026/03/25/americans-broadly-disapprove-of-u-s-military-action-in-iran/"
+    }
+  },
+  "approval": [
+    {
+      "cycle": 2022,
+      "start": "2021-01-28",
+      "end": "2021-02-01",
+      "approve": 61,
+      "disapprove": 38,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2021-02-25",
+      "end": "2021-03-01",
+      "approve": 60,
+      "disapprove": 40,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2021-03-25",
+      "end": "2021-03-29",
+      "approve": 61,
+      "disapprove": 38,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2021-04-29",
+      "end": "2021-05-03",
+      "approve": 63,
+      "disapprove": 36,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2021-06-10",
+      "end": "2021-06-14",
+      "approve": 55,
+      "disapprove": 44,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2021-07-15",
+      "end": "2021-07-19",
+      "approve": 59,
+      "disapprove": 41,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2021-08-12",
+      "end": "2021-08-16",
+      "approve": 54,
+      "disapprove": 46,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2021-09-23",
+      "end": "2021-09-27",
+      "approve": 50,
+      "disapprove": 49,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2021-10-21",
+      "end": "2021-10-25",
+      "approve": 48,
+      "disapprove": 51,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2021-12-02",
+      "end": "2021-12-07",
+      "approve": 48,
+      "disapprove": 51,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2022-01-13",
+      "end": "2022-01-18",
+      "approve": 43,
+      "disapprove": 56,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2022-02-18",
+      "end": "2022-02-21",
+      "approve": 44,
+      "disapprove": 55,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2022-03-17",
+      "end": "2022-03-21",
+      "approve": 43,
+      "disapprove": 56,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2022-04-14",
+      "end": "2022-04-18",
+      "approve": 45,
+      "disapprove": 54,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2022-05-12",
+      "end": "2022-05-16",
+      "approve": 39,
+      "disapprove": 60,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2022-06-23",
+      "end": "2022-06-27",
+      "approve": 39,
+      "disapprove": 60,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2022-07-14",
+      "end": "2022-07-17",
+      "approve": 36,
+      "disapprove": 62,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2022-09-09",
+      "end": "2022-09-12",
+      "approve": 45,
+      "disapprove": 53,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2022,
+      "start": "2022-10-06",
+      "end": "2022-10-10",
+      "approve": 43,
+      "disapprove": 56,
+      "source": "biden",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2025-03-20",
+      "end": "2025-03-24",
+      "approve": 42,
+      "disapprove": 56,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2025-04-17",
+      "end": "2025-04-21",
+      "approve": 39,
+      "disapprove": 59,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2025-05-01",
+      "end": "2025-05-05",
+      "approve": 41,
+      "disapprove": 57,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2025-06-05",
+      "end": "2025-06-09",
+      "approve": 39,
+      "disapprove": 60,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2025-07-10",
+      "end": "2025-07-14",
+      "approve": 40,
+      "disapprove": 58,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2025-08-21",
+      "end": "2025-08-25",
+      "approve": 45,
+      "disapprove": 53,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2025-09-11",
+      "end": "2025-09-15",
+      "approve": 39,
+      "disapprove": 60,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2025-10-09",
+      "end": "2025-10-13",
+      "approve": 37,
+      "disapprove": 61,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2025-11-06",
+      "end": "2025-11-10",
+      "approve": 36,
+      "disapprove": 62,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2025-12-04",
+      "end": "2025-12-08",
+      "approve": 36,
+      "disapprove": 61,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2026-01-08",
+      "end": "2026-01-11",
+      "approve": 40,
+      "disapprove": 59,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2026-02-05",
+      "end": "2026-02-08",
+      "approve": 36,
+      "disapprove": 62,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2026-03-19",
+      "end": "2026-03-23",
+      "approve": 38,
+      "disapprove": 60,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2026-04-16",
+      "end": "2026-04-20",
+      "approve": 33,
+      "disapprove": 67,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2026-05-14",
+      "end": "2026-05-18",
+      "approve": 37,
+      "disapprove": 62,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2026-06-11",
+      "end": "2026-06-17",
+      "approve": 37,
+      "disapprove": 62,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2026-07-23",
+      "end": "2026-07-27",
+      "approve": 33,
+      "disapprove": 66,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2026-09-24",
+      "end": "2026-09-28",
+      "approve": 31,
+      "disapprove": 69,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    },
+    {
+      "cycle": 2026,
+      "start": "2026-10-08",
+      "end": "2026-10-12",
+      "approve": 35,
+      "disapprove": 64,
+      "source": "trump",
+      "population": "U.S. adults",
+      "pollster": "AP-NORC"
+    }
+  ],
+  "war_cutoff": "2026-02-28",
+  "election_day": "2026-11-03",
+  "dobbs_date": "2022-06-24",
+  "house_2022_margin": -2.8,
+  "house_2010_margin": -6.8,
+  "assumptions": {
+    "no_dobbs_min": 4,
+    "no_dobbs_max": 5,
+    "no_dobbs_default": 4.5,
+    "fit_months": 3,
+    "persistence": 0.5,
+    "approval_to_margin": 1
+  },
+  "notes": [
+    "Approval readings are individual AP-NORC polls of U.S. adults, not a polling average or a survey of the midterm electorate.",
+    "Missing months are not imputed; field end dates are used in the fit and charts.",
+    "House margins use all votes, not a two-party denominator. Historical margins are rounded to one decimal.",
+    "The no-Dobbs range is the user-specified hypothesis; it is not an estimated causal effect.",
+    "The prewar extrapolation is a sensitivity exercise, not an identified effect of the war."
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "checked_on": "2026-11-17",
+  "sources": {
+    "nj2021": {
+      "label": "NJ Division of Elections: 2021 official governor results",
+      "url": "https://nj.gov/state/elections/assets/pdf/election-results/2021/2021-official-general-results-governor.pdf"
+    },
+    "nj2025": {
+      "label": "NJ Division of Elections: 2025 official governor results",
+      "url": "https://nj.gov/state/elections/assets/pdf/election-results/2025/2025-official-general-results-governor.pdf"
+    },
+    "turnout2021": {
+      "label": "NJ Division of Elections: 2021 ballots and registration",
+      "url": "https://nj.gov/state/elections/assets/pdf/election-results/2021/2021-general-election-voter-turnout.pdf"
+    },
+    "turnout2025": {
+      "label": "NJ Division of Elections: 2025 ballots and registration",
+      "url": "https://nj.gov/state/elections/assets/pdf/election-results/2025/2025-official-general-voter-turnout.pdf"
+    },
+    "nj2024": {
+      "label": "NJ Division of Elections: 2024 presidential results",
+      "url": "https://www.nj.gov/state/elections/assets/pdf/election-results/2024/2024-official-general-results-president.pdf"
+    },
+    "polls2025": {
+      "label": "RealClearPolling: final NJ governor polling average",
+      "url": "https://www.realclearpolling.com/polls/governor/general/2025/new-jersey/sherrill-vs-ciattarelli"
+    },
+    "pew2022": {
+      "label": "Pew Research Center: validated 2022 turnout by 2020 vote",
+      "url": "https://www.pewresearch.org/politics/2023/07/12/republican-gains-in-2022-midterms-driven-mostly-by-turnout-advantage/"
+    }
+  },
+  "nj": {
+    "governor_2021": {
+      "dem_name": "Phil Murphy",
+      "dem": 1339471,
+      "rep_name": "Jack Ciattarelli",
+      "rep": 1255185,
+      "other_listed": 20230,
+      "source": "nj2021"
+    },
+    "governor_2025": {
+      "dem_name": "Mikie Sherrill",
+      "dem": 1896610,
+      "rep_name": "Jack Ciattarelli",
+      "rep": 1417705,
+      "other_listed": 20044,
+      "source": "nj2025"
+    },
+    "president_2024": {
+      "dem_name": "Kamala Harris",
+      "dem": 2220713,
+      "rep_name": "Donald Trump",
+      "rep": 1968215,
+      "source": "nj2024"
+    },
+    "turnout_2021": {
+      "ballots": 2648814,
+      "registered": 6545250,
+      "source": "turnout2021"
+    },
+    "turnout_2025": {
+      "ballots": 3369507,
+      "registered": 6549793,
+      "source": "turnout2025"
+    },
+    "polling_2025": {
+      "dem": 48.9,
+      "rep": 45.6,
+      "margin": 3.3,
+      "field_start": "2025-10-14",
+      "field_end": "2025-10-30",
+      "source": "polls2025"
+    }
+  },
+  "pew_2022": {
+    "trump2020_turnout": 71,
+    "biden2020_turnout": 67,
+    "source": "pew2022",
+    "population": "2020 presidential voters, turnout validated using voter files",
+    "release_date": "2023-07-12"
+  },
+  "notes": [
+    "Governor vote totals are listed-candidate totals in the official result PDFs; they exclude any unlisted write-ins and are not the statewide ballots-cast denominator.",
+    "Turnout is ballots cast divided by registered voters. Ballot totals differ from votes for listed governor candidates.",
+    "2025 governor votes divided by same-party 2024 presidential votes are aggregate ratios, not individual retention or turnout rates.",
+    "Higher Democratic vote growth is consistent with a turnout contribution, but aggregate totals cannot separate returning voters, new voters and switching or attribute polling error to turnout.",
+    "The reversed-2022 scenario reverses the measured four-point gap, not the literal 71% and 67% turnout levels. It preserves the simulator baseline\u2019s combined Trump/Harris participation and holds within-group vote choices fixed."
+  ]
+}
