@@ -38,5 +38,29 @@
     if (!Number.isFinite(actualMargin) || !Number.isFinite(republicanMargin) || republicanMargin < 4 || republicanMargin > 5) throw new Error('No-Dobbs assumption must be R+4 to R+5');
     return {margin: -republicanMargin, delta: -republicanMargin - actualMargin};
   }
-  return {projectApproval, approvalScenario, noDobbs};
+  function njComparison(nj) {
+    const a = nj.governor_2021, b = nj.governor_2025, p = nj.president_2024;
+    const values = [a.dem, a.rep, a.other_listed, b.dem, b.rep, b.other_listed, p.dem, p.rep,
+      nj.turnout_2021.ballots, nj.turnout_2021.registered, nj.turnout_2025.ballots, nj.turnout_2025.registered];
+    if (!values.every((v) => Number.isFinite(v) && v >= 0) || !p.dem || !p.rep || !nj.turnout_2021.registered || !nj.turnout_2025.registered) throw new Error('Invalid New Jersey vote counts');
+    const counterfactualTotal = a.dem + b.rep + a.other_listed;
+    return {demIncrease: b.dem - a.dem, repIncrease: b.rep - a.rep,
+      demGrowth: 100 * (b.dem / a.dem - 1), repGrowth: 100 * (b.rep / a.rep - 1),
+      demRatio: 100 * b.dem / p.dem, repRatio: 100 * b.rep / p.rep,
+      turnout2021: 100 * nj.turnout_2021.ballots / nj.turnout_2021.registered,
+      turnout2025: 100 * nj.turnout_2025.ballots / nj.turnout_2025.registered,
+      counterfactualTotal, counterfactualRepShare: 100 * b.rep / counterfactualTotal,
+      margin2025: 100 * (b.dem - b.rep) / (b.dem + b.rep + b.other_listed)};
+  }
+  function turnoutAtGap({demSize, repSize, demRate, repRate, gap}) {
+    if (![demSize, repSize, demRate, repRate, gap].every(Number.isFinite) || demSize <= 0 || repSize <= 0 || demRate < 0 || demRate > 100 || repRate < 0 || repRate > 100) throw new Error('Invalid turnout inputs');
+    const combinedVoters = (demSize * demRate + repSize * repRate) / 100;
+    const mean = combinedVoters * 100 / (demSize + repSize);
+    // Solve d−r=gap while preserving D*d + R*r, with rates in percent.
+    const nextDem = mean + gap * repSize / (demSize + repSize);
+    const nextRep = mean - gap * demSize / (demSize + repSize);
+    if (nextDem < 0 || nextDem > 100 || nextRep < 0 || nextRep > 100) throw new Error('Requested gap requires turnout outside 0–100%');
+    return {demRate: nextDem, repRate: nextRep, combinedVoters, gap};
+  }
+  return {projectApproval, approvalScenario, noDobbs, njComparison, turnoutAtGap};
 });

@@ -25,6 +25,7 @@ jobs:
           node --check assets/dash.js
           node --check assets/environment-model.js
           node --check assets/environment.js
+          node --check assets/turnout.js
       - name: Check counterfactual and simulator calculations
         run: node --test tests/*.test.cjs
       - name: Check refresh failure handling

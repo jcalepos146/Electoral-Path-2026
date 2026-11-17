@@ -220,6 +220,35 @@
   </section>
 
   <section id="turnout" class="page" hidden>
+    <div class="card wide" id="nj-turnout-card">
+      <p class="eyebrow">New Jersey · 2021 → 2025</p>
+      <h2>Republican votes grew. Democratic votes grew faster.</h2>
+      <p class="note">Compare official governor totals, registered-voter turnout and the size of each party’s 2024 presidential vote. This case study examines the turnout explanation for polling underperformance while allowing for persuasion and changes in the electorate.</p>
+      <div data-draw="nj-turnout"></div>
+    </div>
+    <div class="card wide" data-draw="turnout-gap-values" id="turnout-gap-card">
+      <p class="eyebrow">2026 counterfactual · hold combined participation fixed</p>
+      <h2>What if the 2022 turnout gap ran in reverse?</h2>
+      <p class="note">Pew’s validated-voter study found 2022 turnout of <b data-gap-value="pewRep">71%</b> among Trump 2020 voters and <b data-gap-value="pewDem">67%</b> among Biden 2020 voters: a four-point Republican advantage. Reverse that gap to a four-point advantage for Harris 2024 voters, while keeping the simulator’s combined Trump/Harris turnout fixed.</p>
+      <div class="controls" role="group" aria-label="Turnout gap presets">
+        <button type="button" data-gap-preset="4" aria-pressed="true" disabled>2022 gap reversed</button>
+        <button type="button" data-gap-preset="0" aria-pressed="false" disabled>Equal turnout</button>
+        <button type="button" data-gap-preset="-4" aria-pressed="false" disabled>2022 original direction</button>
+        <button type="button" data-gap-preset="baseline" aria-pressed="false" disabled>Simulator baseline</button>
+      </div>
+      <div class="ctl dobbs-control"><label for="turnout-gap">Harris minus Trump turnout gap <output data-gap-value="gap">Harris +4.0 points</output></label><input type="range" id="turnout-gap" min="-15" max="15" step="any" value="4" disabled><p>Negative values give Trump voters the turnout advantage. Gap units are percentage points of each group, not vote-margin points.</p></div>
+      <p class="note turnout-gap-status" role="status">Loading turnout comparison…</p>
+      <div class="big scenario-stats" aria-live="polite">
+        <div><b data-gap-value="actual">—</b><span>Counted House margin</span></div>
+        <div><b data-gap-value="margin">—</b><span>Modeled House margin</span></div>
+        <div><b data-gap-value="seats">—</b><span>Modeled House seats, including leaders</span></div>
+      </div>
+      <p class="note">Scenario turnout: Harris voters <b data-gap-value="dem">—</b>, Trump voters <b data-gap-value="rep">—</b>. Combined voters from these two groups: <b data-gap-value="voters">—</b>, unchanged. Approval, national environment, turnout of other groups and each group’s House vote choices stay at the simulator baseline.</p>
+      <p class="note">Simulator baseline: Harris <b data-gap-value="baseDem">—</b>, Trump <b data-gap-value="baseRep">—</b> (<b data-gap-value="baseGap">—</b>). Separately, J.L. Partners reports Harris <b data-gap-value="jlDem">78%</b>, Trump <b data-gap-value="jlRep">65%</b>, a <b data-gap-value="jlGap">13 points</b> turnout gap. The simulator’s rates are inferred from a voter-only poll and counted votes; they are not the J.L. Partners estimates. New Jersey’s 85.4% / 72.0% aggregate vote ratios are not used as national turnout rates.</p>
+      <button type="button" class="btn apply-turnout-gap" disabled>Apply these turnout rates to the 2026 simulator</button>
+      <details open><summary>Compare turnout assumptions</summary><div class="tablebox"><table><thead><tr><th>Scenario</th><th>Turnout advantage</th><th>Harris turnout</th><th>Trump turnout</th><th>House margin</th><th>Modeled House seats</th></tr></thead><tbody class="turnout-gap-alternatives"></tbody></table></div></details>
+      <details><summary>How this isolates the turnout gap</summary><p>The scenario reverses the four-point 2022 difference, rather than copying the literal 71% and 67% levels into 2026. Let H and T be the sizes of the 2024 Harris and Trump coalitions. Solve H × Harris turnout + T × Trump turnout = the baseline combined number of voters, and Harris turnout − Trump turnout = the selected gap. Rates are percentages of each group. Each state then follows the existing simulator’s turnout model, holding within-group vote choice fixed.</p><p>Applying this scenario resets the other simulator controls, including any no-war adjustment. The seat totals are illustrative model outputs; uncalled races use their leaders and Alaska uses the existing ranked-choice approximation. This estimates a turnout-only change, not how much of the polling error turnout caused. The 2025 New Jersey polling comparison and the 2026 J.L. Partners decomposition provide different kinds of evidence.</p><p><a class="pew-turnout-source" href="https://www.pewresearch.org/politics/2023/07/12/republican-gains-in-2022-midterms-driven-mostly-by-turnout-advantage/">Pew Research Center: 2022 validated-voter study</a></p></details>
+    </div>
     <div class="card wide">
       <p class="eyebrow">New · J.L. Partners · November 16</p>
       <h2>What Trump’s 2024 voters did in 2026</h2>
@@ -256,6 +285,7 @@
   </section>
 
   <section id="environment" class="page" role="tabpanel" aria-labelledby="tab-environment" hidden>
+    <div class="card wide"><p class="eyebrow">New · turnout and polling</p><h2>The New Jersey comparison and a narrower turnout gap</h2><p class="note">Explore 2021–2025 vote growth in New Jersey, then test a four-point Democratic turnout advantage in 2026—the size of Pew’s 2022 gap, reversed. The model holds combined participation fixed and leaves persuasion unchanged.</p><a href="#turnout" data-go="turnout">Open the turnout case study and scenario controls</a></div>
     <div class="card wide">
       <p class="eyebrow">2021 → 2022 / 2025 → 2026</p>
       <h2>Two midterm environments, on the same timeline</h2>
@@ -432,5 +462,6 @@
 <script src="assets/environment-model.js"></script>
 <script src="assets/app.js"></script>
 <script src="assets/environment.js"></script>
+<script src="assets/turnout.js"></script>
 </body>
 </html>

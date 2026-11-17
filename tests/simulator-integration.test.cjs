@@ -8,6 +8,7 @@ const M = require('../assets/environment-model.js');
 function loadApp() {
   const calcs = {}, cache = {};
   const context = {
+    EnvironmentModel: M,
     dash: {
       calc: (name, definition) => { calcs[name] = definition; },
       draw: () => {}, start: () => {},
@@ -37,6 +38,22 @@ test('simulator starts from the counted House margin and preserves seat totals',
   assert.equal(R.sD + R.sR, 100);
   assert.equal(R.gD + R.gI + R.gR, 36);
   assert.equal([...R.races, ...R.house].filter((r) => r.called && r.changed).length, 0);
+});
+
+test('reversed-2022 turnout gap preserves combined participation and moves 2026 closer', () => {
+  const app = loadApp(), s = app.EV.turnoutGapScenario(4), S = app.EV.simDefaults();
+  const year = app.dash.data('pres_totals').data.find((r) => r.year === 2024);
+  assert.ok(Math.abs(s.S.hd - s.S.tr - 4) < 1e-10);
+  assert.ok(Math.abs((year.dem * s.S.hd + year.rep * s.S.tr) - (year.dem * S.hd + year.rep * S.tr)) < 1e-5);
+  assert.equal(s.S.env, 0);
+  assert.equal(s.S.appr, S.appr);
+  assert.equal(s.S.nv, S.nv);
+  assert.equal(s.S.year, 24);
+  assert.ok(s.result.nat < s.base.nat && s.result.nat > 0);
+  assert.ok(s.result.hD <= s.base.hD);
+  assert.equal(s.result.hD + s.result.hR, 435);
+  const unchanged = app.EV.turnoutGapScenario(S.hd - S.tr);
+  assert.ok(Math.abs(unchanged.result.nat - s.base.nat) < 1e-10);
 });
 
 test('applying just the counterfactual margin shift matches the environment calculation', () => {

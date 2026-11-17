@@ -566,6 +566,14 @@ EV.simRun = (S) => {
     sD: (hold.D || 0) + (hold.I || 0) + cnt(sen, 'D') + cnt(sen, 'I'), sR: (hold.R || 0) + cnt(sen, 'R'),
     hD: cnt(house, 'D'), hR: house.length - cnt(house, 'D'), gD: cnt(gov, 'D'), gI: cnt(gov, 'I'), gR: cnt(gov, 'R')};
 };
+EV.turnoutGapScenario = (gap) => {
+  if (!EV.ok(...EV.SIMDATA)) return null;
+  const S = EV.simDefaults(), year = dash.data('pres_totals').data.find((r) => r.year === 2024);
+  const rates = EnvironmentModel.turnoutAtGap({demSize: year.dem, repSize: year.rep,
+    demRate: S.hd, repRate: S.tr, gap});
+  return {S: {...S, hd: rates.demRate, tr: rates.repRate}, rates,
+    result: EV.simRun({...S, hd: rates.demRate, tr: rates.repRate}), base: EV.simRun(S)};
+};
 EV.sim = () => {
   if (!EV.ok(...EV.SIMDATA)) return null;
   if (!EV.simS) EV.simS = EV.simDefaults();
