@@ -1,4 +1,25 @@
 .ev .cmap { min-height: 18rem; }
+.ev .updates { margin-bottom: var(--cds-gap-md); padding-left: var(--cds-pad-sm); border-left: 3px solid var(--ev-t); }
+.ev .updates details { margin-top: 0; }
+.ev .eyebrow { color: var(--ev-t); font-size: var(--cds-font-size-caption); font-weight: 600; margin: 0 0 var(--cds-gap-xs); }
+.ev .scenario-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--cds-gap-md); margin: var(--cds-gap-md) 0; }
+.ev .scenario-controls label { display: block; margin-bottom: 5px; font-size: var(--cds-font-size-caption); }
+.ev select { font: inherit; font-size: var(--cds-font-size-caption); background: var(--color-bg); color: var(--color-fg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-xs) var(--cds-pad-sm); max-width: 100%; }
+.ev .scenario-controls select { width: 100%; }
+.ev .scenario-stats { border-block: 1px solid var(--color-border-line); padding-block: var(--cds-pad-md); margin-block: var(--cds-gap-md); }
+.ev .scenario-stats b { font-size: clamp(1.8rem, 4vw, 2.7rem); }
+.ev .evidence-row { display: grid; grid-template-columns: minmax(8rem, 12rem) 1fr 3rem; gap: var(--cds-gap-sm); align-items: center; margin-block: 8px; font-size: var(--cds-font-size-caption); }
+.ev .evidence-row b { text-align: right; font-variant-numeric: tabular-nums; }
+.ev .evidence-track { background: var(--color-bg); height: 1rem; border-radius: 3px; overflow: hidden; }
+.ev .evidence-track > span { display: block; height: 100%; }
+.ev .env-metric { margin-top: var(--cds-gap-md); }
+.ev .sw.t { background: var(--ev-t); }
+.ev .dobbs-control { max-width: 35rem; margin-top: var(--cds-gap-md); }
+.ev td small { display: block; color: var(--color-fg-muted); margin-top: 3px; }
+.ev button:disabled { opacity: .5; cursor: default; }
+.ev a { color: inherit; text-underline-offset: 2px; }
+.ev :is(button, input, select, a, summary):focus-visible { outline: 2px solid var(--ev-t); outline-offset: 3px; }
+@media (max-width: 640px) { .ev .scenario-controls { grid-template-columns: 1fr; } .ev .evidence-row { grid-template-columns: 8rem 1fr 2.5rem; } }
 .ev .simgrid { display: grid; grid-template-columns: minmax(16rem, 20rem) 1fr; gap: var(--cds-gap-md); align-items: start; }
 @media (max-width: 860px) { .ev .simgrid { grid-template-columns: 1fr; } }
 .ev .simrail { position: sticky; top: var(--cds-gap-sm); display: grid; gap: var(--cds-gap-md); }

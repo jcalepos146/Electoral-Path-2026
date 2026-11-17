@@ -9,7 +9,8 @@ Rebuilds, from the latest civicAPI counts:
   data/measures.json       statewide ballot measure counts
 
 Race calls (data/senate_races.json, governor_races.json, house.json) are NOT changed: update those by hand from AP calls.
-After running, update the national 2026 House totals in assets/app.js (HOUSE_2026 and VOTES_2026); this script prints them.
+Also updates data/results_meta.json with national House totals and count dates.
+Race-call verification dates and sources are preserved separately.
 
 Usage:  python3 scripts/refresh_civicapi.py            (from the repository root)
 civicAPI is free to use with attribution: https://civicapi.org
@@ -19,6 +20,9 @@ import json
 import re
 import time
 import urllib.request
+import urllib.error
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -35,6 +39,12 @@ def get(url):
         try:
             with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=90) as r:
                 return json.load(r)
+        except urllib.error.HTTPError as error:
+            if error.code in (401, 403):
+                raise RuntimeError(f'Count refresh blocked (HTTP {error.code}); existing snapshots were not changed.') from error
+            if attempt == 3:
+                raise
+            time.sleep(5 * (attempt + 1))
         except Exception:  # noqa: BLE001
             time.sleep(5 * (attempt + 1))
     raise RuntimeError('failed: ' + url)
@@ -69,6 +79,13 @@ def main():
         time.sleep(0.15)
         if i % 100 == 0:
             print('  fetched', i)
+
+    # Reject an incomplete response before replacing any existing datasets.
+    house_races = [r for r in want if r['type'] == 'House of Representatives']
+    if len(house_races) != 435 or len({(r['province'], r['district']) for r in house_races}) != 435:
+        raise RuntimeError(f'Expected 435 House districts, got {len(house_races)}; snapshots were not changed.')
+    if any(not detail[r['id']].get('candidates') for r in want):
+        raise RuntimeError('Missing race candidates; snapshots were not changed.')
 
     # house.json lists each district's candidates as "Name (P); Name (P)"
     house_wiki = {}
@@ -241,7 +258,13 @@ def main():
     nat = collections.Counter()
     for h in house_dist.values():
         nat['dem'] += h['d']; nat['rep'] += h['r']; nat['total'] += h['total']
-    print('National House totals for assets/app.js (HOUSE_2026 and VOTES_2026):', dict(nat))
+    meta = load('results_meta.json')
+    checked = datetime.now(ZoneInfo('America/New_York')).date().isoformat()
+    meta['house_counts'] = dict(nat, as_of=checked, source='civicAPI', source_url='https://civicapi.org')
+    meta['county_counts_as_of'] = checked
+    meta['refresh_attempt'] = {'date': checked, 'status': 'ok'}
+    save('results_meta.json', meta)
+    print('National House totals saved to data/results_meta.json:', dict(nat))
 
 
 if __name__ == '__main__':

@@ -1,0 +1,99 @@
+{
+  "house_counts": {
+    "dem": 64278885,
+    "rep": 49063784,
+    "total": 115043169,
+    "as_of": "2026-11-09",
+    "source": "civicAPI",
+    "source_url": "https://civicapi.org"
+  },
+  "calls_checked_on": "2026-11-17",
+  "county_counts_as_of": "2026-11-09",
+  "refresh_attempt": {
+    "date": "2026-11-17",
+    "status": "blocked",
+    "reason": "civicAPI returned HTTP 403; county, district and national vote-count snapshots retained."
+  },
+  "updates": [
+    {
+      "race": "House \u00b7 AZ-2",
+      "detail": "Eli Crane (R)",
+      "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections"
+    },
+    {
+      "race": "House \u00b7 CA-4",
+      "detail": "Eric Jones (D)",
+      "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections"
+    },
+    {
+      "race": "House \u00b7 CA-7",
+      "detail": "Doris Matsui (D)",
+      "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections"
+    },
+    {
+      "race": "House \u00b7 CA-40",
+      "detail": "Ken Calvert (R)",
+      "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections"
+    },
+    {
+      "race": "House \u00b7 CO-4",
+      "detail": "Eileen Laubacher (D)",
+      "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections"
+    },
+    {
+      "race": "House \u00b7 FL-7",
+      "detail": "Ryan Elijah (R)",
+      "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections"
+    },
+    {
+      "race": "House \u00b7 FL-26",
+      "detail": "Mario D\u00edaz-Balart (R)",
+      "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections"
+    },
+    {
+      "race": "House \u00b7 FL-27",
+      "detail": "Mar\u00eda Elvira Salazar (R)",
+      "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections"
+    },
+    {
+      "race": "House \u00b7 NC-7",
+      "detail": "David Rouzer (R)",
+      "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections"
+    },
+    {
+      "race": "House \u00b7 NC-10",
+      "detail": "Pat Harrigan (R)",
+      "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections"
+    },
+    {
+      "race": "House \u00b7 SC-2",
+      "detail": "Joe Wilson (R)",
+      "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections"
+    },
+    {
+      "race": "House \u00b7 WA-5",
+      "detail": "Michael Baumgartner (R)",
+      "source_url": "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections"
+    },
+    {
+      "race": "House \u00b7 NC-3",
+      "detail": "Lead updated to D+0.11; remains uncalled (concession alone is not a call).",
+      "source_url": "https://votes.decisiondeskhq.com/races/2026-11-03/north-carolina-us-house-3-general-election"
+    },
+    {
+      "race": "Senate \u00b7 Mississippi",
+      "detail": "Scott Colom (D), AP call 2026-11-11",
+      "source_url": "https://apnews.com/article/7f098b8834f598c923ba73572ea2223f"
+    },
+    {
+      "race": "Governor \u00b7 Kansas",
+      "detail": "Cindy Holscher (D), AP call 2026-11-12",
+      "source_url": "https://www.local10.com/news/politics/2026/11/12/democrat-cindy-holscher-is-elected-kansas-next-governor-extending-her-partys-wave-of-victories/"
+    },
+    {
+      "race": "House \u00b7 NC-3 call status",
+      "detail": "AP-based Nov. 16 reporting lists this race as uncalled despite Murphy\u2019s concession.",
+      "source_url": "https://www.axios.com/local/raleigh/2026/11/16/north-carolina-us-house-races-winners-election-results"
+    }
+  ]
+}

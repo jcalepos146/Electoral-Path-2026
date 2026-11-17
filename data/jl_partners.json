@@ -1,0 +1,48 @@
+{
+  "release_date": "2026-11-16",
+  "report_date": "2026-11-13",
+  "field_date": "2026-11-03",
+  "pollster": "J.L. Partners",
+  "population": "Registered voters in the United States",
+  "sample": 1000,
+  "voter_sample": 870,
+  "trump_sample": 486,
+  "source_url": "https://jlpartners.com/sitting-out-the-surf",
+  "report_url": "https://jlpartners.com/s/Sitting-Out-the-Surf-Report.pdf",
+  "tables_url": "https://jlpartners.com/s/Sitting-Out-the-Surf-Tables.xlsx",
+  "trump_outcomes": [
+    {
+      "label": "Voted Republican",
+      "value": 52,
+      "party": "R"
+    },
+    {
+      "label": "Stayed home",
+      "value": 35,
+      "party": "U"
+    },
+    {
+      "label": "Voted Democratic",
+      "value": 8,
+      "party": "D"
+    },
+    {
+      "label": "Other / no House vote",
+      "value": 6,
+      "party": "O"
+    }
+  ],
+  "harris_stayed_home": 22,
+  "swing_decomposition": {
+    "turnout": 10,
+    "switching": 5,
+    "total": 15
+  },
+  "notes": [
+    "Outcome percentages are of all Trump 2024 voters in this registered-voter survey, including nonvoters. Rounded values sum to 101%; no renormalization is applied.",
+    "The 6% category includes other choices and people who voted but did not cast a House ballot.",
+    "The 2026 voter subsample is weighted to a D+13 House vote. This is not an independent estimate of the national House margin.",
+    "The pollster attributes 10 of a rounded 15-point swing to turnout and 5 to switching. This descriptive decomposition does not identify a war effect.",
+    "Reported margins of error: \u00b13.1 points for registered voters, \u00b13.3 for 2026 voters and \u00b110.5 for Trump defectors (n=87). The Trump-voter subgroup has additional sampling uncertainty."
+  ]
+}

@@ -18,7 +18,8 @@
 <div id="dash-root">
 <div class="ev">
   <h1 id="top">2026 midterm election results</h1>
-  <p class="lede">House, Senate and governor results from the Nov. 3, 2026 general election, plus how groups of voters cast their House ballots. Race calls as of Nov. 9, 2026; uncalled races are shaded and listed with their latest status.</p>
+  <p class="lede">House, Senate and governor results from the Nov. 3, 2026 general election, plus voter turnout, national environment comparisons and counterfactual scenarios. Selected race calls checked Nov. 17; vote counts retain their stated snapshot dates.</p>
+  <div class="updates" data-draw="results-updates"></div>
   <p class="take">Democrats hold <b data-draw="n" data-source="senate_balance" data-field="seats" data-where="key=DC">—</b> Senate seats (counting independents who caucus with them) to Republicans' <b data-draw="n" data-source="senate_balance" data-field="seats" data-where="key=R">—</b>, and have won <b data-draw="n" data-source="house_balance" data-field="seats" data-where="key=D">—</b> House seats to Republicans' <b data-draw="n" data-source="house_balance" data-field="seats" data-where="key=R">—</b>. Still uncalled: <b data-draw="n" data-source="senate_balance" data-field="seats" data-where="key=U">—</b> Senate, <b data-draw="n" data-source="house_balance" data-field="seats" data-where="key=U">—</b> House and <b data-draw="n" data-source="governor_balance" data-field="races" data-where="key=U">—</b> governor races.</p>
 
   <nav class="tabs" role="tablist">
@@ -30,9 +31,10 @@
     <button role="tab" id="tab-counties" data-tab="counties" aria-selected="false">County map</button>
     <button role="tab" id="tab-measures" data-tab="measures" aria-selected="false">Ballot measures</button>
     <button role="tab" id="tab-turnout" data-tab="turnout" aria-selected="false">Turnout</button>
+    <button role="tab" id="tab-environment" data-tab="environment" aria-selected="false">National environment</button>
     <button role="tab" id="tab-sim" data-tab="sim" aria-selected="false">Simulator</button>
   </nav>
-  <p class="note simlink">What if the national mood or turnout had been different? The <a href="#sim" data-go="sim">Simulator</a> tab re-runs every race with sliders.</p>
+  <p class="note simlink">Explore the <a href="#environment" data-go="environment">national environment and counterfactuals</a>, or use the <a href="#sim" data-go="sim">Simulator</a> to re-run 2026 races with sliders.</p>
 
   <section id="overview" class="page">
     <div class="grid">
@@ -142,7 +144,7 @@
   <section id="voters" class="page" hidden>
     <div class="card wide" id="vp-card">
       <h2>How groups voted for the House</h2>
-      <p class="note">National House vote by group, from the 2026 Voter Poll (a survey of verified voters). Overall: Democrats <b data-draw="n" data-fmt="pct" data-source="voter_poll" data-field="dem" data-where="id=Overall | Total vote">—</b>, Republicans <b data-draw="n" data-fmt="pct" data-source="voter_poll" data-field="rep" data-where="id=Overall | Total vote">—</b>. Right column: the group's share of all voters.</p>
+      <p class="note">National House vote by group, from the existing 2026 voter-only exit-poll dataset. Overall: Democrats <b data-draw="n" data-fmt="pct" data-source="voter_poll" data-field="dem" data-where="id=Overall | Total vote">—</b>, Republicans <b data-draw="n" data-fmt="pct" data-source="voter_poll" data-field="rep" data-where="id=Overall | Total vote">—</b>. Right column: the group's share of all voters.</p>
       <div class="controls"><select class="dash-select" id="vp-q" data-draw="vp-q" aria-label="Question"></select></div>
       <div class="chart" id="vp-chart" data-draw="vp-chart"></div>
       <div class="legend"><span><i class="sw d"></i>Democratic candidate</span><span><i class="sw r"></i>Republican candidate</span></div>
@@ -218,6 +220,11 @@
   </section>
 
   <section id="turnout" class="page" hidden>
+    <div class="card wide">
+      <p class="eyebrow">New · J.L. Partners · November 16</p>
+      <h2>What Trump’s 2024 voters did in 2026</h2>
+      <div data-draw="jl-evidence"></div>
+    </div>
     <div class="card wide" id="turnout-poll-card">
       <h2>Who turned out, by 2024 vote</h2>
       <p class="note">2026 voters grouped by how they voted in 2024, from the 2026 Voter Poll. Right column: each group's share of 2026 voters.</p>
@@ -248,13 +255,64 @@
     </div>
   </section>
 
+  <section id="environment" class="page" role="tabpanel" aria-labelledby="tab-environment" hidden>
+    <div class="card wide">
+      <p class="eyebrow">2021 → 2022 / 2025 → 2026</p>
+      <h2>Two midterm environments, on the same timeline</h2>
+      <p class="note">Compare presidential approval from the same pollster, AP-NORC, among U.S. adults. Off-year approval is a measure of the national mood; 2021 and 2025 had no nationwide House election. Approval percentages and House vote margins measure different things.</p>
+      <div class="tablebox" data-draw="environment-summary"></div>
+      <div class="controls env-metric"><label for="approval-metric">Chart measure</label><select id="approval-metric" data-env-setting="metric"><option value="approve">Approval (%)</option><option value="net">Net approval (approve − disapprove)</option></select></div>
+      <div class="chart" data-draw="approval-history"></div>
+      <div class="legend"><span><i class="sw d"></i>Biden · 2021–2022 · solid</span><span><i class="sw r"></i>Trump · 2025–2026 · dashed</span></div>
+      <p class="note">Y1 is the year before the midterm; Y2 is the midterm year. Dots are individual polls, joined as a visual guide. Missing months are not filled. The June 23–27, 2022 poll straddles Dobbs; a change across that date cannot isolate its effect.</p>
+      <details><summary>View every approval reading and source</summary><div class="tablebox"><table><thead><tr><th>Cycle</th><th>Field dates</th><th>Approve</th><th>Disapprove</th><th>Net</th><th>Source</th></tr></thead><tbody data-draw="approval-data"></tbody></table></div></details>
+    </div>
+    <div class="card wide" data-draw="counterfactual-values">
+      <p class="eyebrow">Counterfactual · assumptions you can change</p>
+      <h2>2026 without the Iran war</h2>
+      <p class="note">Extend Trump’s approval trajectory using only polls completed before February 28, 2026. This estimates a hypothetical path, not the war’s causal effect. Other events, the economy and turnout could have followed different paths too.</p>
+      <div class="scenario-controls">
+        <div><label for="war-window">Prewar fit window</label><select id="war-window" data-env-setting="months"><option value="3">Last 3 months</option><option value="6">Last 6 months</option><option value="12">Last 12 months</option></select></div>
+        <div><label for="war-method">Trajectory after the last prewar poll</label><select id="war-method" data-env-setting="persistence"><option value="0.5">Continue half the fitted slope</option><option value="0">Hold approval flat</option><option value="1">Continue the full fitted slope</option></select></div>
+        <div class="ctl"><label for="war-coefficient">House margin points per approval point <output data-env-value="coefficient">1.0</output></label><input id="war-coefficient" type="range" min="0" max="2" step="0.1" value="1" data-env-setting="coefficient"><p>An assumption, not a fitted causal coefficient. Zero disconnects approval from the House vote.</p></div>
+        <div class="ctl"><label for="war-uncertainty">Approval sensitivity, ± points <output data-env-value="uncertainty">3.0</output></label><input id="war-uncertainty" type="range" min="0" max="10" step="0.5" value="3" data-env-setting="uncertainty"><p>A user-selected sensitivity range, not a confidence interval.</p></div>
+      </div>
+      <div class="big scenario-stats" aria-live="polite">
+        <div><b data-env-value="approval">—</b><span>Hypothetical approval on Nov. 3</span></div>
+        <div><b data-env-value="margin">—</b><span>Hypothetical national House margin</span></div>
+        <div><b data-env-value="actual">—</b><span>Counted 2026 House margin · <span data-env-value="countDate">Nov. 9, 2026</span></span></div>
+      </div>
+      <p class="note">House margin sensitivity: <b data-env-value="sensitivity">—</b>. Positive margins favor Democrats; negative margins favor Republicans.</p>
+      <div class="chart" data-draw="counterfactual-chart"></div>
+      <div class="legend"><span><i class="sw r"></i>Observed approval · solid</span><span><i class="sw t"></i>Hypothetical path · dashed</span></div>
+      <p class="note">Fit: <b data-env-value="polls">—</b> polls, <b data-env-value="window">—</b>; slope <b data-env-value="slope">—</b>. Projection anchored to the last prewar poll: <b data-env-value="anchor">—</b>. Observed reference: <b data-env-value="observed">—</b> in AP-NORC’s Oct. 8–12 poll, the latest pre-election reading in this series.</p>
+      <button class="btn apply-no-war" disabled>Apply this national shift to the 2026 simulator</button>
+      <details open><summary>How much does the trajectory choice matter?</summary>
+        <p>Each cell shows hypothetical approval and House margin using the sensitivity coefficient above. These alternatives are model choices, not probabilities.</p>
+        <div class="tablebox"><table><thead><tr><th>Fit window</th><th>Flat approval</th><th>Half slope</th><th>Full slope</th></tr></thead><tbody data-draw="counterfactual-sensitivity"></tbody></table></div>
+      </details>
+      <details><summary>Calculation and limits</summary><p>Fit an unweighted least-squares line to approval against field-end date within the selected window. Only polls whose entire fieldwork starts inside the window and ends before the war cutoff enter the fit. Start the hypothetical path at the last prewar observation, then extend zero, half or all of the fitted monthly slope through Nov. 3; approval is bounded to 0–100%.</p><p>Hypothetical House margin = counted 2026 D−R margin − sensitivity coefficient × (hypothetical approval − observed October approval). Both approval readings concern all adults. Their difference is applied to the election margin; the voter-only approval slider is not substituted for either reading. Applying this scenario resets the simulator to its default approval and turnout before applying just this national shift, avoiding double counting.</p><p>The scenario holds turnout and candidate effects fixed. It does not assign all post-February changes to the war, and it can imply a worse Republican outcome for some trend choices. Uniform shifts across states and districts are illustrative, especially for ranked-choice contests and runoffs. Shifts beyond the simulator’s ±20-point range cannot be applied.</p></details>
+    </div>
+    <div class="card wide" data-draw="counterfactual-values">
+      <p class="eyebrow">2022 · no-Dobbs hypothesis</p>
+      <h2>A somewhat redder year, within R+4 to R+5</h2>
+      <p class="note">Use the proposed assumption that, without Dobbs, 2022 would have been R+4 to R+5. The recorded national House result was approximately R+2.8 (often rounded to R+3). This is a national vote-margin exercise; it does not assume a 2010-scale wave or estimate individual seat changes.</p>
+      <div class="ctl dobbs-control"><label for="dobbs-margin">Assumed House margin without Dobbs <output data-env-value="dobbs">R+4.5</output></label><input type="range" id="dobbs-margin" min="4" max="5" step="0.1" value="4.5" data-env-setting="dobbs"></div>
+      <div class="big scenario-stats" aria-live="polite"><div><b data-env-value="dobbsActual">—</b><span>2022 recorded House margin</span></div><div><b data-env-value="dobbs">—</b><span>Assumed margin without Dobbs</span></div><div><b>R+6.8</b><span>2010 House margin · historical context</span></div></div>
+      <p class="note">Implied change: <b data-env-value="dobbsShift">—</b>. Across the full R+4–R+5 range, the assumed Dobbs contribution is 1.2–2.2 points of national margin; against a rounded R+3 baseline, it is 1–2 points. This assumption does not establish causation. Candidate quality, redistricting, turnout and other issues also affected 2022.</p>
+    </div>
+    <div class="card wide"><h2>Turnout and switching are separate questions</h2><p class="note">Use the new survey as evidence about participation and vote choice. Neither its turnout gap nor its swing decomposition tells us how much the war caused either behavior.</p><div data-draw="jl-evidence"></div></div>
+    <details><summary>Sources and update notes</summary><ul data-draw="environment-sources"></ul><p>Approval and historical results checked Nov. 17, 2026. The 2026 national margin uses the retained Nov. 9 civicAPI snapshot. Historical House margins use all votes and are rounded to one decimal. The R+4–R+5 no-Dobbs range and approval-to-vote conversion are scenario assumptions.</p></details>
+  </section>
+
   <section id="sim" class="page" hidden>
+    <p id="sim-scenario-note" class="note" role="status"></p>
     <div class="simgrid">
       <aside class="card simrail" id="sim-rail" aria-label="Scenario settings">
         <h2>Scenario settings</h2>
         <div class="ctl">
           <label for="sim-env">National environment <output data-draw="sim-val" data-k="env">—</output></label>
-          <input type="range" id="sim-env" class="sim-in" data-k="env" min="-20" max="20" step="0.5" value="0">
+          <input type="range" id="sim-env" class="sim-in" data-k="env" min="-20" max="20" step="any" value="0">
           <p>Adds the same swing to every race's margin. Left is toward Republicans, right toward Democrats.</p>
         </div>
         <div class="ctl">
@@ -360,9 +418,9 @@
 
   <details>
     <summary>Sources and method</summary>
-    <p>Race results and calls: Associated Press tallies as compiled on Wikipedia's 2026 House, Senate and governor election pages (snapshot Nov. 8, 2026; calls rechecked Nov. 9). Vote shares in the race tables come from those pages and may lag the latest count.</p>
+    <p>Race results and calls: Associated Press tallies as compiled on Wikipedia's 2026 House, Senate and governor election pages (original snapshot Nov. 8–9, 2026). Selected House winners rechecked against Wikipedia district tables Nov. 17; Mississippi Senate and Kansas governor calls updated from AP reporting. See the update log above for per-race sources. Vote shares may lag calls. NC-3 remains uncalled despite Murphy’s concession; its simulator margin uses a newer DDHQ count.</p>
     <p>Notes on uncalled races come from AP reporting on the Mississippi count and on Alaska's ranked-choice timetable. "Changed party" compares the winner with the party that held the seat or office before the election; for House seats redrawn mid-decade, it follows the source's gain and hold labels.</p>
-    <p>Voter trends: the 2026 Voter Poll conducted by SSRS for the AP and partner networks, national House results as published by CNN and transcribed on Wikipedia. These are survey estimates with a margin of error, not counts.</p>
+    <p>Voter trends: the national House exit-poll figures transcribed from Wikipedia’s 2026 House elections page, labeled there as Edison. These are survey estimates, not counts. The separately labeled J.L. Partners survey includes nonvoters and uses a different denominator; AP-NORC’s approval series covers all adults.</p>
     <p>County map: 2020 and 2024 presidential results by county from the tonmcg/US_County_Level_Election_Results_08-24 dataset; 2026 county results for Senate, governor and House races from <a href="https://civicapi.org" target="_blank" rel="noopener">civicAPI</a>, unofficial as of Nov. 9. civicAPI doesn't publish where its data comes from; its statewide totals agree with AP-reported results within 1.5 points everywhere, and closer where counting has finished. County outlines from the us-atlas package.</p>
     <p>Ballot measures: counts from civicAPI; descriptions from Wikipedia's 2026 ballot measures page where the measure could be matched. Turnout: votes in each state's largest 2026 statewide count compared with presidential votes summed from county results.</p>
     <p>Simulator: starting margins from civicAPI counts as of Nov. 9 (race calls stay with AP); turnout rates estimated from the 2026 Voter Poll, the roughly 115 million House votes counted by Nov. 9, 2024 and 2020 presidential totals, and the UF Election Lab's 2024 eligible-population and ballots estimates.</p>
@@ -371,6 +429,8 @@
 </div>
 <footer class="site-footer">Election data from civicAPI (<a href="https://civicapi.org">civicapi.org</a>), Wikipedia (CC BY-SA), tonmcg/US_County_Level_Election_Results_08-24 and us-atlas. See the README for full sources.</footer>
 </div>
+<script src="assets/environment-model.js"></script>
 <script src="assets/app.js"></script>
+<script src="assets/environment.js"></script>
 </body>
 </html>
