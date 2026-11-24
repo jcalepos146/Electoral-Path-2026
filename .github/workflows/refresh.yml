@@ -1,0 +1,55 @@
+name: Refresh vote counts
+
+# Re-downloads civicAPI counts and opens (or updates) a pull request when they change.
+# A blocked or incomplete refresh fails this job, so a stale snapshot is visible in the Actions tab.
+# Requires Settings → Actions → General → "Allow GitHub Actions to create and approve pull requests".
+
+on:
+  schedule:
+    - cron: '17 15 * * *'   # daily, 15:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: refresh-counts
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Refresh counts from civicAPI
+        run: python3 scripts/refresh_civicapi.py
+      - name: Check data consistency and calculations
+        id: checks
+        continue-on-error: true   # still open the PR, and report the result in it
+        run: |
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          node --test tests/*.test.cjs
+      - name: Open or update the refresh pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: automated/refresh-counts
+          delete-branch: true
+          commit-message: Refresh civicAPI vote counts
+          title: Refresh civicAPI vote counts
+          body: |
+            Automated refresh of county, district, statewide turnout and ballot measure counts from civicAPI.
+
+            Checks on the refreshed data: **${{ steps.checks.outcome }}** (see the workflow run for details).
+
+            Race calls are not changed by this job. Before merging, review:
+            - the snapshot dates in `index.html` and `README.md`;
+            - any hardcoded scenario results in the README and tests (a failing test here usually means one moved);
+            - new AP calls, which go in the race tables, `sim_races.json`, `sim_house.json` and `results_meta.json`.
+          add-paths: data/

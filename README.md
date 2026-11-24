@@ -10,14 +10,15 @@ It's a static site with no build step: plain HTML, CSS and JavaScript, [d3](http
 
 | Tab | What it shows |
 |---|---|
-| Overview | Seat counts for the Senate (with senators not up this year), House and governors; seats that changed party |
+| Overview | Seat counts for the Senate (with senators not up this year), House and governors; seats that changed party; uncalled races with their next step and date |
 | Senate / House / Governors | State tile maps and a table of every race; uncalled races marked |
 | Voter trends | National House vote by group from the 2026 Voter Poll |
 | County map | Every county: 2026 margin, swing from 2024 or 2020, trend vs. the nation, and turnout vs. 2024 or 2020, for each state's top race, Senate, governor or all House districts combined; plus a state map of each race vs. the national environment |
 | Ballot measures | Statewide measures with yes/no counts and descriptions |
-| Turnout | New Jersey 2021–2025 vote growth and polling comparison; a fixed-participation turnout-gap scenario; who turned out by 2024 vote; estimated turnout rates and state vote comparisons |
+| Turnout | New Jersey 2021–2025 vote growth and polling comparison; a check of any turnout and crossover assumption against the counted national House vote; a fixed-participation turnout-gap scenario; who turned out by 2024 vote; estimated turnout rates and state vote comparisons |
 | National environment | AP-NORC approval in 2021–2022 and 2025–2026, prewar approval extrapolation with sensitivity controls, and an R+4–R+5 no-Dobbs hypothesis |
 | 2028 scenarios | Presidential cohort-return benchmarks, editable turnout and switching, new/returning voters, a midterm-comeback sensitivity, session comparisons and JSON export |
+| Candidate WAR | Each Senate, governor and House candidate's margin against their seat's 2024 presidential margin plus the national swing; a "normal midterm" swing slider showing which seats change hands; a county-by-county comparison of candidates on the same state ballot; each nominee's votes as a share of their party's 2024 presidential vote |
 | Simulator | Sliders for the national environment, Trump approval, and turnout among 2024 (or 2020) Trump voters, Harris (or Biden) voters and people who skipped 2024; re-runs every Senate, House and governor race |
 
 ## Data sources
@@ -25,10 +26,11 @@ It's a static site with no build step: plain HTML, CSS and JavaScript, [d3](http
 | Data | Source | Notes |
 |---|---|---|
 | Race calls, candidates, statewide vote shares in the race tables | Associated Press results as compiled on Wikipedia's 2026 House, Senate and governor election pages | Original snapshot Nov. 8–9; selected House winners checked Nov. 17; Mississippi Senate / Kansas governor calls updated from AP reporting; Alaska Senate, governor and House, CA-23 and NC-5 calls added Nov. 24. See `data/results_meta.json` for sources. Wikipedia text and data are CC BY-SA 4.0 |
-| 2026 county results (Senate, governor, House), House district margins, statewide turnout, ballot measure counts | [civicAPI](https://civicapi.org) | Unofficial counts as of Nov. 24, 2026. civicAPI is free to use with attribution and doesn't say where its data comes from; its statewide totals agree with AP-reported results within 1.5 points everywhere |
+| 2026 county results (Senate, governor, House), House district margins, statewide turnout, ballot measure counts | [civicAPI](https://civicapi.org) | Unofficial counts as of Nov. 24, 2026. civicAPI is free to use with attribution and doesn't say where its data comes from; Checked Nov. 24 against the AP shares in the race tables (an earlier Nov. 8–9 snapshot): 149 of 153 candidate shares agree within 1.5 points. The exceptions are Maryland and Oregon governor, where ballots counted after the snapshot moved shares by up to 3 points, and an Idaho minor candidate |
 | Ballot measure descriptions | Wikipedia, "2026 United States ballot measures" | CC BY-SA 4.0 |
 | 2024 and 2020 presidential results by county | [tonmcg/US_County_Level_Election_Results_08-24](https://github.com/tonmcg/US_County_Level_Election_Results_08-24) | |
 | County and state outlines | [us-atlas](https://github.com/topojson/us-atlas) (Census cartographic boundaries) | Albers USA projection |
+| 2024 presidential results by House district | [The Downballot](https://www.the-downballot.com/p/the-downballots-calculations-of-presidential) | District lines used in 2026, including the 2025 redraws; 2020 results on the same lines where published. State baselines for WAR and retention sum these districts. Checked Nov. 24 |
 | Voter poll | National House exit-poll figures transcribed from Wikipedia’s 2026 House page (labeled Edison there) | Survey estimates, not counts |
 | 2024 eligible population and ballots cast | UF Election Lab | Used for turnout rates of people who skipped 2024 |
 | Approval history | [AP-NORC Biden trend](https://apnorc.org/wp-content/uploads/2024/03/February-2024-topline-Biden.pdf), pp. 5–6, and [Trump trend](https://apnorc.org/wp-content/uploads/2026/10/October-2026-Topline-Issues-1.pdf), pp. 2–3 | Individual polls of U.S. adults; field dates and provenance in `data/environment.json` |
@@ -50,6 +52,9 @@ Data from civicAPI (civicapi.org).
 - **House layers** leave out counties in a district that one party didn't contest.
 - **Alaska** reports 2020 and 2024 results by state house district, so the map shows 2026 margins only. **Connecticut's** 2024 results are by planning region, so its comparisons with 2024 are blank.
 - **The simulator** starts each race at its actual margin and adds the national shift, an approval effect (each point moves voters between "somewhat approve" and "somewhat disapprove") and a turnout effect. With the 2024 baseline, starting turnout rates are J.L. Partners' reported 78% of Harris voters and 65% of Trump voters. The voter poll's recall implies about 78.5% and 68.4%, but that poll's own group shares and vote choices add up to only about D+12, short of the counted D+14.1, so it overstates Trump voters. Broome Street Labs' precinct model also finds roughly a third of Trump voters skipped 2026. The voter-poll inferred rates remain available as an alternative reference, and the 2020 baseline still uses them. Alaska's ranked-choice races assume votes for eliminated Republicans transfer to the leading Republican. It's a what-if tool, not a forecast.
+- **Candidate WAR** is the 2026 margin minus (the seat's 2024 presidential margin + the national swing of 15.6 points). Positive means the Democratic or independent challenger beat the baseline. Uncontested seats are left out of summaries. Alaska's House race uses the final ranked-choice round against independent Bill Hill. Flags mark lopsided seats (2024 margin 30+ points) and districts that moved 8+ points right from 2020 to 2024, where WAR partly reflects a return to an earlier lean. The "normal midterm" view shifts every margin uniformly, assuming each candidate keeps their WAR. It does not adjust for incumbency, spending or demographics.
+- **Retention** divides each 2026 nominee's votes by their party's 2024 presidential vote in the state. Where an independent was the main challenger (Idaho, Montana, Nebraska, South Dakota Senate), the independent is compared with Harris. These are aggregate ratios, not tracked voters.
+- **The turnout check** multiplies assumed turnout and crossover rates by each 2024 cohort's size, gives the remaining 2026 votes to 2024 third-party voters and nonvoters (70% D / 25% R, from the voter poll) and compares the result with the counted vote. J.L. Partners' turnout with the voter poll's crossover rates lands at D+15.1 against the counted D+14.1; its own reported crossover (12% of Trump voters who voted) gives D+22.4.
 - Some measures need a supermajority to pass (for example Florida amendments and most Colorado constitutional amendments), so a yes lead doesn't always mean a measure passed.
 - This is a snapshot. Counts keep changing until states certify.
 
@@ -95,9 +100,11 @@ node --check assets/environment.js
 node --check assets/turnout.js
 node --check assets/presidential-model.js
 node --check assets/presidential.js
+node --check assets/war-model.js
+node --check assets/war.js
 ```
 
-The model tests cover prewar-only fitting, slope choices, margin direction and bounds, no-Dobbs endpoints, New Jersey arithmetic and denominators, fixed combined participation with reversed/equal/original turnout gaps, simulator integration, proportional swing scaling, J.L. Partners calibration and call consistency. Presidential tests check vote conservation, returner denominators, disjoint entrants, break-even calculations, invalid inputs, the midterm-comeback partition and historical references. Refresh tests cover blocked and incomplete responses without making network calls.
+The model tests cover prewar-only fitting, slope choices, margin direction and bounds, no-Dobbs endpoints, New Jersey arithmetic and denominators, fixed combined participation with reversed/equal/original turnout gaps, simulator integration, proportional swing scaling, J.L. Partners calibration and call consistency. Presidential tests check vote conservation, returner denominators, disjoint entrants, break-even calculations, invalid inputs, the midterm-comeback partition and historical references. Refresh tests cover blocked and incomplete responses without making network calls. Data-integrity tests fail when a called race is missing vote totals, when calls disagree between the race tables and the simulator datasets, or when an uncalled race has no next step. WAR tests cover the baseline arithmetic, uncontested exclusions, the Alaska ranked-choice case, uniform swing, retention and vote conservation in the turnout check.
 
 ## Updating the data
 
@@ -105,7 +112,9 @@ The model tests cover prewar-only fitting, slope choices, margin direction and b
 python3 scripts/refresh_civicapi.py
 ```
 
-This re-downloads every Senate, governor, House and statewide measure race from civicAPI and rebuilds `data/counties.json`, `data/sim_house.json`, `data/sim_races.json`, `data/state_turnout.json` and the counts in `data/measures.json`. It also updates national House totals and count dates in `data/results_meta.json`, which supplies both the national environment and turnout calculations. It rejects missing House races or candidate lists before writing. HTTP 401/403 stops immediately and preserves the existing snapshot. Race calls (`data/senate_races.json`, `data/governor_races.json`, `data/house.json`) are not changed by the script; update them with verified sources and keep the corresponding `actual` / `called` fields in simulator datasets and candidate winner markers in sync. Record per-race sources and verification dates in `results_meta.json`; a concession alone is not an AP call. After a successful count refresh, review the explanatory snapshot-date text in `index.html` and this README.
+A scheduled GitHub Action (`.github/workflows/refresh.yml`) runs this daily at 15:17 UTC and opens or updates a pull request when counts change, reporting whether the checks pass on the new data. A blocked refresh fails the job, so it shows up in the Actions tab. It needs "Allow GitHub Actions to create and approve pull requests" turned on under Settings → Actions → General.
+
+The script re-downloads every Senate, governor, House and statewide measure race from civicAPI and rebuilds `data/counties.json`, `data/sim_house.json`, `data/sim_races.json`, `data/state_turnout.json` and the counts in `data/measures.json`. It also updates national House totals and count dates in `data/results_meta.json`, which supplies both the national environment and turnout calculations. It rejects missing House races or candidate lists before writing. HTTP 401/403 stops immediately and preserves the existing snapshot. Race calls (`data/senate_races.json`, `data/governor_races.json`, `data/house.json`) are not changed by the script; update them with verified sources and keep the corresponding `actual` / `called` fields in simulator datasets and candidate winner markers in sync. Record per-race sources and verification dates in `results_meta.json`; a concession alone is not an AP call. After a successful count refresh, review the explanatory snapshot-date text in `index.html` and this README.
 
 `scripts/archive/` holds the one-time scripts used to build the original datasets from Wikipedia and other sources. They're kept for reference and use paths from the environment they were run in.
 
@@ -119,12 +128,14 @@ assets/environment.js        comparison charts, evidence panels and scenario con
 assets/turnout.js            NJ case study and turnout-gap controls
 assets/presidential-model.js pure national presidential cohort calculations
 assets/presidential.js       2028 scenario controls, comparisons and export
+assets/war-model.js          pure WAR, retention and turnout-check calculations (also loaded by Node tests)
+assets/war.js                Candidate WAR tab, turnout check and pending-race list
 assets/dash.js        small runtime that loads data/*.json and redraws charts
 assets/page.css       page styles
 assets/theme.css      colors, type and spacing (light and dark)
 data/                 JSON datasets
 scripts/              data refresh script and archived build scripts
-.github/workflows/    deploys the site to GitHub Pages on every push to main
+.github/workflows/    deploys the site on every push to main, runs checks, and refreshes counts daily
 ```
 
 ## Earlier version

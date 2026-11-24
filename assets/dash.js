@@ -6,7 +6,7 @@ window.dash = (() => {
     'senate_races', 'senate_candidates', 'governor_races', 'governor_candidates', 'senate_holdovers',
     'voter_poll', 'state_tiles', 'house', 'county_shapes', 'pres_totals', 'sim_states',
     'counties', 'sim_house', 'sim_races', 'measures', 'state_turnout',
-    'environment', 'jl_partners', 'results_meta', 'turnout_context', 'presidential_2028',
+    'environment', 'jl_partners', 'results_meta', 'turnout_context', 'presidential_2028', 'district_pres24',
   ];
   const store = {};
   const calcs = {};

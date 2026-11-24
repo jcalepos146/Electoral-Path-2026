@@ -33,6 +33,7 @@
     <button role="tab" id="tab-turnout" data-tab="turnout" aria-selected="false">Turnout</button>
     <button role="tab" id="tab-environment" data-tab="environment" aria-selected="false">National environment</button>
     <button role="tab" id="tab-pres2028" data-tab="pres2028" aria-selected="false">2028 scenarios</button>
+    <button role="tab" id="tab-war" data-tab="war" aria-selected="false">Candidate WAR</button>
     <button role="tab" id="tab-sim" data-tab="sim" aria-selected="false">Simulator</button>
   </nav>
   <p class="note simlink">Explore the <a href="#environment" data-go="environment">national environment and counterfactuals</a>, build <a href="#pres2028" data-go="pres2028">2028 presidential scenarios</a>, or use the <a href="#sim" data-go="sim">Simulator</a> to re-run 2026 races.</p>
@@ -77,6 +78,11 @@
         <thead><tr><th>Office</th><th class="num">Flipped to Democrats</th><th class="num">Flipped to Republicans</th></tr></thead>
         <tbody data-draw="flips-table"></tbody>
       </table>
+    </div>
+    <div class="card wide" id="ov-pending">
+      <h2>Still to be decided</h2>
+      <p class="note">Uncalled races and the next step in each. A race moves off this list when it is called.</p>
+      <div class="tablebox" data-draw="pending-races"></div>
     </div>
   </section>
 
@@ -293,6 +299,13 @@
         </table>
       </div>
     </div>
+    <div class="card wide" id="calibration-card">
+      <p class="eyebrow">Check a turnout estimate against the count</p>
+      <h2>Does this turnout story add up to the actual result?</h2>
+      <p class="note">Pick or type turnout and crossover rates for 2024 Harris and Trump voters. The check multiplies them by each side’s 2024 vote, gives the remaining 2026 votes to 2024 third-party voters and nonvoters (split 70% D / 25% R, as in the voter poll), and compares the result with the counted national House vote. A story that misses the count by several points can’t be right as stated.</p>
+      <div data-draw="calibration-check"></div>
+      <details><summary>Where the presets come from</summary><p>J.L. Partners: 78% of Harris and 65% of Trump 2024 voters voted; as reported, 8 of every 100 Trump voters backed a Democrat and 6 voted another way, which is 12% and 9% of those who voted. <a href="https://jlpartners.com/sitting-out-the-surf" target="_blank" rel="noopener">Source</a>. Broome Street Labs: roughly a third of Trump voters skipped 2026 and about 6% of Trump voters who voted backed the Democrat (13 states); its Harris turnout estimate (77%) is for Georgia only. <a href="https://broomestreetlabs.com/research/2026-senate-wave/" target="_blank" rel="noopener">Source</a>. Voter-poll inferred: the 2026 Voter Poll’s 2024 recall applied to the counted vote. Crossover rates for the other presets come from the voter poll (2% of Harris voters, 7% of Trump voters).</p></details>
+    </div>
   </section>
 
   <section id="environment" class="page" role="tabpanel" aria-labelledby="tab-environment" hidden>
@@ -389,6 +402,37 @@
       <details open><summary>Compare and export assumptions</summary><div class="controls"><label for="p28-scenario-name">Scenario name</label><input type="text" id="p28-scenario-name" maxlength="80" placeholder="Scenario 1"><button type="button" data-p28-action="save" disabled>Save to comparison</button><button type="button" data-p28-action="export" disabled>Export scenario JSON</button><button type="button" data-p28-action="reset" disabled>Reset illustration</button></div><p class="note">Keep up to six snapshots in this page session. Export includes assumptions, input cohorts, calculated votes and source links.</p><p id="p28-action-status" class="note" role="status"></p><p class="note p28-no-snapshots">No scenarios saved yet.</p><div class="tablebox"><table><thead><tr><th>Name</th><th>Margin</th><th>Voters</th><th>Harris return</th><th>Trump return</th><th>New/returning voters</th><th>Action</th></tr></thead><tbody class="p28-snapshots"></tbody></table></div></details>
     </div>
     <div class="card wide"><h2>Historical context: compare the same office first</h2><div class="tablebox"><table><thead><tr><th>Year</th><th>Office</th><th>National D−R margin</th><th>Source</th></tr></thead><tbody data-draw="p28-history"></tbody></table></div><p class="note">The 2008 House margin of D+10.6 became R+6.8 in 2010, a 17.4-point Republican swing. Obama nevertheless won the 2012 presidential vote by about 3.9 points. The D+10.5 reference belongs approximately to the 2008 House election, not 2010. McCain’s 2008 presidential defeat was about 7.3 points; House and presidential margins in the same year differ.</p><p class="note">The existing 2024 presidential → 2026 House comparison mixes offices. It should not be treated as the same measure as the 2008→2010 House swing. Midterm electorates, candidates, economic conditions and coalitions change. The pre-Trump examples illustrate that outcomes can reverse; their turnout rates and coalitions are not silently imported into this tool.</p><details><summary>Calculation, sources and limits</summary><p>For each 2024 cohort, returning voters = 2024 vote total × assumed 2028 return turnout. Allocate only those returners using conditional Democratic/Republican/other shares. Add a separate, disjoint number of voters who did not cast a 2024 presidential vote. Sum all votes and divide the D−R difference by all modeled votes, including other candidates. There is no automatic carryover from the 2026 House margin.</p><p>This simplified national model does not explicitly estimate future eligibility, deaths or migration, candidate effects, state turnout, electoral votes or win probabilities. The analyst-selected return rates and entrant volume absorb unmodeled demographic changes. Pew’s historical panel estimates are benchmarks, not measurements of 2028. Historical House margins are rounded; the presidential entries subtract published rounded FEC shares.</p><ul data-draw="p28-sources"></ul></details></div>
+  </section>
+
+  <section id="war" class="page" role="tabpanel" aria-labelledby="tab-war" hidden>
+    <div class="card wide">
+      <p class="eyebrow">Wins above replacement</p>
+      <h2>Which candidates beat their seat’s baseline?</h2>
+      <p class="note">WAR = the 2026 margin minus what the seat would give a typical candidate: its 2024 presidential margin plus the national swing. Positive numbers mean the Democrat (or independent) beat the baseline; negative numbers mean the Republican did. This simple version does not adjust for incumbency, spending or demographics.</p>
+      <div class="ctl war-swing"><label for="war-swing"><span>Swing from 2024 in a “normal” midterm</span> <output data-war-swing>+7</output></label><input type="range" id="war-swing" min="0" max="16" step="0.5" value="7"><p>Recent midterms under a new president swung about 6–8 points toward the opposition party; 2026 swung more than twice that.</p></div>
+      <div data-draw="war-summary"></div>
+    </div>
+    <div class="card wide">
+      <div class="controls">
+        <label for="war-office">Office</label><select id="war-office"><option value="all">All races</option><option value="senate">Senate</option><option value="governor">Governor</option><option value="house">House</option></select>
+        <label for="war-sort">Sort</label><select id="war-sort"><option value="war-desc">Best challenger WAR first</option><option value="war-asc">Best Republican WAR first</option><option value="changes">Seats that change hands first</option><option value="flip">Closest at the chosen swing</option></select>
+        <label for="war-q" class="sr-only">Search races</label><input type="search" id="war-q" placeholder="Search a state, seat or name">
+      </div>
+      <div class="tablebox" data-draw="war-table"></div>
+      <details><summary>Method and sources</summary><p>Seat baselines: 2024 presidential margins by congressional district on the lines used in 2026, from <a href="https://www.the-downballot.com/p/the-downballots-calculations-of-presidential" target="_blank" rel="noopener">The Downballot</a>; state baselines sum those districts. National swing: the counted 2026 House vote minus the 2024 presidential vote, both summed nationally. 2026 margins are the civicAPI counts the simulator uses. Alaska’s House race uses the final ranked-choice round against independent Bill Hill. The “normal midterm” column shifts every margin by the same amount, assuming each candidate keeps their WAR. Flags mark cases where WAR is less reliable: districts that swung 8+ points right from 2020 to 2024 may simply be returning to an earlier lean, and seats beyond 30 points have little room to move.</p></details>
+    </div>
+    <div class="card wide">
+      <h2>Same ballot, different candidates</h2>
+      <p class="note">Every Democrat on a state’s ballot faced the same electorate. Comparing them county by county separates the candidate from the environment better than WAR alone. Margins use the two major parties.</p>
+      <div class="controls"><label for="ballot-state">State</label><select id="ballot-state" data-draw="ballot-state" disabled></select></div>
+      <div data-draw="ballot-compare"></div>
+    </div>
+    <div class="card wide">
+      <h2>How much of each party’s 2024 vote came back?</h2>
+      <p class="note">Each 2026 nominee’s votes as a share of their party’s 2024 presidential vote in the state.</p>
+      <div class="seg ret-seg" role="group" aria-label="Office"><button class="ret-office" data-office="senate" aria-pressed="true">Senate</button><button class="ret-office" data-office="governor" aria-pressed="false">Governor</button></div>
+      <div data-draw="retention"></div>
+    </div>
   </section>
 
   <section id="sim" class="page" hidden>
@@ -508,7 +552,7 @@
     <p>Race results and calls: Associated Press tallies as compiled on Wikipedia's 2026 House, Senate and governor election pages (original snapshot Nov. 8–9, 2026). Selected House winners rechecked against Wikipedia district tables Nov. 17, and Alaska, CA-23, NC-5 and MN-1 rechecked against AP and state reporting Nov. 24; Mississippi Senate and Kansas governor calls updated from AP reporting. See the update log above for per-race sources. Vote shares may lag calls. NC-3 remains uncalled despite Murphy’s concession, and MN-1 stays uncalled until its Dec. 8 recount.</p>
     <p>Notes on uncalled races come from AP reporting on the Mississippi count and on Alaska's ranked-choice timetable. "Changed party" compares the winner with the party that held the seat or office before the election; for House seats redrawn mid-decade, it follows the source's gain and hold labels.</p>
     <p>Voter trends: the national House exit-poll figures transcribed from Wikipedia’s 2026 House elections page, labeled there as Edison. These are survey estimates, not counts. The separately labeled J.L. Partners survey includes nonvoters and uses a different denominator; AP-NORC’s approval series covers all adults.</p>
-    <p>County map: 2020 and 2024 presidential results by county from the tonmcg/US_County_Level_Election_Results_08-24 dataset; 2026 county results for Senate, governor and House races from <a href="https://civicapi.org" target="_blank" rel="noopener">civicAPI</a>, unofficial as of Nov. 24. civicAPI doesn't publish where its data comes from; its statewide totals agree with AP-reported results within 1.5 points everywhere, and closer where counting has finished. County outlines from the us-atlas package.</p>
+    <p>County map: 2020 and 2024 presidential results by county from the tonmcg/US_County_Level_Election_Results_08-24 dataset; 2026 county results for Senate, governor and House races from <a href="https://civicapi.org" target="_blank" rel="noopener">civicAPI</a>, unofficial as of Nov. 24. civicAPI doesn't publish where its data comes from; checked Nov. 24, 149 of 153 statewide candidate shares agree within 1.5 points with the AP shares in the race tables (a Nov. 8–9 snapshot); the exceptions are Maryland and Oregon governor, where later-counted ballots moved shares by up to 3 points, and an Idaho minor candidate. County outlines from the us-atlas package.</p>
     <p>Ballot measures: counts from civicAPI; descriptions from Wikipedia's 2026 ballot measures page where the measure could be matched. Turnout: votes in each state's largest 2026 statewide count compared with presidential votes summed from county results.</p>
     <p>Simulator: starting margins from civicAPI counts as of Nov. 24 (race calls stay with AP); turnout rates estimated from the 2026 Voter Poll, the roughly 119 million House votes counted by Nov. 24, 2024 and 2020 presidential totals, and the UF Election Lab's 2024 eligible-population and ballots estimates.</p>
     <p>Not included: precinct results, state-by-state demographic estimates, and live updates. This is a fixed snapshot and does not refresh on its own.</p>
@@ -518,6 +562,8 @@
 </div>
 <script src="assets/environment-model.js"></script>
 <script src="assets/app.js"></script>
+<script src="assets/war-model.js"></script>
+<script src="assets/war.js"></script>
 <script src="assets/environment.js"></script>
 <script src="assets/turnout.js"></script>
 <script src="assets/presidential-model.js"></script>
