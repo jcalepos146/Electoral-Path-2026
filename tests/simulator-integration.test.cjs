@@ -41,7 +41,7 @@ test('simulator starts from the counted House margin and preserves seat totals',
 });
 
 test('reversed-2022 turnout gap preserves combined participation and moves 2026 closer', () => {
-  const app = loadApp(), s = app.EV.turnoutGapScenario(4), S = app.EV.simDefaults();
+  const app = loadApp(), s = app.EV.turnoutGapScenario(4), S = app.EV.turnoutReference('inferred');
   const year = app.dash.data('pres_totals').data.find((r) => r.year === 2024);
   assert.ok(Math.abs(s.S.hd - s.S.tr - 4) < 1e-10);
   assert.ok(Math.abs((year.dem * s.S.hd + year.rep * s.S.tr) - (year.dem * S.hd + year.rep * S.tr)) < 1e-5);
@@ -92,4 +92,15 @@ test('proportional benchmark applies once as a national shift with baseline turn
   const result = app.EV.simRun({...S, env: s.margin - actual});
   assert.ok(Math.abs(result.nat - s.margin) < 1e-10);
   assert.equal(result.hD + result.hR, 435);
+});
+
+test('simulator defaults to the J.L. Partners turnout calibration and still reproduces the count', () => {
+  const app = loadApp(), S = app.EV.simDefaults(), jl = app.dash.data('jl_partners').data;
+  assert.equal(S.turnoutRef, 'jl');
+  assert.equal(S.tr, 100 - jl.trump_outcomes.find((r) => r.label === 'Stayed home').value);
+  assert.equal(S.hd, 100 - jl.harris_stayed_home);
+  const R = app.EV.simRun(S), inferred = app.EV.simRun(app.EV.turnoutReference('inferred'));
+  assert.equal(R.nat, inferred.nat);
+  assert.equal(R.hD, inferred.hD);
+  assert.ok(S.tr < app.EV.turnoutReference('inferred').tr);
 });

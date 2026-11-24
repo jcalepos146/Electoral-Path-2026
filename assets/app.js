@@ -526,12 +526,14 @@ dash.draw('turnout-table', (tb) => {
 /* ---------- simulator ---------- */
 EV.SIMDATA = ['sim_races', 'sim_house', 'sim_states', 'senate_holdovers', 'voter_poll', 'pres_totals', 'sim_base', 'national_env', 'jl_partners'];
 EV.simS = null;
-EV.simDefaults = () => {
-  const B = Object.fromEntries(dash.data('sim_base').data.map((r) => [r.key, r.value]));
-  return {env: 0, appr: B.approval, year: 24, tr: B.trump24, hd: B.harris24, nv: B.new24, turnoutRef: 'inferred', B};
-};
+// Default calibration: J.L. Partners' reported 78% Harris / 65% Trump turnout. The voter-poll inferred rates
+// (2024 recall share x counted votes) put Trump turnout near 68%, but the same poll's group shares and vote choices
+// add up to about D+12, short of the counted margin, so its recall overstates Trump voters. Broome Street Labs'
+// precinct model ("roughly a third" of Trump voters skipped 2026) corroborates the lower Trump rate.
+EV.simDefaults = () => EV.turnoutReference('jl');
 EV.turnoutReference = (reference = 'inferred') => {
-  const S = EV.simDefaults();
+  const B = Object.fromEntries(dash.data('sim_base').data.map((r) => [r.key, r.value]));
+  const S = {env: 0, appr: B.approval, year: 24, tr: B.trump24, hd: B.harris24, nv: B.new24, turnoutRef: 'inferred', B};
   if (reference === 'inferred') return S;
   if (reference !== 'jl') throw new Error('Unknown turnout reference');
   const jl = dash.data('jl_partners').data;
@@ -601,7 +603,7 @@ EV.signed = (v) => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v);
 
 dash.draw('sim-ref', (el) => {
   if (!EV.sim()) return;
-  el.textContent = EV.simS.turnoutRef === 'jl' ? 'Turnout calibration: J.L. Partners’ rounded 78% Harris / 65% Trump rates are the reference that reproduces the counted margins. Within-group House vote choices still come from the existing voter-only poll; this is a hybrid sensitivity model.' : 'Turnout calibration: rates inferred from the voter-only poll and counted House votes.';
+  el.textContent = EV.simS.turnoutRef === 'jl' ? 'Turnout calibration (default): J.L. Partners’ rounded 78% Harris / 65% Trump rates are the reference that reproduces the counted margins. Broome Street Labs’ precinct model also finds roughly a third of Trump voters skipped 2026. Within-group House vote choices still come from the existing voter-only poll; this is a hybrid sensitivity model.' : 'Turnout calibration: rates inferred from the voter-only poll and counted House votes.';
 });
 
 dash.draw('sim-val', (el) => {
@@ -772,7 +774,8 @@ dash.draw('sim-nat', (el) => {
   all('.ev .sim-year', (b) => b.addEventListener('click', () => {
     if (!EV.simS) return;
     const y = +b.dataset.year, B = EV.simS.B;
-    Object.assign(EV.simS, {year: y, tr: y === 24 ? B.trump24 : B.trump20, hd: y === 24 ? B.harris24 : B.biden20, turnoutRef: 'inferred'});
+    if (y === 24) { const D = EV.simDefaults(); Object.assign(EV.simS, {year: 24, tr: D.tr, hd: D.hd, turnoutRef: D.turnoutRef}); }
+    else Object.assign(EV.simS, {year: y, tr: B.trump20, hd: B.biden20, turnoutRef: 'inferred'});
     showYear(y);
     EV.simRedraw();
   }));
