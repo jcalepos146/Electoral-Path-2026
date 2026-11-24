@@ -79,7 +79,7 @@ test('JL calibration reproduces counted margins at 78/65 and preserves its own v
   const year = app.dash.data('pres_totals').data.find((r) => r.year === 2024);
   assert.ok(Math.abs(year.dem * (s.S.hd - 78) + year.rep * (s.S.tr - 65)) < 1e-5);
   assert.ok(Math.abs(s.S.hd - s.S.tr - 4) < 1e-10);
-  assert.equal(s.result.nat.toFixed(1), '7.9');
+  assert.equal(s.result.nat.toFixed(1), '8.8');
   assert.ok(s.result.nat < app.EV.turnoutGapScenario(4, 'inferred').result.nat);
   assert.equal(app.EV.simRun(s.S).nat, s.result.nat);
   assert.throws(() => app.EV.simRun({...ref, year: 20}));

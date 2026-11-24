@@ -18,7 +18,7 @@
 <div id="dash-root">
 <div class="ev">
   <h1 id="top">2026 midterm election results</h1>
-  <p class="lede">House, Senate and governor results from the Nov. 3, 2026 general election, plus voter turnout, national environment comparisons and counterfactual scenarios. Selected race calls checked Nov. 17; vote counts retain their stated snapshot dates.</p>
+  <p class="lede">House, Senate and governor results from the Nov. 3, 2026 general election, plus voter turnout, national environment comparisons and counterfactual scenarios. Selected race calls checked Nov. 24; vote counts retain their stated snapshot dates.</p>
   <div class="updates" data-draw="results-updates"></div>
   <p class="take">Democrats hold <b data-draw="n" data-source="senate_balance" data-field="seats" data-where="key=DC">—</b> Senate seats (counting independents who caucus with them) to Republicans' <b data-draw="n" data-source="senate_balance" data-field="seats" data-where="key=R">—</b>, and have won <b data-draw="n" data-source="house_balance" data-field="seats" data-where="key=D">—</b> House seats to Republicans' <b data-draw="n" data-source="house_balance" data-field="seats" data-where="key=R">—</b>. Still uncalled: <b data-draw="n" data-source="senate_balance" data-field="seats" data-where="key=U">—</b> Senate, <b data-draw="n" data-source="house_balance" data-field="seats" data-where="key=U">—</b> House and <b data-draw="n" data-source="governor_balance" data-field="races" data-where="key=U">—</b> governor races.</p>
 
@@ -155,7 +155,7 @@
   <section id="counties" class="page" hidden>
     <div class="card wide" id="county-card">
       <h2>Results by county</h2>
-      <p class="note">Every county with a 2026 count, unofficial as of Nov. 9. "Top race" uses each state's Senate race, else its governor race, else its House races, skipping races where an independent was a top-two finisher. Alaska has no 2024 or 2020 results by borough, so it shows 2026 margins only; Connecticut's 2024 results are by planning region, so its 2024 comparisons are blank.</p>
+      <p class="note">Every county with a 2026 count, unofficial as of Nov. 24. "Top race" uses each state's Senate race, else its governor race, else its House races, skipping races where an independent was a top-two finisher. Alaska has no 2024 or 2020 results by borough, so it shows 2026 margins only; Connecticut's 2024 results are by planning region, so its 2024 comparisons are blank.</p>
       <div class="controls">
         <select class="dash-select cm-race" id="cm-race" aria-label="2026 race">
           <option value="top">2026 top race in each state</option>
@@ -205,7 +205,7 @@
   <section id="measures" class="page" hidden>
     <div class="card wide" id="measures-card">
       <h2>Statewide ballot measures</h2>
-      <p class="note">Yes and no shares from civicAPI (unofficial counts as of Nov. 9). Some measures need a supermajority to pass, such as Florida amendments and most Colorado constitutional amendments, so a yes lead does not always mean a measure passes. Measures without a count in the source are listed with their description only.</p>
+      <p class="note">Yes and no shares from civicAPI (unofficial counts as of Nov. 24). Some measures need a supermajority to pass, such as Florida amendments and most Colorado constitutional amendments, so a yes lead does not always mean a measure passes. Measures without a count in the source are listed with their description only.</p>
       <div class="controls">
         <button data-mf="all" aria-pressed="true">All measures</button>
         <button data-mf="counted" aria-pressed="false">With counts</button>
@@ -253,8 +253,8 @@
         <p>The quoted estimate scales J.L. Partners’ rounded 10-point turnout contribution by the ratio of the hypothetical turnout gap to the reported 13-point gap, then adds the rounded five-point switching contribution to the R+2 presidential baseline. At a four-point gap, this is −2 + 10 × (4 ÷ 13) + 5 = D+6.1.</p>
         <p>At the currently selected gap: <b data-gap-value="scaledFormula">—</b>. Proportionality between turnout-rate differences and vote-margin swings is an extra analyst assumption. It is not a counterfactual estimated by J.L. Partners. The calculations below are alternative models, not an uncertainty interval.</p>
         <div class="tablebox"><table><thead><tr><th>Method</th><th>Reference turnout gap</th><th>House margin at selected gap</th><th>Assumption</th></tr></thead><tbody class="turnout-methods"></tbody></table></div>
-        <p>The earlier D+9.8 output starts from a 9.8-point inferred turnout gap; the reported J.L. Partners gap is 13 points. Reweighting from that larger gap produces a different result. Both cohort models calculate how the electorate changes and hold within-group House choices fixed; they do not assume the report’s entire five-point switching component stays constant. The proportional method holds that aggregate switching component fixed instead.</p>
-        <p>The decomposition reconstructs a rounded D+13 result, while the cohort models use the retained D+13.2 count. These are hypothetical national House vote margins, not newly measured generic-ballot polling.</p>
+        <p>The earlier D+10.6 output starts from a 10.1-point inferred turnout gap; the reported J.L. Partners gap is 13 points. Reweighting from that larger gap produces a different result. Both cohort models calculate how the electorate changes and hold within-group House choices fixed; they do not assume the report’s entire five-point switching component stays constant. The proportional method holds that aggregate switching component fixed instead.</p>
+        <p>The decomposition reconstructs a rounded D+13 result, while the cohort models use the counted D+14.1 margin. These are hypothetical national House vote margins, not newly measured generic-ballot polling.</p>
         <button type="button" class="btn apply-scaled-turnout" disabled>Apply the proportional margin scenario to the simulator</button>
         <p>Applies a uniform national margin shift once, resetting turnout and approval sliders. Shifts beyond ±20 points cannot be applied. <a href="https://jlpartners.com/sitting-out-the-surf">J.L. Partners source report</a></p>
       </details>
@@ -281,7 +281,7 @@
     </div>
     <div class="card wide" id="turnout-chart-card">
       <h2>Votes cast in 2026 compared with 2024 and 2020</h2>
-      <p class="note">Votes in each state's largest 2026 statewide count (Senate, governor, or all House districts combined; as of Nov. 9) as a share of its presidential vote. Bars compare with 2024; dots with 2020. Several states, such as California, count mail ballots for weeks, so their shares will rise.</p>
+      <p class="note">Votes in each state's largest 2026 statewide count (Senate, governor, or all House districts combined; as of Nov. 24) as a share of its presidential vote. Bars compare with 2024; dots with 2020. Several states, such as California, count mail ballots for weeks, so their shares will rise.</p>
       <div class="chart" id="turnout-chart" data-draw="turnout-chart"></div>
     </div>
     <div class="card wide" id="turnout-table-card">
@@ -321,7 +321,7 @@
       <div class="big scenario-stats" aria-live="polite">
         <div><b data-env-value="approval">—</b><span>Hypothetical approval on Nov. 3</span></div>
         <div><b data-env-value="margin">—</b><span>Hypothetical national House margin</span></div>
-        <div><b data-env-value="actual">—</b><span>Counted 2026 House margin · <span data-env-value="countDate">Nov. 9, 2026</span></span></div>
+        <div><b data-env-value="actual">—</b><span>Counted 2026 House margin · <span data-env-value="countDate">Nov. 24, 2026</span></span></div>
       </div>
       <p class="note">House margin sensitivity: <b data-env-value="sensitivity">—</b>. Positive margins favor Democrats; negative margins favor Republicans.</p>
       <div class="chart" data-draw="counterfactual-chart"></div>
@@ -343,7 +343,7 @@
       <p class="note">Implied change: <b data-env-value="dobbsShift">—</b>. Across the full R+4–R+5 range, the assumed Dobbs contribution is 1.2–2.2 points of national margin; against a rounded R+3 baseline, it is 1–2 points. This assumption does not establish causation. Candidate quality, redistricting, turnout and other issues also affected 2022.</p>
     </div>
     <div class="card wide"><h2>Turnout and switching are separate questions</h2><p class="note">Use the new survey as evidence about participation and vote choice. Neither its turnout gap nor its swing decomposition tells us how much the war caused either behavior.</p><div data-draw="jl-evidence"></div></div>
-    <details><summary>Sources and update notes</summary><ul data-draw="environment-sources"></ul><p>Approval and historical results checked Nov. 17, 2026. The 2026 national margin uses the retained Nov. 9 civicAPI snapshot. Historical House margins use all votes and are rounded to one decimal. The R+4–R+5 no-Dobbs range and approval-to-vote conversion are scenario assumptions.</p></details>
+    <details><summary>Sources and update notes</summary><ul data-draw="environment-sources"></ul><p>Approval and historical results checked Nov. 17, 2026. The 2026 national margin uses the Nov. 24 civicAPI count. Historical House margins use all votes and are rounded to one decimal. The R+4–R+5 no-Dobbs range and approval-to-vote conversion are scenario assumptions.</p></details>
   </section>
 
   <section id="pres2028" class="page" role="tabpanel" aria-labelledby="tab-pres2028" hidden>
@@ -495,9 +495,9 @@
         <details>
           <summary>How the simulator works</summary>
           <p>Each race starts at its actual 2026 margin, then gets three adjustments: the national environment shift, the approval change, and the turnout changes for its state.</p>
-          <p>Turnout: the 2026 Voter Poll split voters by their 2024 vote. Each group's turnout rate is estimated by dividing its share of the roughly 115 million 2026 House votes counted by Nov. 9 by its 2024 vote total; for people who skipped 2024, the denominator is the eligible population (UF Election Lab) minus 2024 ballots. Each state's electorate is estimated from its own 2024 or 2020 result, scaled so the nation matches the poll. A slider sets the turnout rate nationally, and every state's group moves by the same proportion. Each group then votes the way it did nationally in the poll. With the 2020 baseline, 2020 Biden and Trump voters are assumed to turn out in the same mix and vote like 2024 Harris and Trump voters.</p>
+          <p>Turnout: the 2026 Voter Poll split voters by their 2024 vote. Each group's turnout rate is estimated by dividing its share of the roughly 119 million 2026 House votes counted by Nov. 24 by its 2024 vote total; for people who skipped 2024, the denominator is the eligible population (UF Election Lab) minus 2024 ballots. Each state's electorate is estimated from its own 2024 or 2020 result, scaled so the nation matches the poll. A slider sets the turnout rate nationally, and every state's group moves by the same proportion. Each group then votes the way it did nationally in the poll. With the 2020 baseline, 2020 Biden and Trump voters are assumed to turn out in the same mix and vote like 2024 Harris and Trump voters.</p>
           <p>Approval: each point moves 1% of voters between "somewhat disapprove" and "somewhat approve", using those groups' House vote in the poll. This assumes only soft opinions change.</p>
-          <p>House districts use each district's count as of Nov. 9; uncontested districts count as 100-point margins. Turnout effects use the state's electorate. Where an independent was the main challenger to a Republican, the independent is treated as the challenger. With a 50–50 Senate the vice president, a Republican, breaks ties. This is a what-if tool, not a forecast.</p>
+          <p>House districts use each district's count as of Nov. 24; uncontested districts count as 100-point margins. Turnout effects use the state's electorate. Where an independent was the main challenger to a Republican, the independent is treated as the challenger. With a 50–50 Senate the vice president, a Republican, breaks ties. This is a what-if tool, not a forecast.</p>
         </details>
       </div>
     </div>
@@ -505,12 +505,12 @@
 
   <details>
     <summary>Sources and method</summary>
-    <p>Race results and calls: Associated Press tallies as compiled on Wikipedia's 2026 House, Senate and governor election pages (original snapshot Nov. 8–9, 2026). Selected House winners rechecked against Wikipedia district tables Nov. 17; Mississippi Senate and Kansas governor calls updated from AP reporting. See the update log above for per-race sources. Vote shares may lag calls. NC-3 remains uncalled despite Murphy’s concession; its simulator margin uses a newer DDHQ count.</p>
+    <p>Race results and calls: Associated Press tallies as compiled on Wikipedia's 2026 House, Senate and governor election pages (original snapshot Nov. 8–9, 2026). Selected House winners rechecked against Wikipedia district tables Nov. 17, and Alaska, CA-23, NC-5 and MN-1 rechecked against AP and state reporting Nov. 24; Mississippi Senate and Kansas governor calls updated from AP reporting. See the update log above for per-race sources. Vote shares may lag calls. NC-3 remains uncalled despite Murphy’s concession, and MN-1 stays uncalled until its Dec. 8 recount.</p>
     <p>Notes on uncalled races come from AP reporting on the Mississippi count and on Alaska's ranked-choice timetable. "Changed party" compares the winner with the party that held the seat or office before the election; for House seats redrawn mid-decade, it follows the source's gain and hold labels.</p>
     <p>Voter trends: the national House exit-poll figures transcribed from Wikipedia’s 2026 House elections page, labeled there as Edison. These are survey estimates, not counts. The separately labeled J.L. Partners survey includes nonvoters and uses a different denominator; AP-NORC’s approval series covers all adults.</p>
-    <p>County map: 2020 and 2024 presidential results by county from the tonmcg/US_County_Level_Election_Results_08-24 dataset; 2026 county results for Senate, governor and House races from <a href="https://civicapi.org" target="_blank" rel="noopener">civicAPI</a>, unofficial as of Nov. 9. civicAPI doesn't publish where its data comes from; its statewide totals agree with AP-reported results within 1.5 points everywhere, and closer where counting has finished. County outlines from the us-atlas package.</p>
+    <p>County map: 2020 and 2024 presidential results by county from the tonmcg/US_County_Level_Election_Results_08-24 dataset; 2026 county results for Senate, governor and House races from <a href="https://civicapi.org" target="_blank" rel="noopener">civicAPI</a>, unofficial as of Nov. 24. civicAPI doesn't publish where its data comes from; its statewide totals agree with AP-reported results within 1.5 points everywhere, and closer where counting has finished. County outlines from the us-atlas package.</p>
     <p>Ballot measures: counts from civicAPI; descriptions from Wikipedia's 2026 ballot measures page where the measure could be matched. Turnout: votes in each state's largest 2026 statewide count compared with presidential votes summed from county results.</p>
-    <p>Simulator: starting margins from civicAPI counts as of Nov. 9 (race calls stay with AP); turnout rates estimated from the 2026 Voter Poll, the roughly 115 million House votes counted by Nov. 9, 2024 and 2020 presidential totals, and the UF Election Lab's 2024 eligible-population and ballots estimates.</p>
+    <p>Simulator: starting margins from civicAPI counts as of Nov. 24 (race calls stay with AP); turnout rates estimated from the 2026 Voter Poll, the roughly 119 million House votes counted by Nov. 24, 2024 and 2020 presidential totals, and the UF Election Lab's 2024 eligible-population and ballots estimates.</p>
     <p>Not included: precinct results, state-by-state demographic estimates, and live updates. This is a fixed snapshot and does not refresh on its own.</p>
   </details>
 </div>
