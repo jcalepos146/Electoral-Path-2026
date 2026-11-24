@@ -92,7 +92,7 @@ dash.calc('state_trends', {
   },
 });
 // Turnout rates by past vote: each group's share of 2026 voters (Voter Poll) times the 2026 House votes counted
-// by Nov. 9 (civicAPI), divided by the group's size then. 2024 eligible population and ballots: UF Election Lab.
+// by Nov. 24 (civicAPI), divided by the group's size then. 2024 eligible population and ballots: UF Election Lab.
 dash.calc('sim_base', {
   inputs: ['pres_totals', 'voter_poll', 'results_meta'],
   fn: (pres_totals, voter_poll, results_meta) => {
